@@ -138,7 +138,7 @@ function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate overflow-hidden bg-background">
+      <section className="relative isolate flex flex-col overflow-hidden bg-background md:block">
         <img
           src={heroEditorial}
           alt="South Asian bride in a red and gold embroidered saree with kundan jewellery, beside cream florals"
@@ -152,7 +152,7 @@ function Home() {
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-background/85 via-background/40 to-transparent md:block"
         />
-        <div className="relative mx-auto flex max-w-7xl px-4 pb-8 pt-8 sm:px-6 md:min-h-[clamp(520px,72vh,720px)] md:items-center md:py-20 lg:px-8">
+        <div className="relative order-1 mx-auto flex w-full max-w-7xl px-4 pb-8 pt-8 sm:px-6 md:min-h-[clamp(520px,72vh,720px)] md:items-center md:py-20 lg:px-8">
           <div className="hero-rise max-w-xl text-center md:text-left">
             <p className="eyebrow">Bridal • Beauty • Fashion</p>
             <div className="mx-auto mt-4 h-px w-16 bg-primary md:mx-0" />
