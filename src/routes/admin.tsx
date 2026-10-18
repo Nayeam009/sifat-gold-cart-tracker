@@ -77,7 +77,7 @@ function AdminLogin() {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   return (
-    <div className="mx-auto max-w-sm py-24">
+    <main className="mx-auto max-w-sm px-4 py-24">
       <h1 className="text-center font-display text-3xl">Admin sign in</h1>
       <p className="mt-2 text-center text-sm text-muted-foreground">Only approved SifatMart administrators can open the dashboard.</p>
       <form className="mt-8 space-y-3" onSubmit={async (e) => {
@@ -92,6 +92,6 @@ function AdminLogin() {
         {err && <p role="alert" className="text-sm text-destructive">{err}</p>}
         <button className={`${btnPrimary} w-full`} disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button>
       </form>
-    </div>
+    </main>
   );
 }

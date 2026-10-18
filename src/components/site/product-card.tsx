@@ -22,16 +22,16 @@ export function ProductCard({ p, showStock, variants }: { p: CardProduct; showSt
   return (
     <div className="group flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-soft">
       <div className="relative aspect-square overflow-hidden bg-muted">
-        <Link to="/product/$slug" params={{ slug: p.slug }} tabIndex={-1} aria-hidden>
+        <Link to="/product/$slug" params={{ slug: p.slug }} tabIndex={-1} aria-label={p.name}>
           <SafeImage src={p.image} alt={p.name} loading="lazy" width={816} height={816} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
         </Link>
-        <button aria-label={wished ? `Remove ${p.name} from wishlist` : `Add ${p.name} to wishlist`} aria-pressed={wished} onClick={() => toggleWish(p.slug)} className="absolute right-2 top-2 grid h-8 w-8 place-items-center rounded-full bg-card/90">
-          <Heart className={cn("h-4 w-4", wished ? "fill-accent text-accent" : "text-muted-foreground")} />
+        <button aria-label={wished ? `Remove ${p.name} from wishlist` : `Add ${p.name} to wishlist`} aria-pressed={wished} onClick={() => toggleWish(p.slug)} className="absolute right-1 top-1 grid h-11 w-11 place-items-center rounded-full">
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-card/90 shadow-sm"><Heart className={cn("h-4 w-4", wished ? "fill-accent text-accent" : "text-muted-foreground")} /></span>
         </button>
         {onSale && <span className="absolute left-2 top-2 rounded-sm bg-accent px-2 py-0.5 text-[10px] uppercase tracking-wider text-accent-foreground">Sale</span>}
       </div>
-      <div className="flex flex-1 flex-col p-4">
-        <Link to="/product/$slug" params={{ slug: p.slug }} className="text-sm font-medium hover:text-primary">{p.name}</Link>
+      <div className="flex flex-1 flex-col p-3 sm:p-4">
+        <Link to="/product/$slug" params={{ slug: p.slug }} className="line-clamp-2 min-h-[2.5rem] text-sm font-medium leading-5 hover:text-primary">{p.name}</Link>
         {hasOptions && (
           <p className="mt-1 text-xs text-muted-foreground">
             {opts.length ? `${opts.filter((v) => v.stock > 0).length} of ${opts.length} options available` : `${optionNames.length} options: ${optionNames.slice(0, 3).join(", ")}`}

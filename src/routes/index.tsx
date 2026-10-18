@@ -83,8 +83,8 @@ function Home() {
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {categories.map((c) => (
             <Link key={c.slug} to="/category/$slug" params={{ slug: c.slug }} className="group overflow-hidden rounded-lg border border-border bg-card shadow-soft">
-              <div className="aspect-square overflow-hidden"><img src={c.image} alt={c.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" /></div>
-              <div className="flex items-center justify-between px-3 py-3 text-xs font-medium">{c.name} <ArrowRight className="h-3 w-3 text-primary" /></div>
+              <div className="aspect-square overflow-hidden"><img src={c.image} alt={c.name} loading="lazy" decoding="async" width={400} height={400} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" /></div>
+              <div className="flex items-center justify-between gap-2 px-3 py-3 text-xs font-medium"><span className="min-w-0">{c.name}</span> <ArrowRight className="h-3 w-3 shrink-0 text-primary" /></div>
             </Link>
           ))}
         </div>
@@ -102,7 +102,7 @@ function Home() {
             </ul>
             <Link to="/occasion/$slug" params={{ slug: "wedding" }} className="mt-7 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm text-primary-foreground hover:opacity-90">Explore Bridal Collection <ArrowRight className="h-4 w-4" /></Link>
           </div>
-          <img src={bridal} alt="Bridal flower set, jewellery and heels" loading="lazy" className="aspect-[4/3] w-full rounded-lg object-cover shadow-soft" />
+          <img src={bridal} alt="Bridal flower set, jewellery and heels" loading="lazy" decoding="async" width={1200} height={900} className="aspect-[4/3] w-full rounded-lg object-cover shadow-soft" />
         </div>
       </section>
 

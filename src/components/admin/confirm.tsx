@@ -39,7 +39,7 @@ export function Pager({ page, total, size, onPage }: { page: number; total: numb
 
 export const inputCls = "w-full rounded-md border border-input bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring";
 export const btnPrimary = "inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50";
-export const btnGhost = "inline-flex items-center justify-center gap-2 rounded-md border border-border px-3 py-1.5 text-sm hover:bg-muted disabled:opacity-50";
+export const btnGhost = "inline-flex min-h-9 min-w-9 items-center justify-center gap-2 rounded-md border border-border px-3 py-1.5 text-sm hover:bg-muted disabled:opacity-50";
 
 export function AdminTitle({ title, children }: { title: string; children?: ReactNode }) {
   return (
