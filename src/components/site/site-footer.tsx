@@ -34,7 +34,7 @@ export function SiteFooter() {
         <div>
           <h4 className="text-lg text-gold-soft">Newsletter</h4>
           <p className="mt-4 text-sm opacity-80">Get the latest updates on new arrivals, exclusive offers and more.</p>
-          <form className="mt-4 space-y-2" onSubmit={(e) => { e.preventDefault(); if (!/^\S+@\S+\.\S+$/.test(email)) return toast.error("Please enter a valid email"); setEmail(""); toast.success("Thank you for subscribing!"); }}>
+          <form className="mt-4 space-y-2" onSubmit={(e) => { e.preventDefault(); if (!/^\S+@\S+\.\S+$/.test(email)) { toast.error("Please enter a valid email"); return; } setEmail(""); toast.success("Thank you for subscribing!"); }}>
             <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Your email address" className="w-full border-b border-espresso-foreground/30 bg-transparent py-2 text-sm outline-none placeholder:text-espresso-foreground/50" />
             <button className="w-full rounded-md bg-primary py-2 text-sm text-primary-foreground hover:opacity-90">Subscribe</button>
           </form>

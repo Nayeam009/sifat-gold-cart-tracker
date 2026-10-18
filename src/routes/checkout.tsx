@@ -39,7 +39,7 @@ function Checkout() {
           e.preventDefault();
           const f = new FormData(e.currentTarget);
           const phone = String(f.get("phone") || "").replace(/\s|-/g, "").replace(/^\+?88/, "");
-          if (!/^01[3-9]\d{8}$/.test(phone)) return toast.error("Please enter a valid 11-digit mobile number (01XXXXXXXXX)");
+          if (!/^01[3-9]\d{8}$/.test(phone)) { toast.error("Please enter a valid 11-digit mobile number (01XXXXXXXXX)"); return; }
           m.mutate({ data: {
             customer_name: String(f.get("name")), phone, email: String(f.get("email") || ""),
             address: String(f.get("address")), city: String(f.get("city")), zone, notes: String(f.get("notes") || ""),
