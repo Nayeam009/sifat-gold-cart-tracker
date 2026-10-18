@@ -11,5 +11,5 @@ export function SafeImage({ src, alt, className, ...rest }: ImgHTMLAttributes<HT
         <ImageOff className="h-6 w-6" aria-hidden />
       </div>
     );
-  return <img src={src} alt={alt} onError={() => setFailed(true)} className={className} {...rest} />;
+  return <img src={src} alt={alt} loading="lazy" decoding="async" onError={() => setFailed(true)} className={className} {...rest} />;
 }

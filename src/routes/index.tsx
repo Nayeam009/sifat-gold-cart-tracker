@@ -71,7 +71,7 @@ function Home() {
           <div className="order-1 md:order-2">
             <div className="relative mx-auto max-w-md md:max-w-none">
               <div aria-hidden className="absolute -inset-3 rounded-t-full border border-primary/40" />
-              <img src={hero} alt="Bride in red and gold bridal saree with floral jewellery" width={1600} height={912} className="relative aspect-[4/5] w-full rounded-t-full object-cover object-right shadow-soft" />
+              <img src={hero} alt="Bride in red and gold bridal saree with floral jewellery" width={1600} height={912} fetchPriority="high" decoding="async" className="relative aspect-[4/5] w-full rounded-t-full object-cover object-right shadow-soft" />
             </div>
           </div>
         </div>

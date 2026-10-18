@@ -35,7 +35,7 @@ export const Route = createFileRoute("/product/$slug")({
       image: p.images.map((i) => absUrl(i.url)),
       brand: { "@type": "Brand", name: "SifatMart" },
       ...(p.categoryName ? { category: p.categoryName } : {}),
-      offers: p.variants.length ? p.variants.map((v) => offer(v.sku, variantPrice(p, v.sku), v.stock, v.name)) : offer(p.sku, p.price, p.stock),
+      offers: p.variants.length ? p.variants.map((v) => offer(v.sku, variantPrice(p, v), v.stock, v.name)) : offer(p.sku, p.price, p.stock),
     };
     const crumbs = [{ name: "Home", path: "/" }, { name: "Shop", path: "/shop" }, ...(p.categorySlug && p.categoryName ? [{ name: p.categoryName, path: `/category/${p.categorySlug}` }] : []), { name: p.name, path }];
     return { ...base, scripts: [jsonLd(product), breadcrumbLd(crumbs)] };
@@ -185,7 +185,7 @@ function Gallery({ images, name }: { images: { url: string; alt: string }[]; nam
         onTouchStart={(e) => (touch.current = e.touches[0]?.clientX ?? null)}
         onTouchEnd={(e) => { if (touch.current == null) return; const dx = (e.changedTouches[0]?.clientX ?? touch.current) - touch.current; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); touch.current = null; }}
       >
-        <SafeImage key={current?.url} src={current?.url} alt={current?.alt ?? name} className="aspect-square w-full object-cover" />
+        <SafeImage key={current?.url} src={current?.url} alt={current?.alt ?? name} loading="eager" fetchPriority="high" width={800} height={800} className="aspect-square w-full object-cover" />
         {n > 1 && (
           <>
             <button aria-label="Previous image" onClick={() => go(-1)} className="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-card/90"><ChevronLeft className="h-5 w-5" /></button>
