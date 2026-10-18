@@ -1,49 +1,79 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, BadgeCheck, Headphones, Play, Star, Tag, Truck, MapPin, Phone, Clock, MessageCircle, Facebook } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { ArrowRight, Gem, Headphones, Star, Truck, Wallet, MapPin, Phone, Clock, MessageCircle, Facebook, Quote } from "lucide-react";
 import hero from "@/assets/hero-bride.jpg";
 import bridal from "@/assets/bridal-banner.jpg";
-import makeup from "@/assets/p-makeup.jpg";
-import { BRAND, categories, occasions, products } from "@/lib/catalog";
+import { BRAND, categories, occasions } from "@/lib/catalog";
 import { ProductCard } from "@/components/site/product-card";
 import { SectionTitle } from "@/components/site/page-header";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { seo } from "@/lib/seo";
 import { homeFaqs } from "@/lib/faqs";
+import { bestsellersQuery, faqsQuery, socialLinksQuery, testimonialsQuery } from "@/lib/store-data";
 
 export const Route = createFileRoute("/")({
   head: () => seo("Beauty for Your Special Moments", "Shop bridal flower sets, sarees, jewellery, makeup and bridal shoes. Cash on delivery across Bangladesh."),
+  loader: async ({ context }) => {
+    const safe = <T,>(o: { queryKey: readonly unknown[]; queryFn?: unknown }) => context.queryClient.ensureQueryData(o as never).then((d) => d as T).catch(() => undefined);
+    const [best, reviews, faqs, social] = await Promise.all([
+      safe<Awaited<ReturnType<typeof bestsellersQuery.queryFn & {}>>>(bestsellersQuery),
+      safe<Awaited<ReturnType<typeof testimonialsQuery.queryFn & {}>>>(testimonialsQuery),
+      safe<Awaited<ReturnType<typeof faqsQuery.queryFn & {}>>>(faqsQuery),
+      safe<Awaited<ReturnType<typeof socialLinksQuery.queryFn & {}>>>(socialLinksQuery),
+    ]);
+    return { best, reviews, faqs, social };
+  },
   component: Home,
 });
 
-
-const reviews = [
-  { name: "Farhana Akter", text: "Amazing collection and excellent customer service! My bridal set was more beautiful than I expected." },
-  { name: "Nusrat Jahan", text: "High quality products and fast delivery. I'm so happy with my purchase. Highly recommended!" },
-  { name: "Tanjima Islam", text: "The makeup and skincare products are original and work really well. Will definitely shop again!" },
+const benefits = [
+  { icon: Gem, t: "Quality-Focused Products", d: "Each item is chosen and checked by our team before it is sent." },
+  { icon: Wallet, t: "Cash on Delivery", d: "Pay in cash when your order arrives at your door." },
+  { icon: Truck, t: "Nationwide Delivery", d: "We deliver inside Saidpur and to the rest of Bangladesh." },
+  { icon: Headphones, t: "Friendly Customer Support", d: `Call our hotline ${BRAND.hotline} for help choosing.` },
 ];
 
+function Skeletons({ n, className }: { n: number; className: string }) {
+  return <>{Array.from({ length: n }).map((_, i) => <div key={i} className={`animate-pulse rounded-lg bg-muted ${className}`} />)}</>;
+}
+
 function Home() {
-  const best = products.filter((p) => p.bestSeller).slice(0, 5);
+  const init = Route.useLoaderData();
+  const best = useQuery({ ...bestsellersQuery, ...(init.best ? { initialData: init.best } : {}) });
+  const reviews = useQuery({ ...testimonialsQuery, ...(init.reviews ? { initialData: init.reviews } : {}) });
+  const faqs = useQuery({ ...faqsQuery, ...(init.faqs ? { initialData: init.faqs } : {}) });
+  const social = useQuery({ ...socialLinksQuery, ...(init.social ? { initialData: init.social } : {}) });
+  const faqList = faqs.data && faqs.data.length > 0 ? faqs.data.map((f) => ({ q: f.question, a: f.answer })) : homeFaqs;
+
   return (
     <>
-      <section className="relative overflow-hidden">
-        <img src={hero} alt="Bride in red and gold saree" width={1600} height={912} className="absolute inset-0 h-full w-full object-cover object-right" />
-        <div className="absolute inset-0 bg-hero-fade" />
-        <div className="relative mx-auto max-w-7xl px-4 py-24 md:py-32">
-          <div className="max-w-xl">
-            <p className="eyebrow">Bridal · Beauty · Fashion</p>
-            <h1 className="mt-5 text-5xl leading-[1.05] text-espresso md:text-6xl">
-              Your Special Moments Deserve Something <em className="text-primary">Beautiful</em>
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-background via-secondary/40 to-background">
+        <div aria-hidden className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full border border-primary/20" />
+        <div aria-hidden className="pointer-events-none absolute -left-10 top-24 h-44 w-44 rounded-full border border-primary/15" />
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 md:grid-cols-2 md:py-20">
+          <div className="order-2 text-center md:order-1 md:text-left">
+            <p className="eyebrow">Bridal • Beauty • Fashion</p>
+            <div className="mx-auto mt-4 h-px w-16 bg-primary md:mx-0" />
+            <h1 className="mt-5 text-4xl leading-[1.08] text-espresso sm:text-5xl lg:text-6xl">
+              Your Special Moments Deserve Something <em className="text-accent">Beautiful</em>
             </h1>
-            <p className="mt-5 max-w-md text-foreground/75">Discover bridal essentials, beauty favourites, elegant fashion and finishing touches for every unforgettable occasion.</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/shop" className="inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm text-primary-foreground hover:opacity-90">Shop Now <ArrowRight className="h-4 w-4" /></Link>
-              <Link to="/about" className="inline-flex items-center gap-2 rounded-md border border-border bg-card px-6 py-3 text-sm hover:border-primary"><span className="grid h-6 w-6 place-items-center rounded-full bg-espresso text-espresso-foreground"><Play className="h-3 w-3" /></span> Discover Our Story</Link>
+            <p className="mx-auto mt-5 max-w-md text-foreground/75 md:mx-0">Discover bridal essentials, beauty favourites, elegant fashion, and finishing touches for every unforgettable occasion.</p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center md:justify-start">
+              <Link to="/shop" className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-7 py-3 text-sm text-primary-foreground hover:opacity-90">Shop Now <ArrowRight className="h-4 w-4" /></Link>
+              <Link to="/occasion/$slug" params={{ slug: "wedding" }} className="inline-flex items-center justify-center gap-2 rounded-md border border-accent px-7 py-3 text-sm text-accent hover:bg-accent hover:text-accent-foreground">Explore Bridal Collection</Link>
+            </div>
+          </div>
+          <div className="order-1 md:order-2">
+            <div className="relative mx-auto max-w-md md:max-w-none">
+              <div aria-hidden className="absolute -inset-3 rounded-t-full border border-primary/40" />
+              <img src={hero} alt="Bride in red and gold bridal saree with floral jewellery" width={1600} height={912} className="relative aspect-[4/5] w-full rounded-t-full object-cover object-right shadow-soft" />
             </div>
           </div>
         </div>
       </section>
 
+      {/* Categories */}
       <section className="mx-auto max-w-7xl px-4 py-20">
         <SectionTitle eyebrow="Shop by category" title="Our Collections" />
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
@@ -56,39 +86,40 @@ function Home() {
         </div>
       </section>
 
-      <section className="relative overflow-hidden bg-secondary">
-        <img src={bridal} alt="Bridal collection" loading="lazy" className="absolute inset-y-0 right-0 hidden h-full w-3/5 object-cover md:block" />
-        <div className="absolute inset-0 hidden bg-hero-fade md:block" />
-        <div className="relative mx-auto max-w-7xl px-4 py-20">
-          <div className="max-w-md">
-            <p className="eyebrow">Special collection</p>
-            <h2 className="mt-3 text-4xl md:text-5xl">Bridal Collection</h2>
+      {/* Featured bridal */}
+      <section className="bg-secondary">
+        <div className="mx-auto grid max-w-7xl items-center gap-8 px-4 py-16 md:grid-cols-2">
+          <div>
+            <p className="eyebrow">Featured collection</p>
+            <h2 className="mt-3 text-4xl md:text-5xl">The Bridal Edit</h2>
             <p className="mt-2 text-lg">Complete Your Dream Look</p>
-            <p className="mt-4 text-sm text-muted-foreground">From floral sets to jewellery, sarees to accessories — find everything you need for your perfect day in one place.</p>
-            <Link to="/occasion/$slug" params={{ slug: "wedding" }} className="mt-6 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm text-primary-foreground hover:opacity-90">Explore Bridal Collection <ArrowRight className="h-4 w-4" /></Link>
+            <ul className="mt-5 grid grid-cols-2 gap-2 text-sm text-foreground/80">
+              {["Bridal accessories", "Floral sets", "Gold-tone jewellery", "Bridal footwear"].map((x) => <li key={x} className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-primary" />{x}</li>)}
+            </ul>
+            <Link to="/occasion/$slug" params={{ slug: "wedding" }} className="mt-7 inline-flex items-center gap-2 rounded-md bg-primary px-6 py-3 text-sm text-primary-foreground hover:opacity-90">Explore Bridal Collection <ArrowRight className="h-4 w-4" /></Link>
           </div>
+          <img src={bridal} alt="Bridal flower set, jewellery and heels" loading="lazy" className="aspect-[4/3] w-full rounded-lg object-cover shadow-soft" />
         </div>
       </section>
 
+      {/* Bestsellers */}
       <section className="mx-auto max-w-7xl px-4 py-20">
-        <SectionTitle eyebrow="Best sellers" title="Most Loved Products" sub="Loved by thousands of happy customers" />
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-          {best.map((p) => <ProductCard key={p.slug} p={p} />)}
+        <SectionTitle eyebrow="Best sellers" title="Most Loved Products" />
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+          {best.isPending && <Skeletons n={6} className="aspect-[3/4]" />}
+          {best.data?.map((p) => <ProductCard key={p.slug} p={p} showStock variants={p.variants} />)}
         </div>
+        {best.isError && <p className="text-center text-sm text-muted-foreground">We couldn't load products right now. <button onClick={() => best.refetch()} className="text-primary underline">Try again</button></p>}
+        {best.data?.length === 0 && <p className="text-center text-sm text-muted-foreground">New favourites are coming soon. <Link to="/shop" className="text-primary underline">Browse the shop</Link></p>}
+        <div className="mt-8 text-center"><Link to="/shop" className="inline-flex items-center gap-2 text-sm text-primary hover:underline">View all products <ArrowRight className="h-4 w-4" /></Link></div>
       </section>
 
-      <section className="relative overflow-hidden bg-secondary">
-        <img src={makeup} alt="" loading="lazy" className="absolute inset-y-0 left-0 hidden h-full w-1/4 object-cover opacity-90 lg:block" />
-        <div className="relative mx-auto max-w-7xl px-4 py-16 lg:pl-[30%]">
-          <p className="eyebrow">Why choose <span className="font-display text-2xl normal-case tracking-normal text-foreground">SifatMart?</span></p>
-          <p className="mt-1 font-medium">Your Trusted Partner for Beauty, Fashion & More</p>
-          <div className="mt-8 grid grid-cols-2 gap-6 md:grid-cols-4">
-            {[
-              { icon: BadgeCheck, t: "100% Authentic Products", d: "Guaranteed genuine and high quality." },
-              { icon: Truck, t: "Cash on Delivery Across Bangladesh", d: "Shop with confidence, pay on delivery." },
-              { icon: Tag, t: "Affordable Prices", d: "Premium quality at the best value." },
-              { icon: Headphones, t: "Fast & Friendly Support", d: "We're here to help, always." },
-            ].map(({ icon: I, t, d }) => (
+      {/* Why us */}
+      <section className="bg-secondary">
+        <div className="mx-auto max-w-7xl px-4 py-16">
+          <SectionTitle eyebrow="Our promise" title="Why Shop With SifatMart?" />
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            {benefits.map(({ icon: I, t, d }) => (
               <div key={t} className="text-center">
                 <div className="mx-auto grid h-14 w-14 place-items-center rounded-full border border-primary/40 bg-card text-primary"><I className="h-6 w-6" /></div>
                 <p className="mt-3 text-sm font-semibold">{t}</p>
@@ -99,8 +130,9 @@ function Home() {
         </div>
       </section>
 
+      {/* Occasions */}
       <section className="mx-auto max-w-7xl px-4 py-20">
-        <SectionTitle title="For Every Special Occasion" sub="Perfect Looks for Life's Most Beautiful Moments" />
+        <SectionTitle eyebrow="Shop by occasion" title="For Every Special Occasion" />
         <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
           {occasions.map((o) => (
             <Link key={o.slug} to="/occasion/$slug" params={{ slug: o.slug }} className="group overflow-hidden rounded-lg border border-border bg-card text-center shadow-soft">
@@ -111,41 +143,55 @@ function Home() {
         </div>
       </section>
 
+      {/* Testimonials */}
       <section className="mx-auto max-w-7xl px-4 pb-20">
-        <SectionTitle eyebrow="Our happy customers" title="What They Say" />
-        <div className="grid gap-6 md:grid-cols-3">
-          {reviews.map((r) => (
-            <figure key={r.name} className="rounded-lg border border-border bg-card p-6 shadow-soft">
-              <div className="flex items-center gap-3">
-                <div className="grid h-11 w-11 place-items-center rounded-full bg-accent font-display text-lg text-accent-foreground">{r.name[0]}</div>
-                <div><p className="text-sm font-semibold">{r.name}</p><div className="flex">{Array.from({ length: 5 }).map((_, i) => <Star key={i} className="h-3.5 w-3.5 fill-star text-star" />)}</div></div>
-              </div>
-              <blockquote className="mt-4 text-sm text-foreground/80">“{r.text}”</blockquote>
-            </figure>
-          ))}
-        </div>
+        <SectionTitle eyebrow="Our customers" title="What They Say" />
+        {reviews.isPending ? (
+          <div className="grid gap-6 md:grid-cols-3"><Skeletons n={3} className="h-40" /></div>
+        ) : reviews.data && reviews.data.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-3">
+            {reviews.data.map((r) => (
+              <figure key={r.id} className="rounded-lg border border-border bg-card p-6 shadow-soft">
+                <div className="flex items-center gap-3">
+                  <div className="grid h-11 w-11 place-items-center rounded-full bg-accent font-display text-lg text-accent-foreground">{r.customer_name[0]}</div>
+                  <div><p className="text-sm font-semibold">{r.customer_name}</p><div className="flex" aria-label={`${r.rating} out of 5`}>{Array.from({ length: r.rating }).map((_, i) => <Star key={i} className="h-3.5 w-3.5 fill-star text-star" />)}</div></div>
+                </div>
+                <blockquote className="mt-4 text-sm text-foreground/80">“{r.body}”</blockquote>
+              </figure>
+            ))}
+          </div>
+        ) : (
+          <div className="mx-auto max-w-lg rounded-lg border border-dashed border-primary/40 bg-card p-8 text-center">
+            <Quote className="mx-auto h-8 w-8 text-primary" />
+            <p className="mt-3 font-display text-xl">Reviews coming soon</p>
+            <p className="mt-1 text-sm text-muted-foreground">We'll share real words from our brides and customers here once they're approved.</p>
+          </div>
+        )}
       </section>
 
+      {/* FAQ + contact */}
       <section className="mx-auto grid max-w-7xl gap-6 px-4 pb-20 md:grid-cols-2">
         <div className="rounded-lg border border-border bg-card p-8">
-          <h3 className="text-2xl">Frequently Asked Questions</h3>
-          <p className="text-sm text-muted-foreground">Find quick answers to common questions.</p>
+          <h2 className="text-2xl">Frequently Asked Questions</h2>
+          <p className="text-sm text-muted-foreground">Ordering, payment, delivery and returns.</p>
           <Accordion type="single" collapsible className="mt-4">
-            {homeFaqs.map((f) => (
-              <AccordionItem key={f.q} value={f.q}><AccordionTrigger className="text-sm">{f.q}</AccordionTrigger><AccordionContent className="text-sm text-muted-foreground">{f.a}</AccordionContent></AccordionItem>
+            {faqList.map((f) => (
+              <AccordionItem key={f.q} value={f.q}><AccordionTrigger className="text-left text-sm">{f.q}</AccordionTrigger><AccordionContent className="text-sm text-muted-foreground">{f.a}</AccordionContent></AccordionItem>
             ))}
           </Accordion>
+          <Link to="/faq" className="mt-4 inline-flex items-center gap-1 text-sm text-primary hover:underline">All FAQs <ArrowRight className="h-3 w-3" /></Link>
         </div>
         <div className="rounded-lg border border-border bg-secondary p-8">
-          <h3 className="text-2xl">Need Help Choosing?</h3>
-          <p className="text-sm text-muted-foreground">Our team is here to assist you.</p>
+          <h2 className="text-2xl">Need Help Choosing?</h2>
+          <p className="text-sm text-muted-foreground">Our team is happy to help.</p>
           <div className="mt-5 flex flex-wrap gap-3">
-            <a href={BRAND.whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-xs text-primary-foreground"><MessageCircle className="h-4 w-4" /> Chat with us on WhatsApp</a>
-            <a href={BRAND.facebook} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-espresso px-5 py-2 text-xs text-espresso-foreground"><Facebook className="h-4 w-4" /> Follow us on Facebook</a>
+            <a href={`tel:${BRAND.hotline}`} className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-xs text-primary-foreground"><Phone className="h-4 w-4" /> Call {BRAND.hotline}</a>
+            {social.data?.whatsapp && <a href={social.data.whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2 text-xs text-accent-foreground"><MessageCircle className="h-4 w-4" /> WhatsApp</a>}
+            {social.data?.facebook && <a href={social.data.facebook} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-espresso px-5 py-2 text-xs text-espresso-foreground"><Facebook className="h-4 w-4" /> Facebook</a>}
           </div>
           <ul className="mt-6 space-y-3 text-sm">
-            <li className="flex gap-3"><MapPin className="h-4 w-4 text-primary" /> {BRAND.location}</li>
-            <li className="flex gap-3"><Phone className="h-4 w-4 text-primary" /> {BRAND.hotline}</li>
+            <li className="flex gap-3"><MapPin className="h-4 w-4 text-primary" /> SifatMart, {BRAND.location}</li>
+            <li className="flex gap-3"><Phone className="h-4 w-4 text-primary" /> <a href={`tel:${BRAND.hotline}`} className="hover:text-primary">{BRAND.hotline}</a></li>
             <li className="flex gap-3"><Clock className="h-4 w-4 text-primary" /> {BRAND.hours}</li>
           </ul>
         </div>

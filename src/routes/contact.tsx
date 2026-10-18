@@ -20,7 +20,7 @@ function Contact() {
           <p className="flex gap-3"><MapPin className="h-5 w-5 text-primary" /> {BRAND.location}</p>
           <p className="flex gap-3"><Phone className="h-5 w-5 text-primary" /> <a href={`tel:${BRAND.hotline}`}>{BRAND.hotline}</a></p>
           <p className="flex gap-3"><Clock className="h-5 w-5 text-primary" /> {BRAND.hours}</p>
-          <a href={BRAND.whatsapp} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-primary-foreground"><MessageCircle className="h-4 w-4" /> Chat on WhatsApp</a>
+          <a href={`tel:${BRAND.hotline}`} className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-primary-foreground"><MessageCircle className="h-4 w-4" /> Call {BRAND.hotline}</a>
         </div>
         <form className="space-y-3 rounded-lg border border-border bg-card p-8" onSubmit={(e) => { e.preventDefault(); e.currentTarget.reset(); toast.success("Thanks! We'll get back to you soon."); }}>
           <h2 className="text-2xl">Send a message</h2>
