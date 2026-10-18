@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Gem, Headphones, Star, Truck, Wallet, MapPin, Phone, Clock, MessageCircle, Facebook, Quote } from "lucide-react";
-import hero from "@/assets/hero-bride.jpg";
-import bridal from "@/assets/bridal-banner.jpg";
+import hero from "@/assets/hero-bride.webp";
+import bridal from "@/assets/bridal-banner.webp";
 import { BRAND, categories, occasions } from "@/lib/catalog";
 import { ProductCard } from "@/components/site/product-card";
 import { SectionTitle } from "@/components/site/page-header";
