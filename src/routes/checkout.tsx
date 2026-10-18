@@ -116,7 +116,7 @@ function Checkout() {
     } });
   };
 
-  const err = (k: keyof Errors) => errors[k] && <p className="mt-1 text-xs text-destructive">{errors[k]}</p>;
+  const err = (k: keyof Errors) => errors[k] && <p id={`${k}-error`} className="mt-1 text-xs text-destructive">{errors[k]}</p>;
 
   return (
     <>
@@ -125,21 +125,21 @@ function Checkout() {
         <div className="space-y-4 rounded-lg border border-border bg-card p-6">
           <h2 className="text-2xl">Delivery Details</h2>
           <p className="text-xs text-muted-foreground">No account needed. Fields marked * are required.</p>
-          <div><label className="mb-1 block text-sm" htmlFor="name">Full name *</label><input id="name" name="name" maxLength={100} autoComplete="name" aria-invalid={!!errors.name} className={field} />{err("name")}</div>
+          <div><label className="mb-1 block text-sm" htmlFor="name">Full name *</label><input id="name" name="name" maxLength={100} autoComplete="name" aria-invalid={!!errors.name} aria-describedby={errors.name ? "name-error" : undefined} className={field} />{err("name")}</div>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div><label className="mb-1 block text-sm" htmlFor="phone">Mobile number *</label><input id="phone" name="phone" inputMode="tel" autoComplete="tel" placeholder="01XXXXXXXXX" aria-invalid={!!errors.phone} className={field} />{err("phone")}</div>
-            <div><label className="mb-1 block text-sm" htmlFor="email">Email (optional)</label><input id="email" name="email" type="email" maxLength={255} autoComplete="email" aria-invalid={!!errors.email} className={field} />{err("email")}</div>
+            <div><label className="mb-1 block text-sm" htmlFor="phone">Mobile number *</label><input id="phone" name="phone" inputMode="tel" autoComplete="tel" placeholder="01XXXXXXXXX" aria-invalid={!!errors.phone} aria-describedby={errors.phone ? "phone-error" : undefined} className={field} />{err("phone")}</div>
+            <div><label className="mb-1 block text-sm" htmlFor="email">Email (optional)</label><input id="email" name="email" type="email" maxLength={255} autoComplete="email" aria-invalid={!!errors.email} aria-describedby={errors.email ? "email-error" : undefined} className={field} />{err("email")}</div>
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div><label className="mb-1 block text-sm" htmlFor="district">District *</label>
-              <select id="district" name="district" defaultValue="" aria-invalid={!!errors.district} className={field}
+              <select id="district" name="district" defaultValue="" aria-invalid={!!errors.district} aria-describedby={errors.district ? "district-error" : undefined} className={field}
                 onChange={(e) => setZone(e.target.value === "Nilphamari" ? zone : "outside")}>
                 <option value="" disabled>Select district</option>
                 {BD_DISTRICTS.map((d) => <option key={d} value={d}>{d}</option>)}
               </select>{err("district")}</div>
-            <div><label className="mb-1 block text-sm" htmlFor="upazila">Upazila / Area *</label><input id="upazila" name="upazila" maxLength={80} placeholder="e.g. Saidpur" aria-invalid={!!errors.upazila} className={field} />{err("upazila")}</div>
+            <div><label className="mb-1 block text-sm" htmlFor="upazila">Upazila / Area *</label><input id="upazila" name="upazila" maxLength={80} placeholder="e.g. Saidpur" autoComplete="address-level2" aria-invalid={!!errors.upazila} aria-describedby={errors.upazila ? "upazila-error" : undefined} className={field} />{err("upazila")}</div>
           </div>
-          <div><label className="mb-1 block text-sm" htmlFor="address">Detailed address *</label><textarea id="address" name="address" maxLength={300} rows={3} placeholder="House, road, village/moholla, landmark" aria-invalid={!!errors.address} className={field} />{err("address")}</div>
+          <div><label className="mb-1 block text-sm" htmlFor="address">Detailed address *</label><textarea id="address" name="address" maxLength={300} rows={3} placeholder="House, road, village/moholla, landmark" autoComplete="street-address" aria-invalid={!!errors.address} aria-describedby={errors.address ? "address-error" : undefined} className={field} />{err("address")}</div>
           <fieldset>
             <legend className="mb-2 text-sm font-medium">Delivery area</legend>
             <div className="grid gap-3 sm:grid-cols-2">
