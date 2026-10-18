@@ -33,5 +33,5 @@ describe("add-to-cart validation", () => {
   it("rejects more than the variant's stock including cart", () => expect(validateAdd(shoes, "S36", 2, 2)).toMatch(/Only 3/));
   it("accepts a valid variant and quantity", () => expect(validateAdd(shoes, "S36", 3)).toBeNull());
   it("uses variant stock, not product stock, for availability", () => expect(availableStock(shoes)).toBe(3));
-  it("rejects out-of-stock simple products", () => expect(validateAdd(list[2], undefined, 1)).toMatch(/out of stock/));
+  it("rejects out-of-stock simple products", () => expect(validateAdd(list[2]!, undefined, 1)).toMatch(/out of stock/));
 });

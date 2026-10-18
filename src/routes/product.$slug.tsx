@@ -56,7 +56,7 @@ function ProductPage() {
 function ProductDetail({ p }: { p: CatalogueItem }) {
   const { add, qtyInCart, wishlist, toggleWish } = useCart();
   const navigate = useNavigate();
-  const [sku, setSku] = useState<string | undefined>(() => (p.variants.length === 1 && p.variants[0].stock > 0 ? p.variants[0].sku : undefined));
+  const [sku, setSku] = useState<string | undefined>(() => (p.variants.length === 1 && (p.variants[0]?.stock ?? 0) > 0 ? p.variants[0]?.sku : undefined));
   const [qty, setQty] = useState(1);
   const variant = p.variants.find((v) => v.sku === sku) ?? null;
   const price = variantPrice(p, variant);
@@ -166,8 +166,8 @@ function Gallery({ images, name }: { images: { url: string; alt: string }[]; nam
     <div>
       <div
         className="relative overflow-hidden rounded-lg border border-border bg-card"
-        onTouchStart={(e) => (touch.current = e.touches[0].clientX)}
-        onTouchEnd={(e) => { if (touch.current == null) return; const dx = e.changedTouches[0].clientX - touch.current; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); touch.current = null; }}
+        onTouchStart={(e) => (touch.current = e.touches[0]?.clientX ?? null)}
+        onTouchEnd={(e) => { if (touch.current == null) return; const dx = (e.changedTouches[0]?.clientX ?? touch.current) - touch.current; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); touch.current = null; }}
       >
         <SafeImage key={current?.url} src={current?.url} alt={current?.alt ?? name} className="aspect-square w-full object-cover" />
         {n > 1 && (
