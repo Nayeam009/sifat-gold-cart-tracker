@@ -310,6 +310,7 @@ export type Database = {
           discount: number
           email: string | null
           id: string
+          idempotency_key: string | null
           notes: string | null
           order_number: string
           payment_method: string
@@ -332,6 +333,7 @@ export type Database = {
           discount?: number
           email?: string | null
           id?: string
+          idempotency_key?: string | null
           notes?: string | null
           order_number: string
           payment_method?: string
@@ -354,6 +356,7 @@ export type Database = {
           discount?: number
           email?: string | null
           id?: string
+          idempotency_key?: string | null
           notes?: string | null
           order_number?: string
           payment_method?: string
@@ -633,6 +636,16 @@ export type Database = {
           p_customer: Json
           p_items: Json
           p_user_id?: string
+        }
+        Returns: Json
+      }
+      place_order_once: {
+        Args: {
+          p_coupon: string
+          p_customer: Json
+          p_idem: string
+          p_items: Json
+          p_user_id: string
         }
         Returns: Json
       }
