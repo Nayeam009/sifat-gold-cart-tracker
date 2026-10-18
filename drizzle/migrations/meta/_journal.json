@@ -15,6 +15,13 @@
       "when": 1792338303903,
       "tag": "0001_full_store_schema",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792338886270,
+      "tag": "0002_newsletter_subscribers",
+      "breakpoints": true
     }
   ]
 }
