@@ -9,7 +9,7 @@ import { SectionTitle } from "@/components/site/page-header";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { seo } from "@/lib/seo";
 import { homeFaqs } from "@/lib/faqs";
-import { bestsellersQuery, faqsQuery, socialLinksQuery, testimonialsQuery } from "@/lib/store-data";
+import { bestsellersQuery, faqsQuery, siteSettingQuery, socialLinksQuery, testimonialsQuery } from "@/lib/store-data";
 
 export const Route = createFileRoute("/")({
   head: () => seo("Beauty for Your Special Moments", "Shop bridal flower sets, sarees, jewellery, makeup and bridal shoes. Cash on delivery across Bangladesh."),
@@ -43,6 +43,10 @@ function Home() {
   const reviews = useQuery({ ...testimonialsQuery, ...(init.reviews ? { initialData: init.reviews } : {}) });
   const faqs = useQuery({ ...faqsQuery, ...(init.faqs ? { initialData: init.faqs } : {}) });
   const social = useQuery({ ...socialLinksQuery, ...(init.social ? { initialData: init.social } : {}) });
+  const homeText = useQuery(siteSettingQuery("homepage")).data;
+  const DEFAULT_TITLE = "Your Special Moments Deserve Something Beautiful";
+  const heroTitle = typeof homeText?.["hero_title"] === "string" && homeText["hero_title"].trim() ? homeText["hero_title"].trim() : DEFAULT_TITLE;
+  const heroSub = typeof homeText?.["hero_subtitle"] === "string" && homeText["hero_subtitle"].trim() ? homeText["hero_subtitle"].trim() : null;
   const faqList = faqs.data && faqs.data.length > 0 ? faqs.data.map((f) => ({ q: f.question, a: f.answer })) : homeFaqs;
 
   return (
@@ -56,9 +60,9 @@ function Home() {
             <p className="eyebrow">Bridal • Beauty • Fashion</p>
             <div className="mx-auto mt-4 h-px w-16 bg-primary md:mx-0" />
             <h1 className="mt-5 text-4xl leading-[1.08] text-espresso sm:text-5xl lg:text-6xl">
-              Your Special Moments Deserve Something <em className="text-accent">Beautiful</em>
+              {heroTitle === DEFAULT_TITLE ? <>Your Special Moments Deserve Something <em className="text-accent">Beautiful</em></> : heroTitle}
             </h1>
-            <p className="mx-auto mt-5 max-w-md text-foreground/75 md:mx-0">Discover bridal essentials, beauty favourites, elegant fashion, and finishing touches for every unforgettable occasion.</p>
+            <p className="mx-auto mt-5 max-w-md text-foreground/75 md:mx-0">{heroSub ?? "Discover bridal essentials, beauty favourites, elegant fashion, and finishing touches for every unforgettable occasion."}</p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center md:justify-start">
               <Link to="/shop" className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-7 py-3 text-sm text-primary-foreground hover:opacity-90">Shop Now <ArrowRight className="h-4 w-4" /></Link>
               <Link to="/occasion/$slug" params={{ slug: "wedding" }} className="inline-flex items-center justify-center gap-2 rounded-md border border-accent px-7 py-3 text-sm text-accent hover:bg-accent hover:text-accent-foreground">Explore Bridal Collection</Link>
