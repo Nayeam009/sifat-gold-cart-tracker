@@ -7,7 +7,7 @@ const validUrl = (v: unknown) => (typeof v === "string" && /^https:\/\/\S+$/.tes
 
 export const bestsellersQuery = queryOptions({
   queryKey: ["bestsellers"],
-  queryFn: async (): Promise<(Product & { variants: string[] })[]> => {
+  queryFn: async (): Promise<(Product & { variantNames: string[] })[]> => {
     const { data, error } = await supabase
       .from("products")
       .select("slug, name, price, compare_at_price, stock_quantity, product_variants(name)")
@@ -25,7 +25,7 @@ export const bestsellersQuery = queryOptions({
         name: row.name,
         price: row.price,
         stock: row.stock_quantity,
-        variants: (row.product_variants ?? []).map((v: { name: string }) => v.name),
+        variantNames: (row.product_variants ?? []).map((v: { name: string }) => v.name),
       }];
     });
   },
