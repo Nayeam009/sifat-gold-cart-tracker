@@ -9,7 +9,7 @@
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
 
-- Product catalog lives in src/lib/catalog.ts (static) — keeps pages fast and SSR-friendly until an admin area exists.
-- Orders are created only by the DB function place_order (service_role only), called from src/lib/orders.functions.ts — it re-prices, checks stock and snapshots items atomically; never trust client prices.
-- Database products mirror src/lib/catalog.ts by slug; keep both in sync until the storefront reads from the DB.
+- Shop, category and product pages read published products from the DB (src/lib/catalogue-data.ts); filtering/sorting/stock validation are pure functions in src/lib/catalogue.ts so they stay testable.
+- src/lib/catalog.ts still holds categories, sample images (fallback when a DB product has no product_images) and cart/homepage prices; keep DB slugs in sync with it until cart pricing reads from the DB.
+- Cart lines are keyed by slug + variant SKU; checkout sends variant_sku so place_order checks variant stock.
 - Admin rights come only from public.user_roles (no write policies); see docs/BACKEND.md for schema, RLS and admin provisioning.
