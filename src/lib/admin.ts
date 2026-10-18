@@ -22,7 +22,8 @@ export function useAdminAuth(): AdminState {
     };
     check();
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") check();
+      // Defer: awaiting auth calls inside this callback can deadlock the auth client.
+      if (event === "SIGNED_IN" || event === "SIGNED_OUT" || event === "USER_UPDATED") setTimeout(check, 0);
     });
     return () => { alive = false; sub.subscription.unsubscribe(); };
   }, []);
