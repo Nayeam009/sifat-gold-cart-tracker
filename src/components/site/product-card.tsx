@@ -7,9 +7,25 @@ import { validateAdd, type Variant } from "@/lib/catalogue";
 import { SafeImage } from "@/components/site/safe-image";
 import { cn } from "@/lib/utils";
 
-type CardProduct = { slug: string; name: string; price: number; oldPrice?: number | undefined; image: string; stock: number; variants?: Variant[] };
+type CardProduct = {
+  slug: string;
+  name: string;
+  price: number;
+  oldPrice?: number | undefined;
+  image: string;
+  stock: number;
+  variants?: Variant[];
+};
 
-export function ProductCard({ p, showStock, variants }: { p: CardProduct; showStock?: boolean; variants?: string[] }) {
+export function ProductCard({
+  p,
+  showStock,
+  variants,
+}: {
+  p: CardProduct;
+  showStock?: boolean;
+  variants?: string[];
+}) {
   const { add, qtyInCart, wishlist, toggleWish } = useCart();
   const wished = wishlist.includes(p.slug);
   const opts = p.variants ?? [];
@@ -23,35 +39,80 @@ export function ProductCard({ p, showStock, variants }: { p: CardProduct; showSt
     <div className="group flex flex-col overflow-hidden rounded-lg border border-border bg-card shadow-soft">
       <div className="relative aspect-square overflow-hidden bg-muted">
         <Link to="/product/$slug" params={{ slug: p.slug }} tabIndex={-1} aria-label={p.name}>
-          <SafeImage src={p.image} alt={p.name} loading="lazy" width={816} height={816} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+          <SafeImage
+            src={p.image}
+            alt={p.name}
+            loading="lazy"
+            width={816}
+            height={816}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
         </Link>
-        <button aria-label={wished ? `Remove ${p.name} from wishlist` : `Add ${p.name} to wishlist`} aria-pressed={wished} onClick={() => toggleWish(p.slug)} className="absolute right-1 top-1 grid h-11 w-11 place-items-center rounded-full">
-          <span className="grid h-8 w-8 place-items-center rounded-full bg-card/90 shadow-sm"><Heart className={cn("h-4 w-4", wished ? "fill-accent text-accent" : "text-muted-foreground")} /></span>
+        <button
+          aria-label={wished ? `Remove ${p.name} from wishlist` : `Add ${p.name} to wishlist`}
+          aria-pressed={wished}
+          onClick={() => toggleWish(p.slug)}
+          className="absolute right-1 top-1 grid h-11 w-11 place-items-center rounded-full"
+        >
+          <span className="grid h-8 w-8 place-items-center rounded-full bg-card/90 shadow-sm">
+            <Heart
+              className={cn(
+                "h-4 w-4",
+                wished ? "fill-accent text-accent" : "text-muted-foreground",
+              )}
+            />
+          </span>
         </button>
-        {onSale && <span className="absolute left-2 top-2 rounded-sm bg-accent px-2 py-0.5 text-[10px] uppercase tracking-wider text-accent-foreground">Sale</span>}
+        {onSale && (
+          <span className="absolute left-2 top-2 rounded-sm bg-accent px-2 py-0.5 text-[10px] uppercase tracking-wider text-accent-foreground">
+            Sale
+          </span>
+        )}
       </div>
       <div className="flex flex-1 flex-col p-3 sm:p-4">
-        <Link to="/product/$slug" params={{ slug: p.slug }} className="line-clamp-2 min-h-[2.5rem] text-sm font-medium leading-5 hover:text-primary">{p.name}</Link>
+        <Link
+          to="/product/$slug"
+          params={{ slug: p.slug }}
+          className="line-clamp-2 min-h-[2.5rem] text-sm font-medium leading-5 hover:text-primary"
+        >
+          {p.name}
+        </Link>
         {hasOptions && (
           <p className="mt-1 text-xs text-muted-foreground">
-            {opts.length ? `${opts.filter((v) => v.stock > 0).length} of ${opts.length} options available` : `${optionNames.length} options: ${optionNames.slice(0, 3).join(", ")}`}
+            {opts.length
+              ? `${opts.filter((v) => v.stock > 0).length} of ${opts.length} options available`
+              : `${optionNames.length} options: ${optionNames.slice(0, 3).join(", ")}`}
           </p>
         )}
         <div className="mt-1 flex items-baseline gap-2">
           <span className="font-semibold text-primary">{formatTaka(p.price)}</span>
-          {onSale && <span className="text-xs text-muted-foreground line-through">{formatTaka(p.oldPrice!)}</span>}
+          {onSale && (
+            <span className="text-xs text-muted-foreground line-through">
+              {formatTaka(p.oldPrice!)}
+            </span>
+          )}
         </div>
-        {showStock && <p className={cn("mt-1 text-xs", soldOut ? "text-destructive" : "text-muted-foreground")}>{soldOut ? "Out of stock" : stock <= 5 ? `Only ${stock} left` : "In stock"}</p>}
+        {showStock && (
+          <p className={cn("mt-1 text-xs", soldOut ? "text-destructive" : "text-muted-foreground")}>
+            {soldOut ? "Out of stock" : stock <= 5 ? `Only ${stock} left` : "In stock"}
+          </p>
+        )}
         <div className="mt-auto pt-4">
           {hasOptions && !soldOut ? (
-            <Link to="/product/$slug" params={{ slug: p.slug }} className="flex items-center justify-center gap-2 rounded-md border border-primary py-2 text-xs font-medium text-primary hover:bg-secondary">
+            <Link
+              to="/product/$slug"
+              params={{ slug: p.slug }}
+              className="flex items-center justify-center gap-2 rounded-md border border-primary py-2 text-xs font-medium text-primary hover:bg-secondary"
+            >
               Choose option
             </Link>
           ) : (
             <button
               disabled={soldOut}
               onClick={() => {
-                const err = showStock ? validateAdd({ stock: p.stock, variants: [] }, undefined, 1, qtyInCart(p.slug)) : null;
+                const err = showStock
+                  ? validateAdd({ stock: p.stock, variants: [] }, undefined, 1, qtyInCart(p.slug))
+                  : null;
                 if (err) return void toast.error(err);
                 add(p.slug);
                 toast.success(`${p.name} added to cart`);

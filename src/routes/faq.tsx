@@ -1,13 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { PageHeader } from "@/components/site/page-header";
 import { seo } from "@/lib/seo";
 import { homeFaqs } from "@/lib/faqs";
 import { faqsQuery } from "@/lib/store-data";
 
 export const Route = createFileRoute("/faq")({
-  head: () => seo("FAQs", "Answers to common questions about ordering, delivery and returns at SifatMart.", { path: "/faq" }),
+  head: () =>
+    seo("FAQs", "Answers to common questions about ordering, delivery and returns at SifatMart.", {
+      path: "/faq",
+    }),
   component: FaqPage,
 });
 
@@ -20,13 +28,24 @@ function FaqPage() {
       <PageHeader eyebrow="Help" title="Frequently Asked Questions" />
       <div className="mx-auto max-w-3xl px-4 py-12">
         {q.isLoading ? (
-          <p role="status" className="text-center text-muted-foreground">Loading questions…</p>
+          <p role="status" className="text-center text-muted-foreground">
+            Loading questions…
+          </p>
         ) : (
           <>
-            {q.isError && <p role="alert" className="mb-4 text-sm text-muted-foreground">Couldn't load the latest answers — showing our standard FAQs.</p>}
+            {q.isError && (
+              <p role="alert" className="mb-4 text-sm text-muted-foreground">
+                Couldn't load the latest answers — showing our standard FAQs.
+              </p>
+            )}
             <Accordion type="single" collapsible>
               {list.map((f) => (
-                <AccordionItem key={f.q} value={f.q}><AccordionTrigger>{f.q}</AccordionTrigger><AccordionContent className="whitespace-pre-line text-muted-foreground">{f.a}</AccordionContent></AccordionItem>
+                <AccordionItem key={f.q} value={f.q}>
+                  <AccordionTrigger>{f.q}</AccordionTrigger>
+                  <AccordionContent className="whitespace-pre-line text-muted-foreground">
+                    {f.a}
+                  </AccordionContent>
+                </AccordionItem>
               ))}
             </Accordion>
           </>

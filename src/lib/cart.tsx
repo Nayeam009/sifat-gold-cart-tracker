@@ -7,7 +7,8 @@ import { mergeWishlists, reconcileCart } from "./account";
 import { catalogueQueryFn } from "./catalogue-data";
 
 export type CartLine = { slug: string; qty: number; sku?: string; variant?: string };
-export const lineKey = (l: { slug: string; sku?: string | undefined }) => (l.sku ? `${l.slug}|${l.sku}` : l.slug);
+export const lineKey = (l: { slug: string; sku?: string | undefined }) =>
+  l.sku ? `${l.slug}|${l.sku}` : l.slug;
 
 type Ctx = {
   lines: CartLine[];
@@ -36,7 +37,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     try {
       const raw = JSON.parse(localStorage.getItem("sm-cart") || "[]");
-      if (Array.isArray(raw)) setLines(raw.filter((l) => l && typeof l.slug === "string" && Number.isInteger(l.qty) && l.qty > 0));
+      if (Array.isArray(raw))
+        setLines(
+          raw.filter(
+            (l) => l && typeof l.slug === "string" && Number.isInteger(l.qty) && l.qty > 0,
+          ),
+        );
       const w = JSON.parse(localStorage.getItem("sm-wish") || "[]");
       if (Array.isArray(w)) setWishlist(w.filter((s) => typeof s === "string"));
     } catch {}
@@ -58,14 +64,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const { data } = await supabase.from("wishlist_items").select("product_slug");
       const remote = (data ?? []).map((r) => r.product_slug);
       const { merged, toUpload } = mergeWishlists(wishRef.current, remote);
-      if (toUpload.length) await supabase.from("wishlist_items").upsert(toUpload.map((product_slug) => ({ user_id: uid, product_slug })), { onConflict: "user_id,product_slug", ignoreDuplicates: true });
+      if (toUpload.length)
+        await supabase.from("wishlist_items").upsert(
+          toUpload.map((product_slug) => ({ user_id: uid, product_slug })),
+          { onConflict: "user_id,product_slug", ignoreDuplicates: true },
+        );
       setWishlist(merged);
       if (isLogin) {
         try {
           const catalogue = await catalogueQueryFn();
           setLines((ls) => {
             const { lines: next, changes } = reconcileCart(ls, catalogue);
-            if (changes.length) setTimeout(() => toast.info("We updated your cart", { description: changes.join(" ") }), 0);
+            if (changes.length)
+              setTimeout(
+                () => toast.info("We updated your cart", { description: changes.join(" ") }),
+                0,
+              );
             return next;
           });
         } catch {}
@@ -73,8 +87,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     };
     supabase.auth.getUser().then(({ data }) => sync(data.user?.id ?? null, false));
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" && session?.user.id !== userId.current) setTimeout(() => sync(session?.user.id ?? null, true), 0);
-      if (event === "SIGNED_OUT") { userId.current = null; setWishlist([]); }
+      if (event === "SIGNED_IN" && session?.user.id !== userId.current)
+        setTimeout(() => sync(session?.user.id ?? null, true), 0);
+      if (event === "SIGNED_OUT") {
+        userId.current = null;
+        setWishlist([]);
+      }
     });
     return () => sub.subscription.unsubscribe();
   }, [ready]);
@@ -88,10 +106,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
         : [...ls, { slug, qty, ...(variant ? { sku: variant.sku, variant: variant.name } : {}) }];
     });
   const setQty = (key: string, qty: number) =>
-    setLines((ls) => (qty <= 0 ? ls.filter((l) => lineKey(l) !== key) : ls.map((l) => (lineKey(l) === key ? { ...l, qty } : l))));
+    setLines((ls) =>
+      qty <= 0
+        ? ls.filter((l) => lineKey(l) !== key)
+        : ls.map((l) => (lineKey(l) === key ? { ...l, qty } : l)),
+    );
   const remove = (key: string) => setLines((ls) => ls.filter((l) => lineKey(l) !== key));
   const clear = () => setLines([]);
-  const qtyInCart = (slug: string, sku?: string) => lines.find((l) => lineKey(l) === lineKey({ slug, sku }))?.qty ?? 0;
+  const qtyInCart = (slug: string, sku?: string) =>
+    lines.find((l) => lineKey(l) === lineKey({ slug, sku }))?.qty ?? 0;
   const toggleWish = (slug: string) => {
     const has = wishlist.includes(slug);
     setWishlist((w) => (has ? w.filter((s) => s !== slug) : [...w, slug]));
@@ -99,7 +122,12 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (!uid) return;
     const req = has
       ? supabase.from("wishlist_items").delete().eq("user_id", uid).eq("product_slug", slug)
-      : supabase.from("wishlist_items").upsert({ user_id: uid, product_slug: slug }, { onConflict: "user_id,product_slug", ignoreDuplicates: true });
+      : supabase
+          .from("wishlist_items")
+          .upsert(
+            { user_id: uid, product_slug: slug },
+            { onConflict: "user_id,product_slug", ignoreDuplicates: true },
+          );
     req.then(({ error }) => {
       if (error) {
         setWishlist((w) => (has ? [...w, slug] : w.filter((s) => s !== slug)));
@@ -112,7 +140,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const subtotal = lines.reduce((s, l) => s + (getProduct(l.slug)?.price ?? 0) * l.qty, 0);
 
   return (
-    <CartContext.Provider value={{ lines, add, setQty, remove, clear, qtyInCart, count, subtotal, wishlist, toggleWish }}>
+    <CartContext.Provider
+      value={{
+        lines,
+        add,
+        setQty,
+        remove,
+        clear,
+        qtyInCart,
+        count,
+        subtotal,
+        wishlist,
+        toggleWish,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
