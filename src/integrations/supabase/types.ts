@@ -14,7 +14,95 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      order_items: {
+        Row: {
+          id: string
+          order_id: string
+          product_name: string
+          product_slug: string
+          quantity: number
+          unit_price: number
+        }
+        Insert: {
+          id?: string
+          order_id: string
+          product_name: string
+          product_slug: string
+          quantity: number
+          unit_price: number
+        }
+        Update: {
+          id?: string
+          order_id?: string
+          product_name?: string
+          product_slug?: string
+          quantity?: number
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_items_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      orders: {
+        Row: {
+          address: string
+          area: string
+          city: string
+          created_at: string
+          customer_name: string
+          delivery_fee: number
+          email: string | null
+          id: string
+          notes: string | null
+          order_number: string
+          payment_method: string
+          phone: string
+          status: string
+          subtotal: number
+          total: number
+        }
+        Insert: {
+          address: string
+          area: string
+          city: string
+          created_at?: string
+          customer_name: string
+          delivery_fee: number
+          email?: string | null
+          id?: string
+          notes?: string | null
+          order_number: string
+          payment_method?: string
+          phone: string
+          status?: string
+          subtotal: number
+          total: number
+        }
+        Update: {
+          address?: string
+          area?: string
+          city?: string
+          created_at?: string
+          customer_name?: string
+          delivery_fee?: number
+          email?: string | null
+          id?: string
+          notes?: string | null
+          order_number?: string
+          payment_method?: string
+          phone?: string
+          status?: string
+          subtotal?: number
+          total?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
