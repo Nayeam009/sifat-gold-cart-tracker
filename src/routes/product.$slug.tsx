@@ -37,7 +37,7 @@ function ProductPage() {
         <div>
           <p className="eyebrow">{cat?.name}</p>
           <h1 className="mt-2 text-4xl">{p.name}</h1>
-          <div className="mt-2 flex items-center gap-1 text-sm text-muted-foreground"><Star className="h-4 w-4 fill-star text-star" /> {p.rating} · {p.reviews}+ reviews</div>
+          
           <div className="mt-4 flex items-baseline gap-3">
             <span className="text-3xl font-semibold text-primary">{formatTaka(p.price)}</span>
             {p.oldPrice && <span className="text-muted-foreground line-through">{formatTaka(p.oldPrice)}</span>}

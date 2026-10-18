@@ -14,7 +14,14 @@ import { bestsellersQuery, faqsQuery, socialLinksQuery, testimonialsQuery } from
 export const Route = createFileRoute("/")({
   head: () => seo("Beauty for Your Special Moments", "Shop bridal flower sets, sarees, jewellery, makeup and bridal shoes. Cash on delivery across Bangladesh."),
   loader: async ({ context }) => {
-    await Promise.all([bestsellersQuery, testimonialsQuery, faqsQuery, socialLinksQuery].map((q) => context.queryClient.prefetchQuery(q as never)));
+    const safe = <T,>(o: { queryKey: readonly unknown[]; queryFn?: unknown }) => context.queryClient.ensureQueryData(o as never).then((d) => d as T).catch(() => undefined);
+    const [best, reviews, faqs, social] = await Promise.all([
+      safe<Awaited<ReturnType<typeof bestsellersQuery.queryFn & {}>>>(bestsellersQuery),
+      safe<Awaited<ReturnType<typeof testimonialsQuery.queryFn & {}>>>(testimonialsQuery),
+      safe<Awaited<ReturnType<typeof faqsQuery.queryFn & {}>>>(faqsQuery),
+      safe<Awaited<ReturnType<typeof socialLinksQuery.queryFn & {}>>>(socialLinksQuery),
+    ]);
+    return { best, reviews, faqs, social };
   },
   component: Home,
 });
@@ -31,10 +38,11 @@ function Skeletons({ n, className }: { n: number; className: string }) {
 }
 
 function Home() {
-  const best = useQuery(bestsellersQuery);
-  const reviews = useQuery(testimonialsQuery);
-  const faqs = useQuery(faqsQuery);
-  const social = useQuery(socialLinksQuery);
+  const init = Route.useLoaderData();
+  const best = useQuery({ ...bestsellersQuery, initialData: init.best });
+  const reviews = useQuery({ ...testimonialsQuery, initialData: init.reviews });
+  const faqs = useQuery({ ...faqsQuery, initialData: init.faqs });
+  const social = useQuery({ ...socialLinksQuery, initialData: init.social });
   const faqList = faqs.data && faqs.data.length > 0 ? faqs.data.map((f) => ({ q: f.question, a: f.answer })) : homeFaqs;
 
   return (

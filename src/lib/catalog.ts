@@ -17,8 +17,6 @@ export const BRAND = {
   location: "Saidpur, Nilphamari, Bangladesh",
   hotline: "01997974394",
   hours: "Mon – Sun | 9:00 AM – 10:00 PM",
-  whatsapp: "https://wa.me/8801997974394",
-  facebook: "https://facebook.com",
 };
 
 export type Category = { slug: string; name: string; group: "Bridal" | "Beauty" | "Fashion"; image: string; blurb: string };
