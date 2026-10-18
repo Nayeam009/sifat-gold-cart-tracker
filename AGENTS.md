@@ -13,3 +13,5 @@
 - src/lib/catalog.ts still holds categories, sample images (fallback when a DB product has no product_images) and cart/homepage prices; keep DB slugs in sync with it until cart pricing reads from the DB.
 - Cart lines are keyed by slug + variant SKU; checkout sends variant_sku so place_order checks variant stock.
 - Admin rights come only from public.user_roles (no write policies); see docs/BACKEND.md for schema, RLS and admin provisioning.
+- /admin talks to the database from the browser under RLS (has_role admin); the layout's role check is UX only, so every new admin table, bucket or function must carry its own has_role policy/check.
+- Stock is changed only via admin_adjust_stock() (audited) or place_order; never update stock_quantity directly from admin UI.
