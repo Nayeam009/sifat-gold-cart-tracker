@@ -297,9 +297,48 @@ export type Database = {
           },
         ]
       }
+      order_status_history: {
+        Row: {
+          admin_id: string | null
+          created_at: string
+          field: string
+          id: string
+          new_value: string | null
+          old_value: string | null
+          order_id: string
+        }
+        Insert: {
+          admin_id?: string | null
+          created_at?: string
+          field: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          order_id: string
+        }
+        Update: {
+          admin_id?: string | null
+          created_at?: string
+          field?: string
+          id?: string
+          new_value?: string | null
+          old_value?: string | null
+          order_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_status_history_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           address: string
+          admin_notes: string | null
           area: string
           city: string
           coupon_code: string | null
@@ -314,6 +353,7 @@ export type Database = {
           notes: string | null
           order_number: string
           payment_method: string
+          payment_status: string
           phone: string
           status: string
           subtotal: number
@@ -323,6 +363,7 @@ export type Database = {
         }
         Insert: {
           address: string
+          admin_notes?: string | null
           area: string
           city: string
           coupon_code?: string | null
@@ -337,6 +378,7 @@ export type Database = {
           notes?: string | null
           order_number: string
           payment_method?: string
+          payment_status?: string
           phone: string
           status?: string
           subtotal: number
@@ -346,6 +388,7 @@ export type Database = {
         }
         Update: {
           address?: string
+          admin_notes?: string | null
           area?: string
           city?: string
           coupon_code?: string | null
@@ -360,6 +403,7 @@ export type Database = {
           notes?: string | null
           order_number?: string
           payment_method?: string
+          payment_status?: string
           phone?: string
           status?: string
           subtotal?: number
@@ -463,6 +507,8 @@ export type Database = {
           name: string
           occasions: string[]
           price: number
+          seo_description: string | null
+          seo_title: string | null
           short_description: string | null
           sku: string
           slug: string
@@ -480,6 +526,8 @@ export type Database = {
           name: string
           occasions?: string[]
           price: number
+          seo_description?: string | null
+          seo_title?: string | null
           short_description?: string | null
           sku: string
           slug: string
@@ -497,6 +545,8 @@ export type Database = {
           name?: string
           occasions?: string[]
           price?: number
+          seo_description?: string | null
+          seo_title?: string | null
           short_description?: string | null
           sku?: string
           slug?: string
@@ -561,6 +611,63 @@ export type Database = {
         }
         Relationships: []
       }
+      stock_adjustments: {
+        Row: {
+          admin_id: string | null
+          change: number
+          created_at: string
+          id: string
+          item_label: string
+          new_qty: number
+          note: string | null
+          previous_qty: number
+          product_id: string | null
+          reason: string
+          variant_id: string | null
+        }
+        Insert: {
+          admin_id?: string | null
+          change: number
+          created_at?: string
+          id?: string
+          item_label: string
+          new_qty: number
+          note?: string | null
+          previous_qty: number
+          product_id?: string | null
+          reason: string
+          variant_id?: string | null
+        }
+        Update: {
+          admin_id?: string | null
+          change?: number
+          created_at?: string
+          id?: string
+          item_label?: string
+          new_qty?: number
+          note?: string | null
+          previous_qty?: number
+          product_id?: string | null
+          reason?: string
+          variant_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_adjustments_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_adjustments_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "product_variants"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       testimonials: {
         Row: {
           body: string
@@ -623,6 +730,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_adjust_stock: {
+        Args: {
+          p_change: number
+          p_note: string
+          p_product_id: string
+          p_reason: string
+          p_variant_id: string
+        }
+        Returns: number
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

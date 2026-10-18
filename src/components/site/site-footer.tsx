@@ -5,12 +5,15 @@ import { useState } from "react";
 import { toast } from "sonner";
 import logo from "@/assets/sifatmart-logo.png.asset.json";
 import { BRAND } from "@/lib/catalog";
-import { socialLinksQuery, subscribeNewsletter } from "@/lib/store-data";
+import { siteSettingQuery, socialLinksQuery, subscribeNewsletter } from "@/lib/store-data";
 
 export function SiteFooter() {
   const [email, setEmail] = useState("");
   const [busy, setBusy] = useState(false);
   const { data: social } = useQuery(socialLinksQuery);
+  const { data: contact } = useQuery(siteSettingQuery("store_contact"));
+  const hotline = typeof contact?.["hotline"] === "string" && contact["hotline"] ? contact["hotline"] : BRAND.hotline;
+  const location = typeof contact?.["location"] === "string" && contact["location"] ? contact["location"] : BRAND.location;
   const links = [
     { href: social?.facebook, label: "Facebook", Icon: Facebook },
     { href: social?.instagram, label: "Instagram", Icon: Instagram },
@@ -24,8 +27,8 @@ export function SiteFooter() {
         <div>
           <div className="inline-block rounded-md bg-background px-3 py-2"><img src={logo.url} alt="SifatMart" className="h-12 w-auto" /></div>
           <ul className="mt-4 space-y-2 text-sm opacity-80">
-            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0" /> SifatMart, {BRAND.location}</li>
-            <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0" /> <a href={`tel:${BRAND.hotline}`} className="hover:text-primary">{BRAND.hotline}</a></li>
+            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0" /> SifatMart, {location}</li>
+            <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0" /> <a href={`tel:${hotline}`} className="hover:text-primary">{hotline}</a></li>
           </ul>
           {links.length > 0 && (
             <div className="mt-4 flex gap-3">
