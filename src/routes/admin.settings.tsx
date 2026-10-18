@@ -96,6 +96,7 @@ function Settings() {
           {T({ k: "policies", f: "returns", label: "Returns & exchanges", area: true, max: 8000 })}
           {T({ k: "policies", f: "terms", label: "Terms & conditions", area: true, max: 8000 })}
           {T({ k: "policies", f: "privacy", label: "Privacy policy", area: true, max: 8000 })}
+          {T({ k: "policies", f: "about", label: "About Us page", area: true, max: 8000 })}
         </div>
       </Card>
 

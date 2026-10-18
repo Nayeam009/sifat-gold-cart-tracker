@@ -36,7 +36,7 @@ export function SiteHeader() {
         </nav>
         <div className="flex items-center gap-4 text-foreground">
           <button aria-label="Search" onClick={() => setSearchOpen((s) => !s)} className="hover:text-primary"><Search className="h-5 w-5" /></button>
-          <Link to="/track-order" aria-label="Track order" className="hover:text-primary"><User className="h-5 w-5" /></Link>
+          <Link to="/account" aria-label="My account" className="hover:text-primary"><User className="h-5 w-5" /></Link>
           <Link to="/wishlist" aria-label="Wishlist" className="relative hover:text-primary">
             <Heart className="h-5 w-5" />
             {wishlist.length > 0 && <span className="absolute -right-2 -top-2 grid h-4 w-4 place-items-center rounded-full bg-accent text-[10px] text-accent-foreground">{wishlist.length}</span>}
@@ -57,6 +57,7 @@ export function SiteHeader() {
       {open && (
         <nav className="flex flex-col border-t border-border px-4 py-3 md:hidden">
           {nav.map((n) => <Link key={n.to} to={n.to} onClick={() => setOpen(false)} className="py-2 text-sm">{n.label}</Link>)}
+          <Link to="/account" onClick={() => setOpen(false)} className="py-2 text-sm">My Account</Link>
           <Link to="/track-order" onClick={() => setOpen(false)} className="py-2 text-sm">Track Order</Link>
         </nav>
       )}
