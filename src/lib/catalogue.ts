@@ -10,7 +10,7 @@ export type CatalogueItem = {
   summary: string | null;
   description: string | null;
   price: number;
-  oldPrice?: number;
+  oldPrice?: number | undefined;
   stock: number;
   categorySlug: string | null;
   categoryName: string | null;
@@ -23,7 +23,7 @@ export type CatalogueItem = {
 };
 
 export type Sort = "newest" | "price-asc" | "price-desc";
-export type Filters = { q?: string; category?: string; min?: number; max?: number; inStock?: boolean; sort?: Sort };
+export type Filters = { q?: string | undefined; category?: string | undefined; min?: number | undefined; max?: number | undefined; inStock?: boolean | undefined; sort?: Sort | undefined };
 
 /** Total units available: variant stock when the product has options, otherwise product stock. */
 export const availableStock = (p: Pick<CatalogueItem, "stock" | "variants">) =>

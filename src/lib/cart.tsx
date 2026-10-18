@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 import { getProduct } from "./catalog";
 
 export type CartLine = { slug: string; qty: number; sku?: string; variant?: string };
-export const lineKey = (l: { slug: string; sku?: string }) => (l.sku ? `${l.slug}|${l.sku}` : l.slug);
+export const lineKey = (l: { slug: string; sku?: string | undefined }) => (l.sku ? `${l.slug}|${l.sku}` : l.slug);
 
 type Ctx = {
   lines: CartLine[];

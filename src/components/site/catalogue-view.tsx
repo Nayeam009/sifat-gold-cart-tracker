@@ -168,7 +168,7 @@ function SearchBox({ value, onSubmit }: { value: string; onSubmit: (q: string) =
   );
 }
 
-function PriceInputs({ min, max, onApply }: { min?: number; max?: number; onApply: (min?: number, max?: number) => void }) {
+function PriceInputs({ min, max, onApply }: { min?: number | undefined; max?: number | undefined; onApply: (min?: number, max?: number) => void }) {
   const [lo, setLo] = useState(min?.toString() ?? "");
   const [hi, setHi] = useState(max?.toString() ?? "");
   useEffect(() => { setLo(min?.toString() ?? ""); setHi(max?.toString() ?? ""); }, [min, max]);

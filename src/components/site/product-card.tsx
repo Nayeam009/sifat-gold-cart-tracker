@@ -7,7 +7,7 @@ import { validateAdd, type Variant } from "@/lib/catalogue";
 import { SafeImage } from "@/components/site/safe-image";
 import { cn } from "@/lib/utils";
 
-type CardProduct = { slug: string; name: string; price: number; oldPrice?: number; image: string; stock: number; variants?: Variant[] };
+type CardProduct = { slug: string; name: string; price: number; oldPrice?: number | undefined; image: string; stock: number; variants?: Variant[] };
 
 export function ProductCard({ p, showStock, variants }: { p: CardProduct; showStock?: boolean; variants?: string[] }) {
   const { add, qtyInCart, wishlist, toggleWish } = useCart();
