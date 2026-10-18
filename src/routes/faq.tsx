@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { PageHeader } from "@/components/site/page-header";
 import { seo } from "@/lib/seo";
-import { homeFaqs } from "./index";
+import { homeFaqs } from "@/lib/faqs";
 
 const more = [
   { q: "Are your products authentic?", a: "Yes. Every product is sourced from trusted suppliers and checked before delivery." },
