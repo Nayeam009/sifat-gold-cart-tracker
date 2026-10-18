@@ -297,6 +297,50 @@ export type Database = {
           },
         ]
       }
+      order_notifications: {
+        Row: {
+          channel: string
+          created_at: string
+          error: string | null
+          event: string
+          id: string
+          order_id: string
+          provider: string | null
+          provider_message_id: string | null
+          status: string
+        }
+        Insert: {
+          channel: string
+          created_at?: string
+          error?: string | null
+          event?: string
+          id?: string
+          order_id: string
+          provider?: string | null
+          provider_message_id?: string | null
+          status: string
+        }
+        Update: {
+          channel?: string
+          created_at?: string
+          error?: string | null
+          event?: string
+          id?: string
+          order_id?: string
+          provider?: string | null
+          provider_message_id?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_notifications_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_status_history: {
         Row: {
           admin_id: string | null
