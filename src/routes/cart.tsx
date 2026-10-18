@@ -44,12 +44,12 @@ function CartPage() {
                     {r.issue && <p className="mt-1 flex items-center gap-1 text-xs text-destructive"><AlertCircle className="h-3 w-3" />{r.issue}</p>}
                   </div>
                   <div className="flex items-center rounded-md border border-input">
-                    <button aria-label="Decrease quantity" className="p-2" onClick={() => setQty(r.key, r.line.qty - 1)}><Minus className="h-3 w-3" /></button>
-                    <span className="w-6 text-center text-sm" aria-live="polite">{r.line.qty}</span>
-                    <button aria-label="Increase quantity" disabled={r.line.qty >= r.maxQty} className="p-2 disabled:opacity-40" onClick={() => setQty(r.key, r.line.qty + 1)}><Plus className="h-3 w-3" /></button>
+                    <button aria-label={`Decrease quantity of ${r.product?.name ?? "item"}`} className="grid h-10 w-10 place-items-center" onClick={() => setQty(r.key, r.line.qty - 1)}><Minus className="h-3.5 w-3.5" /></button>
+                    <span className="w-7 text-center text-sm" aria-live="polite">{r.line.qty}</span>
+                    <button aria-label={`Increase quantity of ${r.product?.name ?? "item"}`} disabled={r.line.qty >= r.maxQty} className="grid h-10 w-10 place-items-center disabled:opacity-40" onClick={() => setQty(r.key, r.line.qty + 1)}><Plus className="h-3.5 w-3.5" /></button>
                   </div>
-                  <p className="w-20 text-right text-sm font-semibold">{formatTaka(r.lineTotal)}</p>
-                  <button aria-label={`Remove ${r.product?.name ?? "item"}`} onClick={() => remove(r.key)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
+                  <p className="ml-auto w-20 text-right text-sm font-semibold sm:ml-0">{formatTaka(r.lineTotal)}</p>
+                  <button aria-label={`Remove ${r.product?.name ?? "item"}`} onClick={() => remove(r.key)} className="grid h-10 w-10 place-items-center rounded-md text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
                 </li>
               ))}
             </ul>

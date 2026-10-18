@@ -188,8 +188,8 @@ function Gallery({ images, name }: { images: { url: string; alt: string }[]; nam
         <SafeImage key={current?.url} src={current?.url} alt={current?.alt ?? name} loading="eager" fetchPriority="high" width={800} height={800} className="aspect-square w-full object-cover" />
         {n > 1 && (
           <>
-            <button aria-label="Previous image" onClick={() => go(-1)} className="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-card/90"><ChevronLeft className="h-5 w-5" /></button>
-            <button aria-label="Next image" onClick={() => go(1)} className="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-card/90"><ChevronRight className="h-5 w-5" /></button>
+            <button aria-label="Previous image" onClick={() => go(-1)} className="absolute left-2 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-card/90 shadow-sm"><ChevronLeft className="h-5 w-5" /></button>
+            <button aria-label="Next image" onClick={() => go(1)} className="absolute right-2 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-full bg-card/90 shadow-sm"><ChevronRight className="h-5 w-5" /></button>
             <span className="absolute bottom-2 right-2 rounded bg-card/90 px-2 py-0.5 text-xs">{i + 1} / {n}</span>
           </>
         )}

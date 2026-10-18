@@ -92,6 +92,6 @@ function AdminLogin() {
         {err && <p role="alert" className="text-sm text-destructive">{err}</p>}
         <button className={`${btnPrimary} w-full`} disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button>
       </form>
-    </div>
+    </main>
   );
 }
