@@ -27,8 +27,10 @@ function Track() {
       <PageHeader eyebrow="Order status" title="Track Your Order">Enter your order number and the mobile number used at checkout.</PageHeader>
       <div className="mx-auto max-w-xl px-4 py-12">
         <form className="space-y-3 rounded-lg border border-border bg-card p-6" onSubmit={(e) => { e.preventDefault(); const f = new FormData(e.currentTarget); m.mutate({ data: { order_number: String(f.get("order")), phone: String(f.get("phone")).replace(/\s|-/g, "").replace(/^\+?88/, "") } }); }}>
-          <input name="order" defaultValue={order} required placeholder="Order number (e.g. SM123456789)" className={field} />
-          <input name="phone" required placeholder="Mobile number" className={field} />
+          <label htmlFor="track-order" className="sr-only">Order number</label>
+          <input id="track-order" name="order" defaultValue={order} required placeholder="Order number (e.g. SM123456789)" className={field} />
+          <label htmlFor="track-phone" className="sr-only">Mobile number used for the order</label>
+          <input id="track-phone" name="phone" inputMode="tel" autoComplete="tel" required placeholder="Mobile number" className={field} />
           <button disabled={m.isPending} className="w-full rounded-md bg-primary py-3 text-sm text-primary-foreground disabled:opacity-60">{m.isPending ? "Checking…" : "Track Order"}</button>
         </form>
         {m.isSuccess && !res && <p className="mt-6 text-center text-sm text-destructive">No order found with those details.</p>}
