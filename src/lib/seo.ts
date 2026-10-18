@@ -1,5 +1,5 @@
 /** Public site origin for canonical URLs, sitemap and structured data. Set VITE_SITE_URL once a domain is live. */
-export const SITE_URL = ((import.meta.env.VITE_SITE_URL as string | undefined) || "https://id-preview--90c952f8-0b27-4ec8-ae62-4bb3a50c0b88.lovable.app").replace(/\/$/, "");
+export const SITE_URL = ((import.meta.env['VITE_SITE_URL'] as string | undefined) || "https://id-preview--90c952f8-0b27-4ec8-ae62-4bb3a50c0b88.lovable.app").replace(/\/$/, "");
 export const absUrl = (path: string) => (/^https?:\/\//.test(path) ? path : `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`);
 
 type Opts = { path?: string; image?: string | null; type?: "website" | "product"; noindex?: boolean };

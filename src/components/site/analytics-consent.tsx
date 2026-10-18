@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 // Optional analytics. Nothing loads unless an ID is configured AND the visitor accepts.
 // Only page paths are sent — never names, phones, addresses or order details.
-const GA = /^G-[A-Z0-9]{4,15}$/.test(import.meta.env.VITE_GA_MEASUREMENT_ID ?? "") ? (import.meta.env.VITE_GA_MEASUREMENT_ID as string) : null;
-const PIXEL = /^\d{10,20}$/.test(import.meta.env.VITE_META_PIXEL_ID ?? "") ? (import.meta.env.VITE_META_PIXEL_ID as string) : null;
+const GA = /^G-[A-Z0-9]{4,15}$/.test(import.meta.env['VITE_GA_MEASUREMENT_ID'] ?? "") ? (import.meta.env['VITE_GA_MEASUREMENT_ID'] as string) : null;
+const PIXEL = /^\d{10,20}$/.test(import.meta.env['VITE_META_PIXEL_ID'] ?? "") ? (import.meta.env['VITE_META_PIXEL_ID'] as string) : null;
 const KEY = "sifatmart_analytics_consent";
 // Private pages never get tracked.
 const PRIVATE = /^\/(admin|account|checkout|order-confirmation|track-order|login|signup|forgot-password|reset-password)/;
