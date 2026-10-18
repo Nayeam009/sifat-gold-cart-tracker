@@ -14,7 +14,7 @@ import {
   Facebook,
   Quote,
 } from "lucide-react";
-import hero from "@/assets/hero-bride.webp";
+import heroEditorial from "@/assets/hero-bride-editorial.jpg";
 import bridal from "@/assets/bridal-banner.webp";
 import { BRAND, categories, occasions } from "@/lib/catalog";
 import { ProductCard } from "@/components/site/product-card";
@@ -138,63 +138,52 @@ function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-background via-secondary/40 to-background">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -left-24 top-10 h-72 w-72 rounded-full border border-primary/20"
+      <section className="relative isolate overflow-hidden bg-background">
+        <img
+          src={heroEditorial}
+          alt="South Asian bride in a red and gold embroidered saree with kundan jewellery, beside cream florals"
+          width={1920}
+          height={1088}
+          fetchPriority="high"
+          decoding="async"
+          className="order-2 aspect-[4/3] w-full object-cover object-[78%_center] sm:aspect-[16/10] md:absolute md:inset-0 md:-z-10 md:h-full md:aspect-auto md:object-[70%_center]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute -left-10 top-24 h-44 w-44 rounded-full border border-primary/15"
+          className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-background/85 via-background/40 to-transparent md:block"
         />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-4 py-12 md:grid-cols-2 md:py-20">
-          <div className="order-2 text-center md:order-1 md:text-left">
+        <div className="relative mx-auto flex max-w-7xl px-4 pb-8 pt-8 sm:px-6 md:min-h-[clamp(520px,72vh,720px)] md:items-center md:py-20 lg:px-8">
+          <div className="hero-rise max-w-xl text-center md:text-left">
             <p className="eyebrow">Bridal • Beauty • Fashion</p>
             <div className="mx-auto mt-4 h-px w-16 bg-primary md:mx-0" />
-            <h1 className="mt-5 text-4xl leading-[1.08] text-espresso sm:text-5xl lg:text-6xl">
+            <h1 className="mt-5 font-serif text-[2.35rem] leading-[1.05] text-espresso sm:text-5xl lg:text-[4.25rem]">
               {heroTitle === DEFAULT_TITLE ? (
                 <>
-                  Your Special Moments Deserve Something <em className="text-accent">Beautiful</em>
+                  Your Special Moments Deserve Something{" "}
+                  <em className="text-accent">Beautiful</em>
                 </>
               ) : (
                 heroTitle
               )}
             </h1>
-            <p className="mx-auto mt-5 max-w-md text-foreground/75 md:mx-0">
+            <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-foreground/80 md:mx-0 md:text-lg">
               {heroSub ??
                 "Discover bridal essentials, beauty favourites, elegant fashion, and finishing touches for every unforgettable occasion."}
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center md:justify-start">
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center md:justify-start">
               <Link
                 to="/shop"
-                className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-7 py-3 text-sm text-primary-foreground hover:opacity-90"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-primary px-8 text-sm font-medium tracking-wide text-primary-foreground shadow-soft transition hover:opacity-90"
               >
-                Shop Now <ArrowRight className="h-4 w-4" />
+                Shop Now <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
               <Link
                 to="/occasion/$slug"
                 params={{ slug: "wedding" }}
-                className="inline-flex items-center justify-center gap-2 rounded-md border border-accent px-7 py-3 text-sm text-accent hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-accent bg-background/70 px-8 text-sm font-medium tracking-wide text-accent backdrop-blur-sm transition hover:bg-accent hover:text-accent-foreground"
               >
                 Explore Bridal Collection
               </Link>
-            </div>
-          </div>
-          <div className="order-1 md:order-2">
-            <div className="relative mx-auto max-w-md md:max-w-none">
-              <div
-                aria-hidden
-                className="absolute -inset-3 rounded-t-full border border-primary/40"
-              />
-              <img
-                src={hero}
-                alt="Bride in red and gold bridal saree with floral jewellery"
-                width={1600}
-                height={912}
-                fetchPriority="high"
-                decoding="async"
-                className="relative aspect-[4/5] w-full rounded-t-full object-cover object-right shadow-soft"
-              />
             </div>
           </div>
         </div>
