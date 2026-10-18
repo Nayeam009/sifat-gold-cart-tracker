@@ -107,7 +107,7 @@ function Home() {
         <SectionTitle eyebrow="Best sellers" title="Most Loved Products" />
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
           {best.isPending && <Skeletons n={6} className="aspect-[3/4]" />}
-          {best.data?.map((p) => <ProductCard key={p.slug} p={p} showStock variants={p.variants} />)}
+          {best.data?.map((p) => <ProductCard key={p.slug} p={p} showStock variants={p.variantNames} />)}
         </div>
         {best.isError && <p className="text-center text-sm text-muted-foreground">We couldn't load products right now. <button onClick={() => best.refetch()} className="text-primary underline">Try again</button></p>}
         {best.data?.length === 0 && <p className="text-center text-sm text-muted-foreground">New favourites are coming soon. <Link to="/shop" className="text-primary underline">Browse the shop</Link></p>}

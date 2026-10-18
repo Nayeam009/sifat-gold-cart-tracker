@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Minus, Plus, Trash2 } from "lucide-react";
 import { formatTaka, getProduct } from "@/lib/catalog";
-import { useCart } from "@/lib/cart";
+import { lineKey, useCart } from "@/lib/cart";
 import { PageHeader } from "@/components/site/page-header";
 import { seo } from "@/lib/seo";
 
@@ -25,19 +25,20 @@ function CartPage() {
                 const p = getProduct(l.slug);
                 if (!p) return null;
                 return (
-                  <li key={l.slug} className="flex items-center gap-4 p-4">
+                  <li key={lineKey(l)} className="flex items-center gap-4 p-4">
                     <img src={p.image} alt={p.name} className="h-20 w-20 rounded-md object-cover" />
                     <div className="flex-1">
                       <Link to="/product/$slug" params={{ slug: p.slug }} className="text-sm font-medium hover:text-primary">{p.name}</Link>
+                      {l.variant && <p className="text-xs text-muted-foreground">Option: {l.variant}</p>}
                       <p className="text-sm text-primary">{formatTaka(p.price)}</p>
                     </div>
                     <div className="flex items-center rounded-md border border-input">
-                      <button aria-label="Decrease" className="p-2" onClick={() => setQty(l.slug, l.qty - 1)}><Minus className="h-3 w-3" /></button>
+                      <button aria-label="Decrease" className="p-2" onClick={() => setQty(lineKey(l), l.qty - 1)}><Minus className="h-3 w-3" /></button>
                       <span className="w-6 text-center text-sm">{l.qty}</span>
-                      <button aria-label="Increase" className="p-2" onClick={() => setQty(l.slug, l.qty + 1)}><Plus className="h-3 w-3" /></button>
+                      <button aria-label="Increase" className="p-2" onClick={() => setQty(lineKey(l), l.qty + 1)}><Plus className="h-3 w-3" /></button>
                     </div>
                     <p className="w-20 text-right text-sm font-semibold">{formatTaka(p.price * l.qty)}</p>
-                    <button aria-label="Remove" onClick={() => remove(l.slug)} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
+                    <button aria-label="Remove" onClick={() => remove(lineKey(l))} className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></button>
                   </li>
                 );
               })}

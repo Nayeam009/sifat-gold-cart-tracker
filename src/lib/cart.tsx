@@ -1,13 +1,16 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { getProduct } from "./catalog";
 
-export type CartLine = { slug: string; qty: number };
+export type CartLine = { slug: string; qty: number; sku?: string; variant?: string };
+export const lineKey = (l: { slug: string; sku?: string | undefined }) => (l.sku ? `${l.slug}|${l.sku}` : l.slug);
+
 type Ctx = {
   lines: CartLine[];
-  add: (slug: string, qty?: number) => void;
-  setQty: (slug: string, qty: number) => void;
-  remove: (slug: string) => void;
+  add: (slug: string, qty?: number, variant?: { sku: string; name: string }) => void;
+  setQty: (key: string, qty: number) => void;
+  remove: (key: string) => void;
   clear: () => void;
+  qtyInCart: (slug: string, sku?: string) => number;
   count: number;
   subtotal: number;
   wishlist: string[];
@@ -22,8 +25,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
-      setLines(JSON.parse(localStorage.getItem("sm-cart") || "[]"));
-      setWishlist(JSON.parse(localStorage.getItem("sm-wish") || "[]"));
+      const raw = JSON.parse(localStorage.getItem("sm-cart") || "[]");
+      if (Array.isArray(raw)) setLines(raw.filter((l) => l && typeof l.slug === "string" && Number.isInteger(l.qty) && l.qty > 0));
+      const w = JSON.parse(localStorage.getItem("sm-wish") || "[]");
+      if (Array.isArray(w)) setWishlist(w.filter((s) => typeof s === "string"));
     } catch {}
     setReady(true);
   }, []);
@@ -34,23 +39,26 @@ export function CartProvider({ children }: { children: ReactNode }) {
     if (ready) localStorage.setItem("sm-wish", JSON.stringify(wishlist));
   }, [wishlist, ready]);
 
-  const add = (slug: string, qty = 1) =>
+  const add: Ctx["add"] = (slug, qty = 1, variant) =>
     setLines((ls) => {
-      const f = ls.find((l) => l.slug === slug);
-      return f ? ls.map((l) => (l.slug === slug ? { ...l, qty: l.qty + qty } : l)) : [...ls, { slug, qty }];
+      const key = lineKey({ slug, sku: variant?.sku });
+      const f = ls.find((l) => lineKey(l) === key);
+      return f
+        ? ls.map((l) => (lineKey(l) === key ? { ...l, qty: l.qty + qty } : l))
+        : [...ls, { slug, qty, ...(variant ? { sku: variant.sku, variant: variant.name } : {}) }];
     });
-  const setQty = (slug: string, qty: number) =>
-    setLines((ls) => (qty <= 0 ? ls.filter((l) => l.slug !== slug) : ls.map((l) => (l.slug === slug ? { ...l, qty } : l))));
-  const remove = (slug: string) => setLines((ls) => ls.filter((l) => l.slug !== slug));
+  const setQty = (key: string, qty: number) =>
+    setLines((ls) => (qty <= 0 ? ls.filter((l) => lineKey(l) !== key) : ls.map((l) => (lineKey(l) === key ? { ...l, qty } : l))));
+  const remove = (key: string) => setLines((ls) => ls.filter((l) => lineKey(l) !== key));
   const clear = () => setLines([]);
-  const toggleWish = (slug: string) =>
-    setWishlist((w) => (w.includes(slug) ? w.filter((s) => s !== slug) : [...w, slug]));
+  const qtyInCart = (slug: string, sku?: string) => lines.find((l) => lineKey(l) === lineKey({ slug, sku }))?.qty ?? 0;
+  const toggleWish = (slug: string) => setWishlist((w) => (w.includes(slug) ? w.filter((s) => s !== slug) : [...w, slug]));
 
   const count = lines.reduce((s, l) => s + l.qty, 0);
   const subtotal = lines.reduce((s, l) => s + (getProduct(l.slug)?.price ?? 0) * l.qty, 0);
 
   return (
-    <CartContext.Provider value={{ lines, add, setQty, remove, clear, count, subtotal, wishlist, toggleWish }}>
+    <CartContext.Provider value={{ lines, add, setQty, remove, clear, qtyInCart, count, subtotal, wishlist, toggleWish }}>
       {children}
     </CartContext.Provider>
   );
