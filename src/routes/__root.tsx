@@ -131,8 +131,9 @@ function RootComponent() {
           <Outlet />
         ) : (
           <>
+            <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[60] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:text-primary-foreground">Skip to main content</a>
             <SiteHeader />
-            <main className="min-h-[60vh]">
+            <main id="main-content" tabIndex={-1} className="min-h-[60vh] outline-none">
               <Outlet />
             </main>
             <SiteFooter />

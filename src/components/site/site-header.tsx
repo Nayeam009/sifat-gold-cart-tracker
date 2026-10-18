@@ -12,6 +12,8 @@ const nav = [
   { to: "/contact", label: "Contact" },
 ] as const;
 
+const icon = "grid h-11 w-11 place-items-center rounded-md hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring";
+
 export function SiteHeader() {
   const { count, wishlist } = useCart();
   const [open, setOpen] = useState(false);
@@ -21,9 +23,9 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4">
-        <Link to="/" className="flex items-center gap-2">
-          <img src={logo.url} alt="SifatMart logo" width={160} height={64} className="h-16 w-auto" />
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-3 sm:h-20 sm:px-4">
+        <Link to="/" aria-label="SifatMart home" className="flex shrink-0 items-center gap-2">
+          <img src={logo.url} alt="SifatMart" width={160} height={64} className="h-12 w-auto sm:h-16" />
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {nav.map((n) => (
