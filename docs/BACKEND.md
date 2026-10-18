@@ -30,8 +30,17 @@ All amounts are `integer` **whole Taka (BDT)**. The store has no paisa prices, s
 - Online payment is disabled (`payment_methods.online = false`, DB constraint allows only `cod`).
   Enabling it requires a real provider + credentials and relaxing `orders_payment_check`.
 
+## Admin dashboard (/admin)
+- `/admin` is client-rendered; the layout shows a sign-in form, "Not authorised", or the dashboard based on
+  `has_role(auth.uid(),'admin')`. That is UX only — every read/write is enforced by RLS (`has_role`) on the tables,
+  the `product-media` storage bucket (JPG/PNG/WebP, 5 MB, admin-only writes) and `admin_adjust_stock()`.
+- Stock changes go through `admin_adjust_stock()` which writes `stock_adjustments` (audit). Order status / COD
+  payment changes are logged to `order_status_history` by trigger; a trigger blocks edits to order amounts.
+- Editable settings live in `site_settings` keys: delivery_fees, store_contact, social_links, homepage, policies, newsletter.
+
 ## Provisioning the first administrator
-1. Owner creates a normal account with the sign-up form.
+Public sign-up never grants admin (signup trigger only inserts `customer`; `user_roles` has no write policies).
+1. Create the owner's account in Lovable Cloud → Users → Add user (or sign up normally and confirm the email).
 2. In Lovable Cloud → Database → SQL, run (replace the email):
 ```sql
 insert into public.user_roles (user_id, role)
