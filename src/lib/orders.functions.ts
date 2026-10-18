@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getRequestHeader } from "@tanstack/react-start/server";
 import { z } from "zod";
 import { DELIVERY, getProduct } from "./catalog";
+import type { Json } from "@/integrations/supabase/types";
 
 const orderSchema = z.object({
   customer_name: z.string().trim().min(2).max(100),
@@ -33,7 +34,7 @@ export function priceOrder(items: { slug: string; qty: number }[], zone: "inside
 
 /** Maps database error codes to friendly messages. */
 export function friendlyOrderError(raw: string): string {
-  if (raw.includes("OUT_OF_STOCK:")) return `Sorry, "${raw.split("OUT_OF_STOCK:")[1].trim()}" doesn't have enough stock.`;
+  if (raw.includes("OUT_OF_STOCK:")) return `Sorry, "${(raw.split("OUT_OF_STOCK:")[1] ?? "").trim()}" doesn't have enough stock.`;
   if (raw.includes("PRODUCT_UNAVAILABLE") || raw.includes("VARIANT_UNAVAILABLE")) return "One of the items in your cart is no longer available.";
   if (raw.includes("INVALID_COUPON")) return "That coupon code isn't valid for this order.";
   if (raw.includes("INVALID_QTY") || raw.includes("INVALID_ITEMS")) return "Please check the quantities in your cart.";
@@ -54,17 +55,15 @@ export const placeOrder = createServerFn({ method: "POST" })
     }
 
     const { items, coupon, ...customer } = data;
-    const { data: result, error } = await supabaseAdmin.rpc("place_order", {
-      p_customer: customer,
-      p_items: items,
-      p_user_id: userId ?? undefined,
-      p_coupon: coupon || undefined,
-    });
+    const args: { p_customer: Json; p_items: Json; p_user_id?: string; p_coupon?: string } = { p_customer: customer as Json, p_items: items as Json };
+    if (userId) args.p_user_id = userId;
+    if (coupon) args.p_coupon = coupon;
+    const { data: result, error } = await supabaseAdmin.rpc("place_order", args);
     if (error || !result) {
       console.error("place_order failed", error?.message);
       throw new Error(friendlyOrderError(error?.message ?? ""));
     }
-    return result as { order_number: string; subtotal: number; delivery_fee: number; discount: number; total: number };
+    return result as unknown as { order_number: string; subtotal: number; delivery_fee: number; discount: number; total: number };
   });
 
 export const trackOrder = createServerFn({ method: "POST" })
