@@ -138,7 +138,7 @@ function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate flex flex-col overflow-hidden bg-background md:block">
+      <section className="relative isolate flex flex-col overflow-hidden bg-background lg:block">
         <img
           src={heroEditorial}
           alt="South Asian bride in a red and gold embroidered saree with kundan jewellery, beside cream florals"
@@ -146,17 +146,17 @@ function Home() {
           height={1088}
           fetchPriority="high"
           decoding="async"
-          className="order-2 aspect-[4/3] w-full object-cover object-[78%_center] sm:aspect-[16/10] md:absolute md:inset-0 md:-z-10 md:h-full md:aspect-auto md:object-[70%_center]"
+          className="order-2 aspect-[4/3] w-full object-cover object-[78%_center] sm:aspect-[16/10] lg:absolute lg:inset-0 lg:-z-10 lg:h-full lg:aspect-auto lg:object-[70%_center]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-background/85 via-background/40 to-transparent md:block"
+          className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-background/85 via-background/40 to-transparent lg:block"
         />
-        <div className="relative order-1 mx-auto flex w-full max-w-7xl px-4 pb-8 pt-8 sm:px-6 md:min-h-[clamp(520px,72vh,720px)] md:items-center md:py-20 lg:px-8">
-          <div className="hero-rise max-w-xl text-center md:text-left">
+        <div className="relative order-1 mx-auto flex w-full max-w-7xl px-4 pb-8 pt-8 sm:px-6 lg:min-h-[clamp(520px,72vh,720px)] lg:items-center lg:py-20 lg:px-8">
+          <div className="hero-rise max-w-xl text-center lg:text-left">
             <p className="eyebrow">Bridal • Beauty • Fashion</p>
-            <div className="mx-auto mt-4 h-px w-16 bg-primary md:mx-0" />
-            <h1 className="mt-5 font-serif text-[2.35rem] leading-[1.05] text-espresso sm:text-5xl lg:text-[4.25rem]">
+            <div className="mx-auto mt-4 h-px w-16 bg-primary lg:mx-0" />
+            <h1 className="mt-5 text-[2.35rem] leading-[1.05] text-espresso sm:text-5xl lg:text-[4.25rem]">
               {heroTitle === DEFAULT_TITLE ? (
                 <>
                   Your Special Moments Deserve Something{" "}
@@ -166,11 +166,11 @@ function Home() {
                 heroTitle
               )}
             </h1>
-            <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-foreground/80 md:mx-0 md:text-lg">
+            <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-foreground/80 lg:mx-0 lg:text-lg">
               {heroSub ??
                 "Discover bridal essentials, beauty favourites, elegant fashion, and finishing touches for every unforgettable occasion."}
             </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center md:justify-start">
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start">
               <Link
                 to="/shop"
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-primary px-8 text-sm font-medium tracking-wide text-primary-foreground shadow-soft transition hover:opacity-90"
