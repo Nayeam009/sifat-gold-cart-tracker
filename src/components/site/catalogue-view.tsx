@@ -160,10 +160,10 @@ function SearchBox({ value, onSubmit }: { value: string; onSubmit: (q: string) =
   const [q, setQ] = useState(value);
   useEffect(() => setQ(value), [value]);
   return (
-    <form role="search" className="flex min-w-0 flex-1 items-center rounded-md border border-input bg-card" onSubmit={(e) => { e.preventDefault(); onSubmit(q.trim().slice(0, 80)); }}>
-      <Search className="ml-3 h-4 w-4 text-muted-foreground" aria-hidden />
-      <input value={q} onChange={(e) => setQ(e.target.value)} maxLength={80} placeholder="Search products…" aria-label="Search products" className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm outline-none" />
-      {q && <button type="button" aria-label="Clear search" onClick={() => { setQ(""); onSubmit(""); }} className="px-2"><X className="h-4 w-4" /></button>}
+    <form role="search" className="flex w-full min-w-0 items-center rounded-md border border-input bg-card sm:w-auto sm:flex-1" onSubmit={(e) => { e.preventDefault(); onSubmit(q.trim().slice(0, 80)); }}>
+      <Search className="ml-3 h-4 w-4 shrink-0 text-muted-foreground" aria-hidden />
+      <input type="search" value={q} onChange={(e) => setQ(e.target.value)} maxLength={80} placeholder="Search products…" aria-label="Search products" className="min-w-0 flex-1 bg-transparent px-3 py-2.5 text-sm outline-none" />
+      {q && <button type="button" aria-label="Clear search" onClick={() => { setQ(""); onSubmit(""); }} className="grid h-10 w-10 shrink-0 place-items-center"><X className="h-4 w-4" /></button>}
     </form>
   );
 }
