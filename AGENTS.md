@@ -10,4 +10,6 @@
 <!-- LOVABLE:END -->
 
 - Product catalog lives in src/lib/catalog.ts (static) — keeps pages fast and SSR-friendly until an admin area exists.
-- Orders are written only via server functions in src/lib/orders.functions.ts, which re-price from the catalog — never trust client prices. Order tables have RLS on with no public policies.
+- Orders are created only by the DB function place_order (service_role only), called from src/lib/orders.functions.ts — it re-prices, checks stock and snapshots items atomically; never trust client prices.
+- Database products mirror src/lib/catalog.ts by slug; keep both in sync until the storefront reads from the DB.
+- Admin rights come only from public.user_roles (no write policies); see docs/BACKEND.md for schema, RLS and admin provisioning.
