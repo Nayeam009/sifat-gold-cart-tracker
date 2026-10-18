@@ -43,7 +43,7 @@ function Checkout() {
           m.mutate({ data: {
             customer_name: String(f.get("name")), phone, email: String(f.get("email") || ""),
             address: String(f.get("address")), city: String(f.get("city")), zone, notes: String(f.get("notes") || ""),
-            items: lines.map((l) => ({ slug: l.slug, qty: l.qty })),
+            items: lines.map((l) => ({ slug: l.slug, qty: l.qty, ...(l.sku ? { variant_sku: l.sku } : {}) })),
           } });
         }}
       >
@@ -73,7 +73,7 @@ function Checkout() {
         <aside className="h-fit rounded-lg border border-border bg-card p-6">
           <h2 className="text-2xl">Your Order</h2>
           <ul className="mt-4 space-y-3 text-sm">
-            {lines.map((l) => { const p = getProduct(l.slug); return p && <li key={l.slug} className="flex justify-between gap-3"><span>{p.name} × {l.qty}</span><span>{formatTaka(p.price * l.qty)}</span></li>; })}
+            {lines.map((l) => { const p = getProduct(l.slug); return p && <li key={l.sku ? `${l.slug}|${l.sku}` : l.slug} className="flex justify-between gap-3"><span>{p.name}{l.variant ? ` (${l.variant})` : ""} × {l.qty}</span><span>{formatTaka(p.price * l.qty)}</span></li>; })}
           </ul>
           <div className="mt-4 space-y-2 border-t border-border pt-4 text-sm">
             <div className="flex justify-between"><span>Subtotal</span><span>{formatTaka(subtotal)}</span></div>
