@@ -21,9 +21,9 @@ export const bestsellersQuery = queryOptions({
       if (!local) return [];
       return [{
         ...local,
+        ...(row.compare_at_price ? { oldPrice: row.compare_at_price } : { oldPrice: undefined as never }),
         name: row.name,
         price: row.price,
-        oldPrice: row.compare_at_price ?? undefined,
         stock: row.stock_quantity,
         variants: (row.product_variants ?? []).map((v: { name: string }) => v.name),
       }];
@@ -53,7 +53,7 @@ export const socialLinksQuery = queryOptions({
   queryKey: ["social_links"],
   queryFn: async (): Promise<SocialLinks> => {
     const { data } = await supabase.from("site_settings").select("value").eq("key", "social_links").maybeSingle();
-    const v = (data?.value ?? {}) as Record<string, unknown>;
+    const v = (data?.value ?? {}) as Partial<Record<keyof SocialLinks, unknown>>;
     const wa = typeof v.whatsapp === "string" && /^8801[3-9]\d{8}$/.test(v.whatsapp) ? `https://wa.me/${v.whatsapp}` : null;
     return { facebook: validUrl(v.facebook), instagram: validUrl(v.instagram), youtube: validUrl(v.youtube), whatsapp: wa };
   },
