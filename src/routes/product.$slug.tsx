@@ -20,10 +20,26 @@ export const Route = createFileRoute("/product/$slug")({
     if (!p) throw notFound();
     return p;
   },
-  head: ({ loaderData }) =>
-    loaderData
-      ? seo(loaderData.name, loaderData.summary ?? loaderData.description?.slice(0, 155) ?? `${loaderData.name} at SifatMart`)
-      : { meta: [{ title: "Product unavailable | SifatMart" }, { name: "robots", content: "noindex" }] },
+  head: ({ loaderData: p }) => {
+    if (!p) return { meta: [{ title: "Product unavailable | SifatMart" }, { name: "robots", content: "noindex" }] };
+    const path = `/product/${p.slug}`;
+    const base = seo(p.name, p.summary ?? p.description?.slice(0, 155) ?? `${p.name} at SifatMart`, { path, image: p.image, type: "product" });
+    const url = absUrl(path);
+    const offer = (sku: string, price: number, stock: number, name?: string) => ({
+      "@type": "Offer", sku, ...(name ? { name } : {}), price: price.toFixed(2), priceCurrency: "BDT", url, itemCondition: "https://schema.org/NewCondition",
+      availability: stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+    });
+    const product = {
+      "@context": "https://schema.org", "@type": "Product", name: p.name, sku: p.sku, url,
+      description: p.description ?? p.summary ?? undefined,
+      image: p.images.map((i) => absUrl(i.url)),
+      brand: { "@type": "Brand", name: "SifatMart" },
+      ...(p.categoryName ? { category: p.categoryName } : {}),
+      offers: p.variants.length ? p.variants.map((v) => offer(v.sku, variantPrice(p, v.sku), v.stock, v.name)) : offer(p.sku, p.price, p.stock),
+    };
+    const crumbs = [{ name: "Home", path: "/" }, { name: "Shop", path: "/shop" }, ...(p.categorySlug && p.categoryName ? [{ name: p.categoryName, path: `/category/${p.categorySlug}` }] : []), { name: p.name, path }];
+    return { ...base, scripts: [jsonLd(product), breadcrumbLd(crumbs)] };
+  },
   notFoundComponent: () => (
     <div className="py-24 text-center">
       <h1 className="text-3xl">Product not found</h1>
