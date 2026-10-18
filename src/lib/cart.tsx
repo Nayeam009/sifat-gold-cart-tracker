@@ -1,3 +1,4 @@
+import type React from "react";
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { getProduct } from "./catalog";
 
@@ -16,7 +17,9 @@ type Ctx = {
   wishlist: string[];
   toggleWish: (slug: string) => void;
 };
-const CartContext = createContext<Ctx | null>(null);
+// Keep one context object across hot reloads so the provider and hooks never get out of step.
+const g = globalThis as { __smCartContext?: React.Context<Ctx | null> };
+const CartContext = (g.__smCartContext ??= createContext<Ctx | null>(null));
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
