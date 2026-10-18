@@ -7,7 +7,7 @@ import { homeFaqs } from "@/lib/faqs";
 import { faqsQuery } from "@/lib/store-data";
 
 export const Route = createFileRoute("/faq")({
-  head: () => seo("FAQs", "Answers to common questions about ordering, delivery and returns at SifatMart."),
+  head: () => seo("FAQs", "Answers to common questions about ordering, delivery and returns at SifatMart.", { path: "/faq" }),
   component: FaqPage,
 });
 

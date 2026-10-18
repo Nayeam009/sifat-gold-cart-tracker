@@ -8,7 +8,7 @@ import { PageHeader } from "@/components/site/page-header";
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/wishlist")({
-  head: () => seo("My Wishlist", "Products you've saved at SifatMart."),
+  head: () => seo("My Wishlist", "Products you've saved at SifatMart.", { path: "/wishlist", noindex: true }),
   component: Wishlist,
 });
 

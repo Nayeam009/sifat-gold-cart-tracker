@@ -4,7 +4,7 @@ import { seo } from "@/lib/seo";
 import { PolicyText } from "@/components/site/policy-text";
 
 export const Route = createFileRoute("/about")({
-  head: () => seo("About Us", "The story behind SifatMart, a bridal, beauty and fashion shop from Saidpur, Bangladesh."),
+  head: () => seo("About Us", "The story behind SifatMart, a bridal, beauty and fashion shop from Saidpur, Bangladesh.", { path: "/about" }),
   component: AboutPage,
 });
 

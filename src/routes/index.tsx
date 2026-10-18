@@ -12,7 +12,7 @@ import { homeFaqs } from "@/lib/faqs";
 import { bestsellersQuery, faqsQuery, siteSettingQuery, socialLinksQuery, testimonialsQuery } from "@/lib/store-data";
 
 export const Route = createFileRoute("/")({
-  head: () => seo("Beauty for Your Special Moments", "Shop bridal flower sets, sarees, jewellery, makeup and bridal shoes. Cash on delivery across Bangladesh."),
+  head: () => seo("Beauty for Your Special Moments", "Shop bridal flower sets, sarees, jewellery, makeup and bridal shoes. Cash on delivery across Bangladesh.", { path: "/" }),
   loader: async ({ context }) => {
     const safe = <T,>(o: { queryKey: readonly unknown[]; queryFn?: unknown }) => context.queryClient.ensureQueryData(o as never).then((d) => d as T).catch(() => undefined);
     const [best, reviews, faqs, social] = await Promise.all([

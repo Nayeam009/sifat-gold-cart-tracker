@@ -7,7 +7,7 @@ import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/search")({
   validateSearch: z.object({ q: z.string().optional() }),
-  head: () => seo("Search", "Search SifatMart for bridal, beauty and fashion products."),
+  head: () => seo("Search", "Search SifatMart for bridal, beauty and fashion products.", { path: "/search", noindex: true }),
   component: SearchPage,
 });
 

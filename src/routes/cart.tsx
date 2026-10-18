@@ -10,7 +10,7 @@ import { SafeImage } from "@/components/site/safe-image";
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/cart")({
-  head: () => seo("Your Cart", "Review the items in your SifatMart shopping cart."),
+  head: () => seo("Your Cart", "Review the items in your SifatMart shopping cart.", { path: "/cart", noindex: true }),
   component: CartPage,
 });
 
