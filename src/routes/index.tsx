@@ -7,12 +7,12 @@ import { BRAND, categories, occasions } from "@/lib/catalog";
 import { ProductCard } from "@/components/site/product-card";
 import { SectionTitle } from "@/components/site/page-header";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { seo } from "@/lib/seo";
+import { SITE_URL, jsonLd, seo } from "@/lib/seo";
 import { homeFaqs } from "@/lib/faqs";
 import { bestsellersQuery, faqsQuery, siteSettingQuery, socialLinksQuery, testimonialsQuery } from "@/lib/store-data";
 
 export const Route = createFileRoute("/")({
-  head: () => seo("Beauty for Your Special Moments", "Shop bridal flower sets, sarees, jewellery, makeup and bridal shoes. Cash on delivery across Bangladesh.", { path: "/" }),
+  head: () => ({ ...seo("Beauty for Your Special Moments", "Shop bridal flower sets, sarees, jewellery, makeup and bridal shoes. Cash on delivery across Bangladesh.", { path: "/" }), scripts: [jsonLd({ "@context": "https://schema.org", "@type": "Store", name: "SifatMart", slogan: "Beauty for Your Special Moments", url: SITE_URL, telephone: "+8801997974394", founder: { "@type": "Person", name: "Rowsan Parvin" }, currenciesAccepted: "BDT", paymentAccepted: "Cash", address: { "@type": "PostalAddress", addressLocality: "Saidpur", addressRegion: "Nilphamari", addressCountry: "BD" } })] }),
   loader: async ({ context }) => {
     const safe = <T,>(o: { queryKey: readonly unknown[]; queryFn?: unknown }) => context.queryClient.ensureQueryData(o as never).then((d) => d as T).catch(() => undefined);
     const [best, reviews, faqs, social] = await Promise.all([
