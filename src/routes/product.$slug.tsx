@@ -10,7 +10,7 @@ import { catalogueQuery, productQuery } from "@/lib/catalogue-data";
 import { ProductCard } from "@/components/site/product-card";
 import { SectionTitle } from "@/components/site/page-header";
 import { SafeImage } from "@/components/site/safe-image";
-import { seo } from "@/lib/seo";
+import { absUrl, breadcrumbLd, jsonLd, seo } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/product/$slug")({

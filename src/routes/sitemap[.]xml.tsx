@@ -27,7 +27,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           ...(products ?? []).map((p) => ({ loc: absUrl(`/product/${p.slug}`), lastmod: p.updated_at })),
         ];
         const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls
-          .map((u) => `  <url><loc>${esc(u.loc)}</loc>${"lastmod" in u && u.lastmod ? `<lastmod>${u.lastmod.slice(0, 10)}</lastmod>` : ""}</url>`)
+          .map((u) => `  <url><loc>${esc(u.loc)}</loc>${"lastmod" in u && u.lastmod ? `<lastmod>${String(u.lastmod).slice(0, 10)}</lastmod>` : ""}</url>`)
           .join("\n")}\n</urlset>\n`;
         return new Response(xml, { headers: { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600" } });
       },
