@@ -153,7 +153,7 @@ function Home() {
           className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-background/85 via-background/40 to-transparent lg:block"
         />
         <div className="relative order-1 mx-auto flex w-full max-w-7xl px-4 pb-8 pt-8 sm:px-6 lg:min-h-[clamp(520px,72vh,720px)] lg:items-center lg:py-20 lg:px-8">
-          <div className="hero-rise max-w-xl text-center lg:text-left">
+          <div className="hero-rise mx-auto max-w-xl text-center lg:mx-0 lg:text-left">
             <p className="eyebrow">Bridal • Beauty • Fashion</p>
             <div className="mx-auto mt-4 h-px w-16 bg-primary lg:mx-0" />
             <h1 className="mt-5 text-[2.35rem] leading-[1.05] text-espresso sm:text-5xl lg:text-[4.25rem]">
