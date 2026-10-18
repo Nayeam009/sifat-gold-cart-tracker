@@ -105,8 +105,8 @@ function Home() {
       {/* Bestsellers */}
       <section className="mx-auto max-w-7xl px-4 py-20">
         <SectionTitle eyebrow="Best sellers" title="Most Loved Products" />
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {best.isPending && <Skeletons n={4} className="aspect-[3/4]" />}
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+          {best.isPending && <Skeletons n={6} className="aspect-[3/4]" />}
           {best.data?.map((p) => <ProductCard key={p.slug} p={p} showStock variants={p.variants} />)}
         </div>
         {best.isError && <p className="text-center text-sm text-muted-foreground">We couldn't load products right now. <button onClick={() => best.refetch()} className="text-primary underline">Try again</button></p>}
