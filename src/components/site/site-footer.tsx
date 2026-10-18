@@ -25,7 +25,7 @@ export function SiteFooter() {
     <footer className="bg-espresso text-espresso-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-4">
         <div>
-          <div className="inline-block rounded-md bg-background px-3 py-2"><img src={logo.url} alt="SifatMart" className="h-12 w-auto" /></div>
+          <div className="inline-block rounded-md bg-background px-3 py-2"><img src={logo.url} alt="SifatMart" loading="lazy" decoding="async" width={120} height={48} className="h-12 w-auto" /></div>
           <ul className="mt-4 space-y-2 text-sm opacity-80">
             <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0" /> SifatMart, {location}</li>
             <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0" /> <a href={`tel:${hotline}`} className="hover:text-primary">{hotline}</a></li>

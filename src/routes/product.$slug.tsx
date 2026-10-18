@@ -10,7 +10,7 @@ import { catalogueQuery, productQuery } from "@/lib/catalogue-data";
 import { ProductCard } from "@/components/site/product-card";
 import { SectionTitle } from "@/components/site/page-header";
 import { SafeImage } from "@/components/site/safe-image";
-import { seo } from "@/lib/seo";
+import { absUrl, breadcrumbLd, jsonLd, seo } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/product/$slug")({
@@ -20,10 +20,26 @@ export const Route = createFileRoute("/product/$slug")({
     if (!p) throw notFound();
     return p;
   },
-  head: ({ loaderData }) =>
-    loaderData
-      ? seo(loaderData.name, loaderData.summary ?? loaderData.description?.slice(0, 155) ?? `${loaderData.name} at SifatMart`)
-      : { meta: [{ title: "Product unavailable | SifatMart" }, { name: "robots", content: "noindex" }] },
+  head: ({ loaderData: p }) => {
+    if (!p) return { meta: [{ title: "Product unavailable | SifatMart" }, { name: "robots", content: "noindex" }] };
+    const path = `/product/${p.slug}`;
+    const base = seo(p.name, p.summary ?? p.description?.slice(0, 155) ?? `${p.name} at SifatMart`, { path, image: p.image, type: "product" });
+    const url = absUrl(path);
+    const offer = (sku: string, price: number, stock: number, name?: string) => ({
+      "@type": "Offer", sku, ...(name ? { name } : {}), price: price.toFixed(2), priceCurrency: "BDT", url, itemCondition: "https://schema.org/NewCondition",
+      availability: stock > 0 ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+    });
+    const product = {
+      "@context": "https://schema.org", "@type": "Product", name: p.name, sku: p.sku, url,
+      description: p.description ?? p.summary ?? undefined,
+      image: p.images.map((i) => absUrl(i.url)),
+      brand: { "@type": "Brand", name: "SifatMart" },
+      ...(p.categoryName ? { category: p.categoryName } : {}),
+      offers: p.variants.length ? p.variants.map((v) => offer(v.sku, variantPrice(p, v), v.stock, v.name)) : offer(p.sku, p.price, p.stock),
+    };
+    const crumbs = [{ name: "Home", path: "/" }, { name: "Shop", path: "/shop" }, ...(p.categorySlug && p.categoryName ? [{ name: p.categoryName, path: `/category/${p.categorySlug}` }] : []), { name: p.name, path }];
+    return { ...base, scripts: [jsonLd(product), breadcrumbLd(crumbs)] };
+  },
   notFoundComponent: () => (
     <div className="py-24 text-center">
       <h1 className="text-3xl">Product not found</h1>
@@ -169,7 +185,7 @@ function Gallery({ images, name }: { images: { url: string; alt: string }[]; nam
         onTouchStart={(e) => (touch.current = e.touches[0]?.clientX ?? null)}
         onTouchEnd={(e) => { if (touch.current == null) return; const dx = (e.changedTouches[0]?.clientX ?? touch.current) - touch.current; if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1); touch.current = null; }}
       >
-        <SafeImage key={current?.url} src={current?.url} alt={current?.alt ?? name} className="aspect-square w-full object-cover" />
+        <SafeImage key={current?.url} src={current?.url} alt={current?.alt ?? name} loading="eager" fetchPriority="high" width={800} height={800} className="aspect-square w-full object-cover" />
         {n > 1 && (
           <>
             <button aria-label="Previous image" onClick={() => go(-1)} className="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full bg-card/90"><ChevronLeft className="h-5 w-5" /></button>

@@ -4,7 +4,7 @@ import { seo } from "@/lib/seo";
 import { PolicyText } from "@/components/site/policy-text";
 
 export const Route = createFileRoute("/shipping-policy")({
-  head: () => seo("Shipping Policy", "Delivery charges and times for SifatMart orders across Bangladesh."),
+  head: () => seo("Shipping Policy", "Delivery charges and times for SifatMart orders across Bangladesh.", { path: "/shipping-policy" }),
   component: ShippingPolicyPage,
 });
 

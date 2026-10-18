@@ -1,18 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Gem, Headphones, Star, Truck, Wallet, MapPin, Phone, Clock, MessageCircle, Facebook, Quote } from "lucide-react";
-import hero from "@/assets/hero-bride.jpg";
-import bridal from "@/assets/bridal-banner.jpg";
+import hero from "@/assets/hero-bride.webp";
+import bridal from "@/assets/bridal-banner.webp";
 import { BRAND, categories, occasions } from "@/lib/catalog";
 import { ProductCard } from "@/components/site/product-card";
 import { SectionTitle } from "@/components/site/page-header";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { seo } from "@/lib/seo";
+import { SITE_URL, jsonLd, seo } from "@/lib/seo";
 import { homeFaqs } from "@/lib/faqs";
 import { bestsellersQuery, faqsQuery, siteSettingQuery, socialLinksQuery, testimonialsQuery } from "@/lib/store-data";
 
 export const Route = createFileRoute("/")({
-  head: () => seo("Beauty for Your Special Moments", "Shop bridal flower sets, sarees, jewellery, makeup and bridal shoes. Cash on delivery across Bangladesh."),
+  head: () => ({ ...seo("Beauty for Your Special Moments", "Shop bridal flower sets, sarees, jewellery, makeup and bridal shoes. Cash on delivery across Bangladesh.", { path: "/" }), scripts: [jsonLd({ "@context": "https://schema.org", "@type": "Store", name: "SifatMart", slogan: "Beauty for Your Special Moments", url: SITE_URL, telephone: "+8801997974394", founder: { "@type": "Person", name: "Rowsan Parvin" }, currenciesAccepted: "BDT", paymentAccepted: "Cash", address: { "@type": "PostalAddress", addressLocality: "Saidpur", addressRegion: "Nilphamari", addressCountry: "BD" } })] }),
   loader: async ({ context }) => {
     const safe = <T,>(o: { queryKey: readonly unknown[]; queryFn?: unknown }) => context.queryClient.ensureQueryData(o as never).then((d) => d as T).catch(() => undefined);
     const [best, reviews, faqs, social] = await Promise.all([
@@ -71,7 +71,7 @@ function Home() {
           <div className="order-1 md:order-2">
             <div className="relative mx-auto max-w-md md:max-w-none">
               <div aria-hidden className="absolute -inset-3 rounded-t-full border border-primary/40" />
-              <img src={hero} alt="Bride in red and gold bridal saree with floral jewellery" width={1600} height={912} className="relative aspect-[4/5] w-full rounded-t-full object-cover object-right shadow-soft" />
+              <img src={hero} alt="Bride in red and gold bridal saree with floral jewellery" width={1600} height={912} fetchPriority="high" decoding="async" className="relative aspect-[4/5] w-full rounded-t-full object-cover object-right shadow-soft" />
             </div>
           </div>
         </div>

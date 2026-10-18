@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/track-order")({
   validateSearch: z.object({ order: z.string().optional() }),
-  head: () => seo("Track Your Order", "Check the status of your SifatMart order with your order number and phone."),
+  head: () => seo("Track Your Order", "Check the status of your SifatMart order with your order number and phone.", { path: "/track-order" }),
   component: Track,
 });
 

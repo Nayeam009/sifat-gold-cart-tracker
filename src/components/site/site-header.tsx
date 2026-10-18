@@ -23,7 +23,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between gap-4 px-4">
         <Link to="/" className="flex items-center gap-2">
-          <img src={logo.url} alt="SifatMart" className="h-16 w-auto" />
+          <img src={logo.url} alt="SifatMart logo" width={160} height={64} className="h-16 w-auto" />
         </Link>
         <nav className="hidden items-center gap-8 md:flex">
           {nav.map((n) => (

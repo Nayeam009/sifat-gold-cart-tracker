@@ -5,7 +5,7 @@ import { PageHeader, SectionTitle } from "@/components/site/page-header";
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/collections")({
-  head: () => seo("Collections", "Explore SifatMart collections by category and by occasion — wedding, Gaye Holud, reception and engagement."),
+  head: () => seo("Collections", "Explore SifatMart collections by category and by occasion — wedding, Gaye Holud, reception and engagement.", { path: "/collections" }),
   component: Collections,
 });
 

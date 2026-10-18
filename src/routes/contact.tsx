@@ -7,7 +7,7 @@ import { seo } from "@/lib/seo";
 import { siteSettingQuery, socialLinksQuery } from "@/lib/store-data";
 
 export const Route = createFileRoute("/contact")({
-  head: () => seo("Contact Us", "Call or message SifatMart in Saidpur, Nilphamari, Bangladesh. Hotline 01997974394."),
+  head: () => seo("Contact Us", "Call or message SifatMart in Saidpur, Nilphamari, Bangladesh. Hotline 01997974394.", { path: "/contact" }),
   component: Contact,
 });
 

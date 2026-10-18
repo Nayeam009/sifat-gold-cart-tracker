@@ -4,7 +4,7 @@ import { seo } from "@/lib/seo";
 import { PolicyText } from "@/components/site/policy-text";
 
 export const Route = createFileRoute("/terms")({
-  head: () => seo("Terms & Conditions", "Terms and conditions for shopping at SifatMart."),
+  head: () => seo("Terms & Conditions", "Terms and conditions for shopping at SifatMart.", { path: "/terms" }),
   component: TermsPage,
 });
 

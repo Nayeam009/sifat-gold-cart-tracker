@@ -4,7 +4,7 @@ import { seo } from "@/lib/seo";
 import { PolicyText } from "@/components/site/policy-text";
 
 export const Route = createFileRoute("/returns")({
-  head: () => seo("Returns & Exchanges", "SifatMart return and exchange policy."),
+  head: () => seo("Returns & Exchanges", "SifatMart return and exchange policy.", { path: "/returns" }),
   component: ReturnsPage,
 });
 

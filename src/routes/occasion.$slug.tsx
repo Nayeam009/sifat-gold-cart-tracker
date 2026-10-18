@@ -10,7 +10,7 @@ export const Route = createFileRoute("/occasion/$slug")({
     if (!o) throw notFound();
     return o;
   },
-  head: ({ loaderData }) => (loaderData ? seo(`${loaderData.name} Collection`, loaderData.blurb) : { meta: [{ title: "Not found | SifatMart" }, { name: "robots", content: "noindex" }] }),
+  head: ({ loaderData }) => (loaderData ? seo(`${loaderData.name} Collection`, loaderData.blurb, { path: `/occasion/${loaderData.slug}` }) : { meta: [{ title: "Not found | SifatMart" }, { name: "robots", content: "noindex" }] }),
   component: OccasionPage,
 });
 

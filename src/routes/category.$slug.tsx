@@ -2,7 +2,7 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { categories, getCategory } from "@/lib/catalog";
 import { PageHeader } from "@/components/site/page-header";
 import { CatalogueView, catalogueSearch } from "@/components/site/catalogue-view";
-import { seo } from "@/lib/seo";
+import { absUrl, breadcrumbLd, jsonLd, seo } from "@/lib/seo";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/category/$slug")({
@@ -12,7 +12,7 @@ export const Route = createFileRoute("/category/$slug")({
     if (!c) throw notFound();
     return c;
   },
-  head: ({ loaderData }) => (loaderData ? seo(loaderData.name, loaderData.blurb) : { meta: [{ title: "Category not found | SifatMart" }, { name: "robots", content: "noindex" }] }),
+  head: ({ loaderData: c }) => (c ? { ...seo(c.name, c.blurb, { path: `/category/${c.slug}` }), scripts: [jsonLd({ "@context": "https://schema.org", "@type": "CollectionPage", name: c.name, description: c.blurb, url: absUrl(`/category/${c.slug}`) }), breadcrumbLd([{ name: "Home", path: "/" }, { name: "Shop", path: "/shop" }, { name: c.name, path: `/category/${c.slug}` }])] } : { meta: [{ title: "Category not found | SifatMart" }, { name: "robots", content: "noindex" }] }),
   notFoundComponent: () => (
     <div className="py-24 text-center">
       <h1 className="text-3xl">Category not found</h1>

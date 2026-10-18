@@ -4,7 +4,7 @@ import { seo } from "@/lib/seo";
 import { PolicyText } from "@/components/site/policy-text";
 
 export const Route = createFileRoute("/privacy")({
-  head: () => seo("Privacy Policy", "How SifatMart collects and uses your information."),
+  head: () => seo("Privacy Policy", "How SifatMart collects and uses your information.", { path: "/privacy" }),
   component: PrivacyPage,
 });
 

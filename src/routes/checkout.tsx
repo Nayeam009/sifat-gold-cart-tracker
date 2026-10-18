@@ -14,7 +14,7 @@ import { PageHeader } from "@/components/site/page-header";
 import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/checkout")({
-  head: () => seo("Checkout", "Complete your SifatMart order with Cash on Delivery."),
+  head: () => seo("Checkout", "Complete your SifatMart order with Cash on Delivery.", { path: "/checkout", noindex: true }),
   component: Checkout,
 });
 

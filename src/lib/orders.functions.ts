@@ -76,11 +76,14 @@ export const placeOrder = createServerFn({ method: "POST" })
     const number = (result as { order_number: string }).order_number;
     const { data: order } = await supabaseAdmin
       .from("orders")
-      .select("order_number, customer_name, phone, address, city, area, subtotal, delivery_fee, discount, total, order_items(product_name, variant_name, unit_price, quantity, line_total)")
+      .select("id, email, order_number, customer_name, phone, address, city, area, subtotal, delivery_fee, discount, total, order_items(product_name, variant_name, unit_price, quantity, line_total)")
       .eq("order_number", number)
       .single();
     if (!order) throw new Error("Your order was placed but we couldn't load it. Please note your order number: " + number);
-    const { order_items, ...o } = order;
+    const { order_items, id, email, ...o } = order;
+    // Backend "order created" event: notifications only go out via configured providers; never throws.
+    const { dispatchOrderCreated } = await import("@/lib/notifications.server");
+    await dispatchOrderCreated({ id, email, order_number: o.order_number, customer_name: o.customer_name, phone: o.phone, total: o.total, items: order_items });
     return { ...o, items: order_items };
   });
 

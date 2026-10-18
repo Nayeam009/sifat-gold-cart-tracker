@@ -5,7 +5,7 @@ import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/shop")({
   validateSearch: catalogueSearch,
-  head: () => seo("Shop All", "Browse every SifatMart product: bridal flower sets, sarees, jewellery, makeup, skincare, bridal shoes and mehendi."),
+  head: () => seo("Shop All", "Browse every SifatMart product: bridal flower sets, sarees, jewellery, makeup, skincare, bridal shoes and mehendi.", { path: "/shop" }),
   component: Shop,
 });
 

@@ -1,14 +1,14 @@
-import flowers from "@/assets/p-flowers.jpg";
-import saree from "@/assets/p-saree.jpg";
-import jewellery from "@/assets/p-jewellery.jpg";
-import makeup from "@/assets/p-makeup.jpg";
-import skincare from "@/assets/p-skincare.jpg";
-import shoes from "@/assets/p-shoes.jpg";
-import mehendi from "@/assets/p-mehendi.jpg";
-import wedding from "@/assets/hero-bride.jpg";
-import holud from "@/assets/o-holud.jpg";
-import reception from "@/assets/o-reception.jpg";
-import engagement from "@/assets/o-engagement.jpg";
+import flowers from "@/assets/p-flowers.webp";
+import saree from "@/assets/p-saree.webp";
+import jewellery from "@/assets/p-jewellery.webp";
+import makeup from "@/assets/p-makeup.webp";
+import skincare from "@/assets/p-skincare.webp";
+import shoes from "@/assets/p-shoes.webp";
+import mehendi from "@/assets/p-mehendi.webp";
+import wedding from "@/assets/hero-bride.webp";
+import holud from "@/assets/o-holud.webp";
+import reception from "@/assets/o-reception.webp";
+import engagement from "@/assets/o-engagement.webp";
 
 export const BRAND = {
   name: "SifatMart",
