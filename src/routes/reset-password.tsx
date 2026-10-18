@@ -8,7 +8,12 @@ import { seo } from "@/lib/seo";
 
 export const Route = createFileRoute("/reset-password")({
   ssr: false,
-  head: () => ({ meta: [...seo("Choose a New Password", "Set a new password for your SifatMart account.").meta, { name: "robots", content: "noindex" }] }),
+  head: () => ({
+    meta: [
+      ...seo("Choose a New Password", "Set a new password for your SifatMart account.").meta,
+      { name: "robots", content: "noindex" },
+    ],
+  }),
   component: Reset,
 });
 
@@ -21,10 +26,17 @@ function Reset() {
   const [err, setErr] = useState<string | null>(null);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((event) => { if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") setReady("ok"); });
-    supabase.auth.getSession().then(({ data }) => { if (data.session) setReady("ok"); });
+    const { data: sub } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") setReady("ok");
+    });
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) setReady("ok");
+    });
     const t = setTimeout(() => setReady((r) => (r === "wait" ? "invalid" : r)), 4000);
-    return () => { clearTimeout(t); sub.subscription.unsubscribe(); };
+    return () => {
+      clearTimeout(t);
+      sub.subscription.unsubscribe();
+    };
   }, []);
 
   const submit = async (e: React.FormEvent) => {
@@ -40,20 +52,49 @@ function Reset() {
     navigate({ to: "/account" });
   };
 
-  if (ready === "wait") return <AuthCard title="Checking your link…"><p className="text-sm text-muted-foreground" role="status">One moment.</p></AuthCard>;
+  if (ready === "wait")
+    return (
+      <AuthCard title="Checking your link…">
+        <p className="text-sm text-muted-foreground" role="status">
+          One moment.
+        </p>
+      </AuthCard>
+    );
   if (ready === "invalid")
     return (
       <AuthCard title="Link expired" sub="This reset link is invalid or has expired.">
-        <Link to="/forgot-password" className={`${authBtn} block text-center`}>Request a new link</Link>
+        <Link to="/forgot-password" className={`${authBtn} block text-center`}>
+          Request a new link
+        </Link>
       </AuthCard>
     );
   return (
     <AuthCard title="Choose a new password">
       <form onSubmit={submit} className="space-y-4" noValidate>
         {err && <FormAlert>{err}</FormAlert>}
-        <Field id="pw" label="New password"><input id="pw" type="password" autoComplete="new-password" value={pw} onChange={(e) => setPw(e.target.value)} className={authInput} /></Field>
-        <Field id="pw2" label="Confirm new password"><input id="pw2" type="password" autoComplete="new-password" value={confirm} onChange={(e) => setConfirm(e.target.value)} className={authInput} /></Field>
-        <button disabled={busy} className={authBtn}>{busy ? "Saving…" : "Update password"}</button>
+        <Field id="pw" label="New password">
+          <input
+            id="pw"
+            type="password"
+            autoComplete="new-password"
+            value={pw}
+            onChange={(e) => setPw(e.target.value)}
+            className={authInput}
+          />
+        </Field>
+        <Field id="pw2" label="Confirm new password">
+          <input
+            id="pw2"
+            type="password"
+            autoComplete="new-password"
+            value={confirm}
+            onChange={(e) => setConfirm(e.target.value)}
+            className={authInput}
+          />
+        </Field>
+        <button disabled={busy} className={authBtn}>
+          {busy ? "Saving…" : "Update password"}
+        </button>
       </form>
     </AuthCard>
   );

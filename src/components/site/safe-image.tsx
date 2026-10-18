@@ -7,9 +7,23 @@ export function SafeImage({ src, alt, className, ...rest }: ImgHTMLAttributes<HT
   const [failed, setFailed] = useState(false);
   if (!src || failed)
     return (
-      <div role="img" aria-label={alt} className={cn("grid place-items-center bg-muted text-muted-foreground", className)}>
+      <div
+        role="img"
+        aria-label={alt}
+        className={cn("grid place-items-center bg-muted text-muted-foreground", className)}
+      >
         <ImageOff className="h-6 w-6" aria-hidden />
       </div>
     );
-  return <img src={src} alt={alt} loading="lazy" decoding="async" onError={() => setFailed(true)} className={className} {...rest} />;
+  return (
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      decoding="async"
+      onError={() => setFailed(true)}
+      className={className}
+      {...rest}
+    />
+  );
 }

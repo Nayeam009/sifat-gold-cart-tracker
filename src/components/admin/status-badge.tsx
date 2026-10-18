@@ -11,5 +11,11 @@ const tone: Record<string, string> = {
   unpaid: "bg-muted text-muted-foreground",
 };
 export function StatusBadge({ status }: { status: string }) {
-  return <span className={`inline-block rounded-full px-2 py-0.5 text-xs capitalize ${tone[status] ?? "bg-muted"}`}>{status}</span>;
+  return (
+    <span
+      className={`inline-block rounded-full px-2 py-0.5 text-xs capitalize ${tone[status] ?? "bg-muted"}`}
+    >
+      {status}
+    </span>
+  );
 }
