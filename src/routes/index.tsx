@@ -39,10 +39,10 @@ function Skeletons({ n, className }: { n: number; className: string }) {
 
 function Home() {
   const init = Route.useLoaderData();
-  const best = useQuery({ ...bestsellersQuery, initialData: init.best });
-  const reviews = useQuery({ ...testimonialsQuery, initialData: init.reviews });
-  const faqs = useQuery({ ...faqsQuery, initialData: init.faqs });
-  const social = useQuery({ ...socialLinksQuery, initialData: init.social });
+  const best = useQuery({ ...bestsellersQuery, ...(init.best ? { initialData: init.best } : {}) });
+  const reviews = useQuery({ ...testimonialsQuery, ...(init.reviews ? { initialData: init.reviews } : {}) });
+  const faqs = useQuery({ ...faqsQuery, ...(init.faqs ? { initialData: init.faqs } : {}) });
+  const social = useQuery({ ...socialLinksQuery, ...(init.social ? { initialData: init.social } : {}) });
   const faqList = faqs.data && faqs.data.length > 0 ? faqs.data.map((f) => ({ q: f.question, a: f.answer })) : homeFaqs;
 
   return (
