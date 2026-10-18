@@ -15,3 +15,4 @@
 - Admin rights come only from public.user_roles (no write policies); see docs/BACKEND.md for schema, RLS and admin provisioning.
 - /admin talks to the database from the browser under RLS (has_role admin); the layout's role check is UX only, so every new admin table, bucket or function must carry its own has_role policy/check.
 - Stock is changed only via admin_adjust_stock() (audited) or place_order; never update stock_quantity directly from admin UI.
+- Customer account pages live under /account (ssr:false layout showing a sign-in prompt when signed out); order access relies on orders RLS (user_id = auth.uid()), never on URL ids. Wishlist syncs to wishlist_items when signed in, localStorage for guests.

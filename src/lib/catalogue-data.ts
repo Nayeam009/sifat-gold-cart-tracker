@@ -5,13 +5,15 @@ import { mapRow, type CatalogueItem } from "@/lib/catalogue";
 const SELECT =
   "id, slug, sku, name, short_description, description, price, compare_at_price, stock_quantity, created_at, categories(slug, name), product_images(image_url, alt_text, sort_order), product_variants(sku, name, price, stock_quantity, sort_order)";
 
+export async function catalogueQueryFn(): Promise<CatalogueItem[]> {
+  const { data, error } = await supabase.from("products").select(SELECT).eq("is_published", true).limit(500);
+  if (error) throw new Error("Could not load products");
+  return (data ?? []).map((r) => mapRow(r as never));
+}
+
 export const catalogueQuery = queryOptions({
   queryKey: ["catalogue"],
-  queryFn: async (): Promise<CatalogueItem[]> => {
-    const { data, error } = await supabase.from("products").select(SELECT).eq("is_published", true).limit(500);
-    if (error) throw new Error("Could not load products");
-    return (data ?? []).map((r) => mapRow(r as never));
-  },
+  queryFn: catalogueQueryFn,
   staleTime: 60_000,
 });
 

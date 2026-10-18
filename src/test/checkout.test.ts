@@ -15,3 +15,24 @@ describe("checkout rules", () => {
   it("uses variant price", () => expect(reviewCart([{ slug: "b", qty: 2, sku: "B36" }], cat)[0]!.lineTotal).toBe(1400));
   it("flags removed products", () => expect(reviewCart([{ slug: "zzz", qty: 1 }], cat)[0]!.issue).not.toBeNull());
 });
+
+import { mergeWishlists, reconcileCart } from "@/lib/account";
+import { safeNext } from "@/lib/auth";
+
+describe("account rules", () => {
+  it("merges guest wishlist into the saved one without duplicates", () => {
+    expect(mergeWishlists(["a", "b"], ["b", "c"])).toEqual({ merged: ["b", "c", "a"], toUpload: ["a"] });
+  });
+  it("drops unavailable items and caps quantity to stock after sign-in", () => {
+    const p = { slug: "x", name: "X", price: 100, stock: 2, variants: [] } as never;
+    const r = reconcileCart([{ slug: "x", qty: 5 }, { slug: "gone", qty: 1 }], [p]);
+    expect(r.lines).toEqual([{ slug: "x", qty: 2 }]);
+    expect(r.changes).toHaveLength(2);
+  });
+  it("only redirects to safe same-site paths after login", () => {
+    expect(safeNext("//evil.com")).toBe("/account");
+    expect(safeNext("https://evil.com")).toBe("/account");
+    expect(safeNext("/admin")).toBe("/account");
+    expect(safeNext("/wishlist")).toBe("/wishlist");
+  });
+});
