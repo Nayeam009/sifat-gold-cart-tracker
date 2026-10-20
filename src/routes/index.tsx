@@ -153,7 +153,7 @@ function Home() {
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-background via-background/75 to-transparent md:block"
+          className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-background/90 via-background/40 via-35% to-transparent to-60% md:block"
         />
         <div className="relative order-1 mx-auto flex w-full max-w-7xl px-5 pb-7 pt-7 sm:px-6 md:min-h-[clamp(480px,70vh,720px)] md:items-center md:py-16 lg:px-8 lg:py-20">
           <div className="hero-rise max-w-xl text-left md:max-w-[52%] lg:max-w-xl">
