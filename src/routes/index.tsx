@@ -14,7 +14,8 @@ import {
   Facebook,
   Quote,
 } from "lucide-react";
-import heroEditorial from "@/assets/hero-bride-editorial.jpg";
+import heroLarge from "@/assets/hero-vivid-1376.webp";
+import heroSmall from "@/assets/hero-vivid-768.webp";
 import bridal from "@/assets/bridal-banner.webp";
 import { BRAND, categories, occasions } from "@/lib/catalog";
 import { ProductCard } from "@/components/site/product-card";
@@ -140,10 +141,12 @@ function Home() {
       {/* Hero */}
       <section className="relative isolate flex flex-col overflow-hidden bg-background md:block">
         <img
-          src={heroEditorial}
+          src={heroLarge}
+          srcSet={`${heroSmall} 768w, ${heroLarge} 1376w`}
+          sizes="100vw"
           alt="South Asian bride in a red and gold embroidered saree with kundan jewellery, beside cream florals"
-          width={1920}
-          height={1088}
+          width={1376}
+          height={768}
           fetchPriority="high"
           decoding="async"
           className="order-2 aspect-[4/3] w-full object-cover object-[78%_center] sm:aspect-[16/10] md:absolute md:inset-0 md:-z-10 md:h-full md:aspect-auto md:object-[72%_center]"
