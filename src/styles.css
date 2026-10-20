@@ -155,3 +155,13 @@
 @media (prefers-reduced-motion: reduce) {
   .about-stagger > *, .about-cell { animation: none; }
 }
+
+/* App-like touch feel */
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; text-size-adjust: 100%; }
+  button, a, [role="button"] { touch-action: manipulation; }
+  img { content-visibility: auto; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  button:active:not(:disabled), a[class*="rounded"]:active { transform: scale(0.98); transition: transform 80ms ease-out; }
+}
