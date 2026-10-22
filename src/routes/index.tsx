@@ -139,7 +139,7 @@ function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate flex flex-col overflow-hidden bg-background md:block">
+      <section className="relative isolate flex min-h-[calc(100svh-4rem)] flex-col justify-end overflow-hidden bg-background md:block md:min-h-0">
         <img
           src={heroLarge}
           srcSet={`${heroSmall} 768w, ${heroLarge} 1376w`}
@@ -149,13 +149,17 @@ function Home() {
           height={768}
           fetchPriority="high"
           decoding="async"
-          className="order-2 aspect-[4/3] w-full object-cover object-[78%_center] sm:aspect-[16/10] md:absolute md:inset-0 md:-z-10 md:h-full md:aspect-auto md:object-[72%_center]"
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-[80%_top] md:object-[72%_center]"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-background from-35% via-background/70 via-55% to-transparent to-75% md:hidden"
         />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-background/90 via-background/40 via-35% to-transparent to-60% md:block"
         />
-        <div className="relative order-1 mx-auto flex w-full max-w-7xl px-5 pb-7 pt-7 sm:px-6 md:min-h-[clamp(480px,70vh,720px)] md:items-center md:py-16 lg:px-8 lg:py-20">
+        <div className="relative mx-auto flex w-full max-w-7xl px-5 pb-8 pt-40 sm:px-6 md:min-h-[clamp(480px,70vh,720px)] md:items-center md:py-16 lg:px-8 lg:py-20">
           <div className="hero-rise max-w-xl text-left md:max-w-[52%] lg:max-w-xl">
             <p className="eyebrow">Bridal • Beauty • Fashion</p>
             <div className="mt-4 h-px w-16 bg-primary" />
