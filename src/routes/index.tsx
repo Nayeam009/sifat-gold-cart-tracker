@@ -139,7 +139,7 @@ function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate flex min-h-[calc(100svh-4rem)] flex-col justify-end overflow-hidden bg-background md:block md:min-h-0">
+      <section className="relative isolate flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden bg-background md:block md:min-h-0">
         <img
           src={heroLarge}
           srcSet={`${heroSmall} 768w, ${heroLarge} 1376w`}
@@ -149,16 +149,46 @@ function Home() {
           height={768}
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-0 -z-10 h-full w-full object-cover object-[80%_top] md:object-[72%_center]"
+          className="absolute inset-x-0 top-0 -z-10 h-[52svh] w-full object-cover object-[80%_top] md:inset-0 md:h-full md:object-[72%_center]"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-t from-background from-0% via-background/45 via-35% to-transparent to-100% md:hidden"
+          className="pointer-events-none absolute inset-x-0 top-[43svh] -z-10 h-[9svh] bg-gradient-to-b from-transparent via-background/55 to-background md:hidden"
         />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-background/90 via-background/40 via-35% to-transparent to-60% md:block"
         />
+        {/* Mobile: the photo stays untouched on top, words sit on plain ivory below it */}
+        <div className="hero-rise mt-[52svh] flex flex-1 flex-col justify-center px-5 pb-10 md:hidden">
+          <p className="eyebrow">Bridal • Beauty • Fashion</p>
+          <div className="mt-3 h-px w-12 bg-primary" />
+          <h1 className="mt-3 text-[clamp(1.7rem,7.2vw,2.1rem)] leading-[1.08] text-espresso">
+            {heroTitle === DEFAULT_TITLE ? (
+              <>
+                Your Special Moments Deserve Something{" "}
+                <em className="text-accent">Beautiful</em>
+              </>
+            ) : (
+              heroTitle
+            )}
+          </h1>
+          <div className="mt-5 flex flex-col items-start gap-2">
+            <Link
+              to="/shop"
+              className="inline-flex min-h-12 w-full max-w-xs items-center justify-center gap-2 rounded-md bg-primary px-6 text-sm font-medium tracking-wide text-primary-foreground shadow-soft transition hover:opacity-90"
+            >
+              Shop Now <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+            <Link
+              to="/occasion/$slug"
+              params={{ slug: "wedding" }}
+              className="inline-flex min-h-11 items-center gap-1.5 px-1 text-sm font-medium text-accent underline-offset-4 hover:underline"
+            >
+              Explore Bridal Collection <ArrowRight className="h-3.5 w-3.5" aria-hidden />
+            </Link>
+          </div>
+        </div>
         <div className="relative mx-auto hidden w-full max-w-7xl px-5 pb-8 pt-40 sm:px-6 md:flex md:min-h-[clamp(480px,70vh,720px)] md:items-center md:py-16 lg:px-8 lg:py-20">
           <div className="hero-rise max-w-xl text-left md:max-w-[52%] lg:max-w-xl">
             <p className="eyebrow">Bridal • Beauty • Fashion</p>
