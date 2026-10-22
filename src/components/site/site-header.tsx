@@ -1,4 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { useState } from "react";
 import logo from "@/assets/sifatmart-logo.png.asset.json";
@@ -130,33 +131,29 @@ export function SiteHeader() {
           </button>
         </form>
       )}
-      {open && (
-        <nav
-          id="mobile-nav"
-          aria-label="Main"
-          className="flex flex-col border-t border-border px-4 py-2 md:hidden"
-          onKeyDown={(e) => e.key === "Escape" && setOpen(false)}
-        >
-          {nav.map((n) => (
-            <Link
-              key={n.to}
-              to={n.to}
-              onClick={() => setOpen(false)}
-              className="py-3 text-sm"
-              activeOptions={{ exact: n.to === "/" }}
-              activeProps={{ className: "text-primary" }}
-            >
-              {n.label}
-            </Link>
-          ))}
-          <Link to="/account" onClick={() => setOpen(false)} className="py-3 text-sm">
-            My Account
-          </Link>
-          <Link to="/track-order" onClick={() => setOpen(false)} className="py-3 text-sm">
-            Track Order
-          </Link>
-        </nav>
-      )}
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent side="left" className="w-[80%] max-w-xs border-border bg-background p-0">
+          <SheetTitle className="border-b border-border px-6 py-5 font-serif text-2xl text-foreground">
+            Menu
+          </SheetTitle>
+          <nav id="mobile-nav" aria-label="Main" className="flex flex-col px-6 py-2">
+            {[...nav, { to: "/account", label: "My Account" }, { to: "/track-order", label: "Track Order" }].map(
+              (n) => (
+                <Link
+                  key={n.to}
+                  to={n.to}
+                  onClick={() => setOpen(false)}
+                  className="border-b border-border/60 py-3.5 text-base text-foreground"
+                  activeOptions={{ exact: n.to === "/" }}
+                  activeProps={{ className: "text-primary" }}
+                >
+                  {n.label}
+                </Link>
+              ),
+            )}
+          </nav>
+        </SheetContent>
+      </Sheet>
     </header>
   );
 }
