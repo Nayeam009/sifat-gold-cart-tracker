@@ -153,13 +153,13 @@ function Home() {
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-t from-background from-35% via-background/70 via-55% to-transparent to-75% md:hidden"
+          className="pointer-events-none absolute inset-x-0 bottom-0 -z-10 h-1/3 bg-gradient-to-t from-background from-0% via-background/45 via-35% to-transparent to-100% md:hidden"
         />
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-background/90 via-background/40 via-35% to-transparent to-60% md:block"
         />
-        <div className="relative mx-auto flex w-full max-w-7xl px-5 pb-8 pt-40 sm:px-6 md:min-h-[clamp(480px,70vh,720px)] md:items-center md:py-16 lg:px-8 lg:py-20">
+        <div className="relative mx-auto hidden w-full max-w-7xl px-5 pb-8 pt-40 sm:px-6 md:flex md:min-h-[clamp(480px,70vh,720px)] md:items-center md:py-16 lg:px-8 lg:py-20">
           <div className="hero-rise max-w-xl text-left md:max-w-[52%] lg:max-w-xl">
             <p className="eyebrow">Bridal • Beauty • Fashion</p>
             <div className="mt-4 h-px w-16 bg-primary" />
