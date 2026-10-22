@@ -140,6 +140,7 @@ function Home() {
     <>
       {/* Hero */}
       <section className="relative isolate flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden bg-background md:block md:min-h-0">
+        <div className="absolute inset-x-0 top-0 -z-10 h-[52svh] overflow-hidden md:inset-0 md:h-full">
         <img
           src={heroLarge}
           srcSet={`${heroSmall} 768w, ${heroLarge} 1376w`}
@@ -149,11 +150,12 @@ function Home() {
           height={768}
           fetchPriority="high"
           decoding="async"
-          className="absolute inset-x-0 top-0 -z-10 h-[52svh] w-full object-cover object-[80%_top] md:inset-0 md:h-full md:object-[72%_center]"
+          className="h-full min-h-[100vw] w-full object-cover object-[80%_top] md:min-h-0 md:object-[72%_center]"
         />
+        </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[43svh] -z-10 h-[9svh] bg-gradient-to-b from-transparent via-background/55 to-background md:hidden"
+          className="pointer-events-none absolute inset-x-0 top-[49svh] -z-10 h-[3svh] bg-gradient-to-b from-transparent to-background md:hidden"
         />
         <div
           aria-hidden
