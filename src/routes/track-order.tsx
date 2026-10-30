@@ -110,6 +110,20 @@ function Track() {
             {res.status === "cancelled" && (
               <p className="mt-3 text-sm text-destructive">This order was cancelled.</p>
             )}
+            {res.tracking_code && (
+              <p className="mt-3 rounded-md bg-muted p-3 text-sm">
+                Sent with {res.courier_name ?? "our courier"} · tracking code{" "}
+                <b>{res.tracking_code}</b>
+                {res.tracking_url?.startsWith("https://") && (
+                  <>
+                    {" · "}
+                    <a href={res.tracking_url} target="_blank" rel="noreferrer noopener" className="text-primary underline">
+                      Track parcel
+                    </a>
+                  </>
+                )}
+              </p>
+            )}
             <ul className="mt-5 space-y-1 text-sm">
               {res.order_items.map((i, k) => (
                 <li key={k} className="flex justify-between">
