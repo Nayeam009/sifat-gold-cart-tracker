@@ -588,6 +588,32 @@ export type Database = {
         }
         Relationships: []
       }
+      product_costs: {
+        Row: {
+          cost_price: number
+          product_id: string
+          updated_at: string
+        }
+        Insert: {
+          cost_price: number
+          product_id: string
+          updated_at?: string
+        }
+        Update: {
+          cost_price?: number
+          product_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_costs_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: true
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_images: {
         Row: {
           alt_text: string | null

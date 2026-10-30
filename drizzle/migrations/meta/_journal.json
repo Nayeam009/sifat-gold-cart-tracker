@@ -50,6 +50,13 @@
       "when": 1793376621498,
       "tag": "0006_admin_upgrade",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1793377071937,
+      "tag": "0007_product_costs_private",
+      "breakpoints": true
     }
   ]
 }
