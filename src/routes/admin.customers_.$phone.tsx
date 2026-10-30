@@ -32,7 +32,7 @@ function CustomerDetail() {
       ]);
       const err = orders.error ?? notes.error ?? credits.error;
       if (err) throw new Error(errMsg(err));
-      return { orders: orders.data, notes: notes.data, credits: credits.data };
+      return { orders: orders.data ?? [], notes: notes.data ?? [], credits: credits.data ?? [] };
     },
   });
   const [note, setNote] = useState("");
@@ -62,7 +62,7 @@ function CustomerDetail() {
   const addCredit = useMutation({
     mutationFn: async () => {
       const parsed = creditSchema.safeParse({ amount: Math.round(Number(credit.amount)) * credit.sign, reason: credit.reason });
-      if (!parsed.success) throw new Error(parsed.error.issues[0].message);
+      if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? "Check the values");
       if (!creditChangeAllowed(balance, parsed.data.amount)) throw new Error("Store credit can't go below zero.");
       const { error } = await supabase.rpc("admin_add_store_credit", { p_phone: phone, p_amount: parsed.data.amount, p_reason: parsed.data.reason });
       if (error) throw new Error(error.message.includes("CREDIT_BELOW_ZERO") ? "Store credit can't go below zero." : errMsg(error));
@@ -84,7 +84,7 @@ function CustomerDetail() {
         No orders from this phone. <Link to="/admin/customers" className="text-primary">Back</Link>
       </StatePanel>
     );
-  const latest = orders[0];
+  const latest = orders[0]!;
   const spent = orders.filter((o) => o.status !== "cancelled" && o.status !== "returned").reduce((a, o) => a + o.total, 0);
   const segs = customerSegments({ orders: orders.length, spent, last: latest.created_at });
   return (

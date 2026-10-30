@@ -46,7 +46,7 @@ function Orders() {
           supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", st),
         ),
       );
-      return Object.fromEntries(ORDER_STATUSES.map((st, i) => [st, res[i].count ?? 0]));
+      return Object.fromEntries(ORDER_STATUSES.map((st, i) => [st, res[i]?.count ?? 0]));
     },
   });
   const q = useQuery({

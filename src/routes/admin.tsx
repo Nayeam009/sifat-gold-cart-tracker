@@ -16,7 +16,7 @@ export const Route = createFileRoute("/admin")({
   component: AdminLayout,
 });
 
-function NavLinkItem({ n, collapsed, onNav }: { n: NavItem; collapsed?: boolean; onNav?: () => void }) {
+function NavLinkItem({ n, collapsed, onNav }: { n: NavItem; collapsed?: boolean | undefined; onNav?: (() => void) | undefined }) {
   return (
     <Link
       to={n.to}
@@ -33,7 +33,7 @@ function NavLinkItem({ n, collapsed, onNav }: { n: NavItem; collapsed?: boolean;
   );
 }
 
-function NavList({ collapsed, onNav }: { collapsed?: boolean; onNav?: () => void }) {
+function NavList({ collapsed, onNav }: { collapsed?: boolean | undefined; onNav?: (() => void) | undefined }) {
   return (
     <nav aria-label="Admin" className="min-h-0 flex-1 space-y-4 overflow-y-auto px-3">
       {NAV_GROUPS.map((g) => (

@@ -52,15 +52,24 @@ export function parseStockCsv(
   const changes: StockChange[] = [];
   const errors: string[] = [];
   const lines = text.replace(/\r/g, "").split("\n").filter((l) => l.trim());
-  lines.slice(1).forEach((line, i) => {
+  lines.slice(1).forEach((line, i): void => {
     const cells = splitCsvLine(line);
     const [id, kind, , stockCell] = cells;
     const row = byId.get(`${kind}:${id}`);
-    if (!row) return errors.push(`Line ${i + 2}: unknown item`);
+    if (!row) {
+      errors.push(`Line ${i + 2}: unknown item`);
+      return;
+    }
     if (stockCell === undefined || stockCell.trim() === "") return;
     const n = Number(stockCell);
-    if (!Number.isInteger(n)) return errors.push(`Line ${i + 2}: stock must be a whole number`);
-    if (n < 0) return errors.push(`Line ${i + 2}: stock can't be negative`);
+    if (!Number.isInteger(n)) {
+      errors.push(`Line ${i + 2}: stock must be a whole number`);
+      return;
+    }
+    if (n < 0) {
+      errors.push(`Line ${i + 2}: stock can't be negative`);
+      return;
+    }
     if (n !== row.stock) changes.push({ ...row, next: n });
   });
   return { changes, errors };
