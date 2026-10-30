@@ -123,7 +123,10 @@ function Inventory() {
               const f = e.target.files?.[0];
               e.target.value = "";
               if (!f || !items.data) return;
-              if (f.size > 1_000_000) return toast.error("CSV must be under 1 MB.");
+              if (f.size > 1_000_000) {
+                toast.error("CSV must be under 1 MB.");
+                return;
+              }
               const cur = items.data.map((r) => ({
                 id: r.variantId ?? r.productId,
                 kind: (r.variantId ? "variant" : "product") as "variant" | "product",
