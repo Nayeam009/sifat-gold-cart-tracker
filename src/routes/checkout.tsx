@@ -42,6 +42,19 @@ const feesQuery = {
   staleTime: 60_000,
 };
 
+function incompleteKey(): string {
+  try {
+    let k = localStorage.getItem("sm-checkout-key");
+    if (!k) {
+      k = crypto.randomUUID().replace(/-/g, "");
+      localStorage.setItem("sm-checkout-key", k);
+    }
+    return k;
+  } catch {
+    return crypto.randomUUID().replace(/-/g, "");
+  }
+}
+
 type Errors = Partial<
   Record<"name" | "phone" | "email" | "district" | "upazila" | "address", string>
 >;
@@ -75,9 +88,34 @@ function Checkout() {
   const discount = coupon?.discount ?? 0;
   const issues = reviewed.filter((r) => r.issue);
 
+  // Owner follow-up list: store name/phone/cart once a valid BD number is typed. Never blocks checkout.
+  const saveIncomplete = (form: HTMLFormElement | null) => {
+    if (!form || !reviewed.length) return;
+    const fd = new FormData(form);
+    const phone = String(fd.get("phone") ?? "").replace(/\D/g, "").replace(/^880/, "0");
+    if (!/^01[3-9]\d{8}$/.test(phone)) return;
+    supabase
+      .rpc("record_incomplete_checkout", {
+        p_key: incompleteKey(),
+        p_name: String(fd.get("name") ?? "").slice(0, 100),
+        p_phone: phone,
+        p_city: String(fd.get("district") ?? "").slice(0, 60),
+        p_cart: reviewed.slice(0, 50).map((r) => ({ name: r.name, qty: r.quantity })),
+        p_subtotal: subtotal,
+      })
+      .then(() => undefined, () => undefined);
+  };
+
   const m = useMutation({
     mutationFn: submit,
     onSuccess: (order) => {
+      supabase.rpc("complete_incomplete_checkout", { p_key: incompleteKey() }).then(() => {
+        try {
+          localStorage.removeItem("sm-checkout-key");
+        } catch {
+          /* storage unavailable */
+        }
+      }, () => undefined);
       sessionStorage.setItem(`sm-order-${order.order_number}`, JSON.stringify(order));
       clear();
       navigate({
@@ -244,6 +282,7 @@ function Checkout() {
                 aria-invalid={!!errors.phone}
                 aria-describedby={errors.phone ? "phone-error" : undefined}
                 className={field}
+                onBlur={(e) => saveIncomplete(e.currentTarget.form)}
               />
               {err("phone")}
             </div>
