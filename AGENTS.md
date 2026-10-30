@@ -22,3 +22,4 @@
 - Returns, store credit and CSV stock imports go through SECURITY DEFINER RPCs (admin_create_return, admin_return_transition, admin_add_store_credit, admin_adjust_stock) so refund caps, credit floor and stock audit are enforced server-side; returns/credits have no delete path.
 - Product cost prices live in admin-only product_costs (products is publicly readable; products.cost_price is deprecated and forced NULL).
 - Printable invoices/labels use top-level /admin-print (outside the admin shell, admin check in-page, RLS on data).
+- Free-delivery threshold (site_settings.delivery_fees.free_over) is enforced inside place_order; checkout's deliveryFeeFor() in src/lib/checkout.ts only mirrors it for display. Courier booking runs in admin-only server functions (src/lib/courier.functions.ts) using env secrets and the admin's RLS client.

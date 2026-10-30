@@ -33,3 +33,10 @@ Scripts load only after the visitor taps **Allow**. Only page paths are sent; ad
 - `/robots.txt` blocks admin/account/cart/checkout and points to the sitemap.
 - Product pages emit `Product` JSON-LD with the current BDT price, SKU and in-stock/out-of-stock per variant; no ratings or reviews are emitted. Category pages emit `CollectionPage`; both emit `BreadcrumbList`. Homepage emits `Store`.
 - Submit the sitemap in Google Search Console after publishing.
+
+## Courier booking (optional)
+Order page "Send to courier" appears per courier once all its secrets are set (server-only, see src/lib/courier.functions.ts):
+- Steadfast: STEADFAST_API_KEY, STEADFAST_SECRET_KEY
+- Pathao: PATHAO_CLIENT_ID, PATHAO_CLIENT_SECRET, PATHAO_USERNAME, PATHAO_PASSWORD, PATHAO_STORE_ID, PATHAO_CITY_ID, PATHAO_ZONE_ID (default city/zone used for every parcel)
+- RedX: REDX_API_TOKEN, REDX_AREA_ID, REDX_AREA_NAME (default delivery area)
+Not yet tested against live courier accounts.
