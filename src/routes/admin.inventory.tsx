@@ -25,7 +25,7 @@ function Inventory() {
         if (!row) continue;
         const { error } = await supabase.rpc("admin_adjust_stock", {
           p_product_id: row.productId,
-          p_variant_id: row.variantId,
+          p_variant_id: row.variantId as string,
           p_change: c.next - c.stock,
           p_reason: "count_correction",
           p_note: "CSV import",
