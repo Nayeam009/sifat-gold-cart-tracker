@@ -81,14 +81,35 @@ export function validateImage(file: { type: string; size: number }): string | nu
   return null;
 }
 
+/** Shrink large photos to max 1600px WebP in the browser; falls back to the original file. */
+async function compressImage(file: File): Promise<Blob> {
+  try {
+    const bmp = await createImageBitmap(file);
+    const scale = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
+    const w = Math.round(bmp.width * scale),
+      h = Math.round(bmp.height * scale);
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    canvas.getContext("2d")!.drawImage(bmp, 0, 0, w, h);
+    bmp.close();
+    const blob = await new Promise<Blob | null>((r) => canvas.toBlob(r, "image/webp", 0.82));
+    return blob && blob.type === "image/webp" && blob.size < file.size ? blob : file;
+  } catch {
+    return file;
+  }
+}
+
 export async function uploadImage(file: File, folder = "products"): Promise<string> {
   const bad = validateImage(file);
   if (bad) throw new Error(bad);
-  const ext = file.type === "image/png" ? "png" : file.type === "image/webp" ? "webp" : "jpg";
+  const body = await compressImage(file);
+  const type = body.type || file.type;
+  const ext = type === "image/png" ? "png" : type === "image/webp" ? "webp" : "jpg";
   const path = `${folder}/${crypto.randomUUID()}.${ext}`;
   const { error } = await supabase.storage
     .from("product-media")
-    .upload(path, file, { contentType: file.type, upsert: false });
+    .upload(path, body, { contentType: type, upsert: false, cacheControl: "31536000" });
   if (error) throw new Error(errMsg(error));
   return supabase.storage.from("product-media").getPublicUrl(path).data.publicUrl;
 }
