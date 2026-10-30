@@ -158,6 +158,23 @@ function Settings() {
       </Card>
 
       <Card
+        title="Invoices & parcel labels"
+        updated={s.invoice?._updated}
+        onSave={() =>
+          go("invoice", null, (v) => ({
+            footer: String(v["footer"] ?? "").trim().slice(0, 300),
+            label_note: String(v["label_note"] ?? "").trim().slice(0, 120),
+          }))
+        }
+        busy={save.isPending}
+      >
+        <div className="space-y-3">
+          <T k="invoice" f="footer" label="Invoice footer message (e.g. thank-you or exchange note)" area max={300} />
+          <T k="invoice" f="label_note" label="Parcel label note (e.g. Handle with care)" max={120} />
+        </div>
+      </Card>
+
+      <Card
         title="Store contact"
         updated={s.store_contact?._updated}
         busy={save.isPending}
