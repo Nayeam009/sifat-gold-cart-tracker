@@ -23,7 +23,10 @@ export function CourierDispatch({ orderId, dispatched }: { orderId: string; disp
   const m = useMutation({
     mutationFn: (courier: CourierId) => send({ data: { orderId, courier } }),
     onSuccess: (r) => {
-      if (!r.ok) return toast.error(r.error);
+      if (!r.ok) {
+        toast.error(r.error);
+        return;
+      }
       toast.success(`Parcel booked. Tracking code ${r.tracking_code}`);
       qc.invalidateQueries({ queryKey: ["admin", "order", orderId] });
     },
