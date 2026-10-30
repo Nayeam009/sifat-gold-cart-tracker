@@ -42,7 +42,7 @@ export function SiteFooter() {
               className="h-12 w-auto"
             />
           </div>
-          <ul className="mt-4 space-y-2 text-sm opacity-80">
+          <ul className="mt-4 space-y-0 text-sm opacity-80 [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center md:space-y-1 md:[&_a]:min-h-8">
             <li className="flex gap-2">
               <MapPin className="h-4 w-4 shrink-0" /> SifatMart, {location}
             </li>
@@ -72,7 +72,7 @@ export function SiteFooter() {
         </div>
         <div>
           <h4 className="text-lg text-gold-soft">Quick Links</h4>
-          <ul className="mt-4 space-y-2 text-sm opacity-80">
+          <ul className="mt-4 space-y-0 text-sm opacity-80 [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center md:space-y-1 md:[&_a]:min-h-8">
             <li>
               <Link to="/">Home</Link>
             </li>
@@ -92,7 +92,7 @@ export function SiteFooter() {
         </div>
         <div>
           <h4 className="text-lg text-gold-soft">Customer Service</h4>
-          <ul className="mt-4 space-y-2 text-sm opacity-80">
+          <ul className="mt-4 space-y-0 text-sm opacity-80 [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center md:space-y-1 md:[&_a]:min-h-8">
             <li>
               <Link to="/faq">FAQs</Link>
             </li>
@@ -142,7 +142,7 @@ export function SiteFooter() {
             />
             <button
               disabled={busy}
-              className="w-full rounded-md bg-primary py-2 text-sm text-primary-foreground hover:opacity-90 disabled:opacity-60"
+              className="min-h-11 w-full rounded-md bg-primary py-2 text-sm text-primary-foreground hover:opacity-90 disabled:opacity-60"
             >
               {busy ? "Subscribing…" : "Subscribe"}
             </button>
