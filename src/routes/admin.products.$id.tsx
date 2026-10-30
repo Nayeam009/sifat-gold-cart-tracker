@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { ArrowDown, ArrowUp, Trash2, Upload } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { occasions } from "@/lib/catalog";
-import { errMsg, slugify, uploadImage } from "@/lib/admin";
+import { errMsg, slugify, uploadImage, validateImage } from "@/lib/admin";
 import { validateProduct, type ProductForm } from "@/lib/admin-validation";
 import {
   AdminTitle,
@@ -91,6 +91,7 @@ function ProductEditor() {
     }
   }, [prod.data]);
 
+  const [staged, setStaged] = useState<File[]>([]);
   const save = useMutation({
     mutationFn: async () => {
       const v = validateProduct(f, isNew);
@@ -103,6 +104,24 @@ function ProductEditor() {
           .single();
         if (error) throw new Error(errMsg(error));
         await saveCost(data.id, v.cost);
+        let failed = 0;
+        for (const [i, file] of staged.entries()) {
+          try {
+            const url = await uploadImage(file);
+            const r = await supabase.from("product_images").insert({
+              product_id: data.id,
+              image_url: url,
+              alt_text: v.value.name,
+              sort_order: i,
+            });
+            if (r.error) throw new Error(errMsg(r.error));
+          } catch (err) {
+            failed++;
+            toast.error(`${file.name}: ${(err as Error).message}`);
+          }
+        }
+        if (failed) toast.warning(`${failed} photo(s) didn't upload — add them again below.`);
+        setStaged([]);
         return data.id;
       }
       const { stock_quantity: _ignored, ...rest } = v.value;
@@ -112,7 +131,7 @@ function ProductEditor() {
       return id;
     },
     onSuccess: (newId) => {
-      toast.success(isNew ? "Product created — now add photos and options" : "Product saved");
+      toast.success(isNew ? "Product created" : "Product saved");
       refresh();
       if (isNew) navigate({ to: "/admin/products/$id", params: { id: newId } });
     },
@@ -345,7 +364,7 @@ function ProductEditor() {
               Featured on homepage
             </label>
             <button className={`${btnPrimary} w-full`} disabled={save.isPending}>
-              {save.isPending ? "Saving…" : isNew ? "Create product" : "Save product"}
+              {save.isPending ? (isNew && staged.length ? "Saving & uploading photos…" : "Saving…") : isNew ? "Create product" : "Save product"}
             </button>
             {!isNew && (
               <p className="text-xs text-muted-foreground">
@@ -376,6 +395,15 @@ function ProductEditor() {
           </div>
         </div>
       </form>
+      {isNew && (
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          <StagedImages files={staged} setFiles={setStaged} disabled={save.isPending} />
+          <section className="rounded-lg border border-dashed border-border bg-card p-4 text-sm text-muted-foreground">
+            <h2 className="mb-2 font-display text-xl text-foreground">Size / colour options</h2>
+            Save the product first, then add options such as sizes or colours here.
+          </section>
+        </div>
+      )}
       {!isNew && prod.data && (
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
           <Images
@@ -757,4 +785,109 @@ async function saveCost(productId: string, cost: number | null) {
           .from("product_costs")
           .upsert({ product_id: productId, cost_price: cost, updated_at: new Date().toISOString() });
   if (r.error) throw new Error(errMsg(r.error));
+}
+
+function StagedImages({
+  files,
+  setFiles,
+  disabled,
+}: {
+  files: File[];
+  setFiles: (f: File[]) => void;
+  disabled: boolean;
+}) {
+  const [urls, setUrls] = useState<string[]>([]);
+  useEffect(() => {
+    const u = files.map((f) => URL.createObjectURL(f));
+    setUrls(u);
+    return () => u.forEach((x) => URL.revokeObjectURL(x));
+  }, [files]);
+  const add = (list: FileList | null) => {
+    const picked = [...(list ?? [])].filter((f) => {
+      const bad = validateImage(f);
+      if (bad) toast.error(`${f.name}: ${bad}`);
+      return !bad;
+    });
+    const next = [...files, ...picked].slice(0, 12);
+    if (files.length + picked.length > 12) toast.warning("Up to 12 photos per product.");
+    setFiles(next);
+  };
+  const move = (i: number, j: number) => {
+    const n = [...files];
+    [n[i], n[j]] = [n[j]!, n[i]!];
+    setFiles(n);
+  };
+  return (
+    <section className="rounded-lg border border-border bg-card p-4">
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <h2 className="font-display text-xl">Photos</h2>
+        <label className={`${btnGhost} min-h-11 cursor-pointer`}>
+          <Upload className="h-4 w-4" /> Add photos
+          <input
+            type="file"
+            multiple
+            accept="image/jpeg,image/png,image/webp"
+            className="sr-only"
+            disabled={disabled}
+            onChange={(e) => {
+              add(e.target.files);
+              e.target.value = "";
+            }}
+          />
+        </label>
+      </div>
+      <div
+        onDragOver={(e) => e.preventDefault()}
+        onDrop={(e) => {
+          e.preventDefault();
+          add(e.dataTransfer.files);
+        }}
+        className="mb-3 rounded-md border border-dashed border-border p-3 text-center text-xs text-muted-foreground"
+      >
+        Drop photos here or use "Add photos". JPG, PNG or WebP, up to 5 MB each. They upload when
+        you save. The first photo is the main one.
+      </div>
+      {files.length === 0 ? (
+        <p className="text-sm text-muted-foreground">No photos chosen yet.</p>
+      ) : (
+        <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4">
+          {files.map((f, i) => (
+            <li key={`${f.name}-${f.size}-${i}`} className="relative">
+              {urls[i] && (
+                <img
+                  src={urls[i]}
+                  alt={f.name}
+                  className="aspect-square w-full rounded object-cover"
+                />
+              )}
+              {i === 0 && (
+                <span className="absolute left-1 top-1 rounded bg-primary px-1.5 py-0.5 text-[10px] text-primary-foreground">
+                  Main
+                </span>
+              )}
+              <div className="mt-1 flex justify-between">
+                <button
+                  type="button"
+                  className={btnGhost}
+                  disabled={i === 0}
+                  aria-label="Move earlier"
+                  onClick={() => move(i, i - 1)}
+                >
+                  <ArrowUp className="h-3.5 w-3.5 -rotate-90" />
+                </button>
+                <button
+                  type="button"
+                  className={`${btnGhost} text-destructive`}
+                  aria-label={`Remove ${f.name}`}
+                  onClick={() => setFiles(files.filter((_, k) => k !== i))}
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
 }
