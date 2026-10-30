@@ -41,7 +41,7 @@ export const Route = createFileRoute("/")({
     ...seo(
       "Beauty for Your Special Moments",
       "Shop bridal flower sets, sarees, jewellery, makeup and bridal shoes. Cash on delivery across Bangladesh.",
-      { path: "/" },
+      { path: "/", image: "https://sifatmart.com/og-home.jpg" },
     ),
     scripts: [
       jsonLd({
