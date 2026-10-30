@@ -109,7 +109,16 @@ export const placeOrder = createServerFn({ method: "POST" })
       throw new Error(
         "Your order was placed but we couldn't load it. Please note your order number: " + number,
       );
+    const isDuplicate = (result as { duplicate?: boolean }).duplicate === true;
+    if (isDuplicate) {
+      // A reused checkout key only returns the order to the same shopper (same phone), never to others.
+      const digits = (s: string) => s.replace(/\D/g, "").slice(-10);
+      if (digits(order.phone) !== digits(String(rest.phone ?? ""))) {
+        throw new Error("We couldn't place this order. Please refresh the page and try again.");
+      }
+    }
     const { order_items, id, email, ...o } = order;
+    if (isDuplicate) return { ...o, items: order_items };
     // Backend "order created" event: notifications only go out via configured providers; never throws.
     const { dispatchOrderCreated } = await import("@/lib/notifications.server");
     await dispatchOrderCreated({
