@@ -24,8 +24,8 @@ function NavLinkItem({ n, collapsed, onNav }: { n: NavItem; collapsed?: boolean 
       activeOptions={{ exact: !!n.exact }}
       title={collapsed ? n.label : undefined}
       aria-label={collapsed ? n.label : undefined}
-      className="flex min-h-11 items-center gap-3 rounded-md px-3 text-sm text-foreground/80 transition-colors hover:bg-muted md:min-h-[clamp(32px,4.6vh,40px)]"
-      activeProps={{ className: "bg-primary/10 font-medium !text-foreground" }}
+      className="flex min-h-11 items-center gap-3 rounded-md px-3 text-sm text-foreground/90 transition-colors hover:bg-muted md:min-h-[clamp(32px,4.6vh,40px)]"
+      activeProps={{ className: "bg-primary/20 font-semibold !text-primary" }}
     >
       <n.icon className="h-4 w-4 shrink-0" aria-hidden />
       {!collapsed && <span className="truncate">{n.label}</span>}
@@ -88,9 +88,9 @@ function AdminLayout() {
       n.exact ? path === n.to || path === n.to + "/" : path.startsWith(n.to),
     )?.label ?? "Admin";
   return (
-    <div className="flex min-h-screen bg-muted/30">
+    <div className="admin-theme flex min-h-screen bg-background">
       <aside
-        className={`sticky top-0 hidden h-screen shrink-0 flex-col border-r border-border bg-card md:flex ${collapsed ? "w-16" : "w-60"}`}
+        className={`sticky top-0 hidden h-screen shrink-0 flex-col admin-dark border-r border-border bg-card md:flex ${collapsed ? "w-16" : "w-60"}`}
       >
         <div className="flex items-center justify-between gap-2 p-4">
           {!collapsed && (
@@ -128,7 +128,7 @@ function AdminLayout() {
       </aside>
 
       <div className="min-w-0 flex-1">
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border bg-card/95 px-2 backdrop-blur md:hidden">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-2 admin-dark border-b border-border bg-card/95 px-2 backdrop-blur md:hidden">
           <button
             onClick={() => setOpen(true)}
             aria-label="Open admin menu"
@@ -139,7 +139,7 @@ function AdminLayout() {
           <span className="truncate font-display text-xl">{current}</span>
         </header>
         <Sheet open={open} onOpenChange={setOpen}>
-          <SheetContent side="left" className="flex w-72 flex-col p-0">
+          <SheetContent side="left" className="admin-dark admin-theme flex w-72 flex-col p-0">
             <SheetHeader className="p-4 text-left">
               <SheetTitle className="font-display text-2xl text-primary">SifatMart admin</SheetTitle>
             </SheetHeader>
