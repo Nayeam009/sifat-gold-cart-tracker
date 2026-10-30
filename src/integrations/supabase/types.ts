@@ -508,6 +508,8 @@ export type Database = {
           area: string
           city: string
           coupon_code: string | null
+          courier_consignment_id: string | null
+          courier_dispatched_at: string | null
           courier_name: string | null
           created_at: string
           customer_name: string
@@ -536,6 +538,8 @@ export type Database = {
           area: string
           city: string
           coupon_code?: string | null
+          courier_consignment_id?: string | null
+          courier_dispatched_at?: string | null
           courier_name?: string | null
           created_at?: string
           customer_name: string
@@ -564,6 +568,8 @@ export type Database = {
           area?: string
           city?: string
           coupon_code?: string | null
+          courier_consignment_id?: string | null
+          courier_dispatched_at?: string | null
           courier_name?: string | null
           created_at?: string
           customer_name?: string
