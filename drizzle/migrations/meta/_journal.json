@@ -57,6 +57,13 @@
       "when": 1793377071937,
       "tag": "0007_product_costs_private",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1793378628962,
+      "tag": "0008_free_delivery_and_courier_dispatch",
+      "breakpoints": true
     }
   ]
 }

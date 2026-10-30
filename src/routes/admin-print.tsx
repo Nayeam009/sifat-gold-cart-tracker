@@ -6,6 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { formatTaka } from "@/lib/catalog";
 import { errMsg, useAdminAuth } from "@/lib/admin";
 
+import { invoiceNumber } from "@/lib/checkout";
+
 export const Route = createFileRoute("/admin-print")({
   ssr: false,
   validateSearch: z.object({
@@ -40,7 +42,7 @@ function PrintPage() {
     queryKey: ["admin", "print", "invoice-settings"],
     queryFn: async () => {
       const { data } = await supabase.from("site_settings").select("value").eq("key", "invoice").maybeSingle();
-      return (data?.value ?? {}) as { footer?: string; label_note?: string };
+      return (data?.value ?? {}) as { footer?: string; label_note?: string; prefix?: string };
     },
   });
   const footer = inv.data?.footer || "Thank you for shopping with SifatMart.";
@@ -73,7 +75,8 @@ function PrintPage() {
             <p>{o.address}</p>
             <p>{o.area}, {o.city}</p>
             <hr className="my-2 border-foreground" />
-            <p>Order <b>{o.order_number}</b></p>
+            <p>Invoice <b>{invoiceNumber(o.order_number, inv.data?.prefix)}</b></p>
+            <p>Order {o.order_number}</p>
             <p>Items: {o.order_items.reduce((a, i) => a + i.quantity, 0)}</p>
             {o.courier_name && <p>Courier: {o.courier_name} {o.tracking_code}</p>}
             {labelNote && <p className="mt-2 font-semibold">{labelNote}</p>}

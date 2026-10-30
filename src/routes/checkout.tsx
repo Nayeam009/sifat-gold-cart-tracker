@@ -2,11 +2,11 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Truck } from "lucide-react";
 import { formatTaka, type DeliveryZone } from "@/lib/catalog";
 import { useCart } from "@/lib/cart";
 import { catalogueQuery } from "@/lib/catalogue-data";
-import { newIdempotencyKey, normalizeBdPhone, reviewCart } from "@/lib/checkout";
+import { deliveryFeeFor, freeDeliveryGap, newIdempotencyKey, normalizeBdPhone, reviewCart } from "@/lib/checkout";
 import { BD_DISTRICTS } from "@/lib/bd-districts";
 import { placeOrder, previewCoupon } from "@/lib/orders.functions";
 import { supabase } from "@/integrations/supabase/client";
@@ -34,10 +34,11 @@ const feesQuery = {
       .eq("key", "delivery_fees")
       .maybeSingle();
     if (error || !data) throw new Error("Delivery charges unavailable");
-    const v = data.value as { inside?: number; outside?: number };
+    const v = data.value as { inside?: number; outside?: number; free_over?: number | null };
     if (typeof v.inside !== "number" || typeof v.outside !== "number")
       throw new Error("Delivery charges unavailable");
-    return { inside: v.inside, outside: v.outside };
+    const free = typeof v.free_over === "number" && v.free_over > 0 ? v.free_over : null;
+    return { inside: v.inside, outside: v.outside, free_over: free };
   },
   staleTime: 60_000,
 };
@@ -84,7 +85,9 @@ function Checkout() {
   useEffect(() => {
     setCoupon(null);
   }, [subtotal]);
-  const delivery = fees.data?.[zone] ?? null;
+  const freeOver = fees.data?.free_over ?? null;
+  const delivery = fees.data ? deliveryFeeFor(fees.data[zone], subtotal, freeOver) : null;
+  const gap = freeDeliveryGap(subtotal, freeOver);
   const discount = coupon?.discount ?? 0;
   const issues = reviewed.filter((r) => r.issue);
 
@@ -380,7 +383,7 @@ function Checkout() {
                     />
                     {z === "inside" ? "Inside Saidpur" : "Outside Saidpur"}
                   </span>
-                  <span>{formatTaka(fees.data[z])}</span>
+                  <span>{deliveryFeeFor(fees.data[z], subtotal, freeOver) === 0 ? "Free" : formatTaka(fees.data[z])}</span>
                 </label>
               ))}
             </div>
@@ -461,8 +464,16 @@ function Checkout() {
             </div>
             <div className="flex justify-between">
               <span>Delivery</span>
-              <span>{delivery != null ? formatTaka(delivery) : "—"}</span>
+              <span>{delivery == null ? "—" : delivery === 0 ? "Free" : formatTaka(delivery)}</span>
             </div>
+            {freeOver != null && (
+              <p className="flex items-start gap-2 rounded-md bg-secondary px-3 py-2 text-xs" role="status">
+                <Truck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden />
+                {gap != null
+                  ? `Add ${formatTaka(gap)} more for free delivery.`
+                  : "You've unlocked free delivery."}
+              </p>
+            )}
             {discount > 0 && (
               <div className="flex justify-between text-primary">
                 <span>Discount ({coupon?.code})</span>
