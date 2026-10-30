@@ -41,7 +41,7 @@ function Signup() {
     setErr(null);
     if (Object.keys(v).length) return;
     setBusy(true);
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: f.email.trim(),
       password: f.password,
       options: {
@@ -51,6 +51,11 @@ function Signup() {
     });
     setBusy(false);
     if (error) return setErr(authErrorMessage(error.message));
+    if (data.session) {
+      const next = new URLSearchParams(window.location.search).get("next");
+      window.location.assign(next && next.startsWith("/") && !next.startsWith("//") ? next : "/account");
+      return;
+    }
     setSent(true);
   };
 
