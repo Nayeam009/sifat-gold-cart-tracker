@@ -114,3 +114,24 @@ export function StatePanel({
     </div>
   );
 }
+
+export function Chip({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-pressed={active}
+      className={`min-h-10 shrink-0 whitespace-nowrap rounded-full border px-4 text-sm transition-colors ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card hover:bg-muted"}`}
+    >
+      {children}
+    </button>
+  );
+}

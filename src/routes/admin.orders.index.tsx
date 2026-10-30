@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { formatTaka } from "@/lib/catalog";
 import { ADMIN_PAGE, ORDER_STATUSES, errMsg, safeSearch } from "@/lib/admin";
 import { downloadCsv } from "@/lib/admin-rules";
-import { AdminTitle, Pager, StatePanel, btnGhost, inputCls } from "@/components/admin/confirm";
+import { AdminTitle, Chip, Pager, StatePanel, btnGhost, inputCls } from "@/components/admin/confirm";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -280,17 +280,5 @@ function Orders() {
         <Pager page={page} total={q.data.count} size={ADMIN_PAGE} onPage={(p) => nav({ search: { ...s, page: p } })} />
       )}
     </div>
-  );
-}
-
-export function Chip({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button
-      onClick={onClick}
-      aria-pressed={active}
-      className={`min-h-10 shrink-0 whitespace-nowrap rounded-full border px-4 text-sm transition-colors ${active ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card hover:bg-muted"}`}
-    >
-      {children}
-    </button>
   );
 }
