@@ -8,6 +8,7 @@ import { formatTaka } from "@/lib/catalog";
 import { ORDER_STATUSES, PAYMENT_STATUSES, errMsg } from "@/lib/admin";
 import { AdminTitle, StatePanel, btnGhost, btnPrimary, inputCls } from "@/components/admin/confirm";
 import { StatusBadge } from "@/components/admin/status-badge";
+import { CourierDispatch } from "@/components/admin/courier-dispatch";
 
 export const Route = createFileRoute("/admin/orders/$id")({ component: OrderDetail });
 
@@ -251,6 +252,7 @@ function OrderDetail() {
             </label>
             <fieldset className="space-y-2 rounded-md border border-border p-3">
               <legend className="px-1 text-sm">Courier &amp; tracking (shown on Track Order)</legend>
+              <CourierDispatch orderId={o.id} dispatched={o.courier_consignment_id ?? null} />
               <input
                 aria-label="Courier name"
                 placeholder="Courier (e.g. Steadfast, Pathao)"

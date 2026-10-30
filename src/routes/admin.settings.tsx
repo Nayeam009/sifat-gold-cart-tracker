@@ -17,6 +17,8 @@ import {
   inputCls,
 } from "@/components/admin/confirm";
 
+import { CourierConnections } from "@/components/admin/courier-dispatch";
+
 export const Route = createFileRoute("/admin/settings")({ component: Settings });
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -123,6 +125,7 @@ function Settings() {
           go("delivery_fees", validateFees(Number(fees.inside), Number(fees.outside)), (v) => ({
             inside: Number(v["inside"]),
             outside: Number(v["outside"]),
+            free_over: Number(v["free_over"]) > 0 ? Math.round(Number(v["free_over"])) : null,
           }))
         }
         busy={save.isPending}
@@ -151,6 +154,18 @@ function Settings() {
             />
           </label>
         </div>
+        <label className="mt-3 block text-sm">
+          Free delivery when the order is at least (৳) — leave empty to turn off
+          <input
+            type="number"
+            min={0}
+            max={1000000}
+            placeholder="e.g. 3000"
+            className={`${inputCls} mt-1`}
+            value={String(fees.free_over ?? "")}
+            onChange={(e) => put("delivery_fees", "free_over", e.target.value)}
+          />
+        </label>
         <p className="mt-2 text-xs text-muted-foreground">
           Checkout and order totals use these immediately. Past orders keep the fee they were
           charged.
@@ -162,6 +177,7 @@ function Settings() {
         updated={s.invoice?._updated}
         onSave={() =>
           go("invoice", null, (v) => ({
+            prefix: String(v["prefix"] ?? "").replace(/[^A-Za-z0-9-]/g, "").slice(0, 10),
             footer: String(v["footer"] ?? "").trim().slice(0, 300),
             label_note: String(v["label_note"] ?? "").trim().slice(0, 120),
           }))
@@ -169,10 +185,20 @@ function Settings() {
         busy={save.isPending}
       >
         <div className="space-y-3">
+          <T k="invoice" f="prefix" label="Invoice number prefix (letters, numbers, dash; e.g. INV)" max={10} />
           <T k="invoice" f="footer" label="Invoice footer message (e.g. thank-you or exchange note)" area max={300} />
           <T k="invoice" f="label_note" label="Parcel label note (e.g. Handle with care)" max={120} />
         </div>
       </Card>
+
+      <section className="rounded-lg border border-border bg-card p-4 sm:p-6">
+        <h2 className="font-serif text-xl">Courier connections</h2>
+        <p className="mb-3 mt-1 text-xs text-muted-foreground">
+          Keys are stored securely on the server, never on this page. Once a courier shows Connected, every
+          order page gets a "Send to courier" button. Cash on Delivery stays on for all orders.
+        </p>
+        <CourierConnections />
+      </section>
 
       <Card
         title="Store contact"
