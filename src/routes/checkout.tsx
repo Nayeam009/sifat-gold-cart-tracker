@@ -100,7 +100,7 @@ function Checkout() {
         p_name: String(fd.get("name") ?? "").slice(0, 100),
         p_phone: phone,
         p_city: String(fd.get("district") ?? "").slice(0, 60),
-        p_cart: reviewed.slice(0, 50).map((r) => ({ name: r.name, qty: r.quantity })),
+        p_cart: reviewed.slice(0, 50).map((r) => ({ name: r.product?.name ?? r.line.slug, qty: r.line.qty })),
         p_subtotal: subtotal,
       })
       .then(() => undefined, () => undefined);
