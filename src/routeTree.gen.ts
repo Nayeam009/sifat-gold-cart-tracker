@@ -40,6 +40,7 @@ import { Route as AdminCouponsRouteImport } from './routes/admin.coupons'
 import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
 import { Route as AdminIncompleteRouteImport } from './routes/admin.incomplete'
 import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
+import { Route as AdminReportsRouteImport } from './routes/admin.reports'
 import { Route as AdminReturnsRouteImport } from './routes/admin.returns'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
@@ -208,6 +209,11 @@ const AdminInventoryRoute = AdminInventoryRouteImport.update({
   path: '/inventory',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminReturnsRoute = AdminReturnsRouteImport.update({
   id: '/returns',
   path: '/returns',
@@ -300,6 +306,7 @@ export interface FileRoutesByFullPath {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/incomplete': typeof AdminIncompleteRoute
   '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/admin/returns': typeof AdminReturnsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/category/$slug': typeof CategorySlugRoute
@@ -343,6 +350,7 @@ export interface FileRoutesByTo {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/incomplete': typeof AdminIncompleteRoute
   '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/admin/returns': typeof AdminReturnsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/category/$slug': typeof CategorySlugRoute
@@ -389,6 +397,7 @@ export interface FileRoutesById {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/incomplete': typeof AdminIncompleteRoute
   '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/reports': typeof AdminReportsRoute
   '/admin/returns': typeof AdminReturnsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/category/$slug': typeof CategorySlugRoute
@@ -436,6 +445,7 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/incomplete'
     | '/admin/inventory'
+    | '/admin/reports'
     | '/admin/returns'
     | '/admin/settings'
     | '/category/$slug'
@@ -479,6 +489,7 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/incomplete'
     | '/admin/inventory'
+    | '/admin/reports'
     | '/admin/returns'
     | '/admin/settings'
     | '/category/$slug'
@@ -524,6 +535,7 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/incomplete'
     | '/admin/inventory'
+    | '/admin/reports'
     | '/admin/returns'
     | '/admin/settings'
     | '/category/$slug'
@@ -789,6 +801,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminInventoryRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/reports': {
+      id: '/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/returns': {
       id: '/admin/returns'
       path: '/returns'
@@ -898,6 +917,7 @@ interface AdminRouteChildren {
   AdminCustomersRoute: typeof AdminCustomersRoute
   AdminIncompleteRoute: typeof AdminIncompleteRoute
   AdminInventoryRoute: typeof AdminInventoryRoute
+  AdminReportsRoute: typeof AdminReportsRoute
   AdminReturnsRoute: typeof AdminReturnsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -914,6 +934,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminCustomersRoute: AdminCustomersRoute,
   AdminIncompleteRoute: AdminIncompleteRoute,
   AdminInventoryRoute: AdminInventoryRoute,
+  AdminReportsRoute: AdminReportsRoute,
   AdminReturnsRoute: AdminReturnsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
