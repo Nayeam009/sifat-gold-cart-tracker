@@ -28,6 +28,7 @@ const EMPTY: ProductForm = {
   description: "",
   price: "",
   compare_at_price: "",
+  cost_price: "",
   stock_quantity: "0",
   is_published: false,
   is_featured: false,
@@ -79,6 +80,7 @@ function ProductEditor() {
         description: p.description ?? "",
         price: String(p.price),
         compare_at_price: p.compare_at_price == null ? "" : String(p.compare_at_price),
+        cost_price: p.cost_price == null ? "" : String(p.cost_price),
         stock_quantity: String(p.stock_quantity),
         is_published: p.is_published,
         is_featured: p.is_featured,
@@ -260,6 +262,16 @@ function ProductEditor() {
                 className={inputCls}
                 value={f.compare_at_price}
                 onChange={(e) => set("compare_at_price", e.target.value)}
+              />
+            </L>
+            <L label="Cost price (৳)" help="Private — what you paid. Never shown to customers.">
+              <input
+                type="number"
+                min={0}
+                step={1}
+                className={inputCls}
+                value={f.cost_price ?? ""}
+                onChange={(e) => set("cost_price", e.target.value)}
               />
             </L>
             <L
