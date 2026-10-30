@@ -64,6 +64,13 @@
       "when": 1793378628962,
       "tag": "0008_free_delivery_and_courier_dispatch",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1793379697263,
+      "tag": "0009_audit_hardening",
+      "breakpoints": true
     }
   ]
 }
