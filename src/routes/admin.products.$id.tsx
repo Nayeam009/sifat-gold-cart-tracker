@@ -364,7 +364,7 @@ function ProductEditor() {
               Featured on homepage
             </label>
             <button className={`${btnPrimary} w-full`} disabled={save.isPending}>
-              {save.isPending ? "Saving…" : isNew ? "Create product" : "Save product"}
+              {save.isPending ? (isNew && staged.length ? "Saving & uploading photos…" : "Saving…") : isNew ? "Create product" : "Save product"}
             </button>
             {!isNew && (
               <p className="text-xs text-muted-foreground">
