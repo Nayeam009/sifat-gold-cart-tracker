@@ -28,6 +28,7 @@ const EMPTY: ProductForm = {
   description: "",
   price: "",
   compare_at_price: "",
+  cost_price: "",
   stock_quantity: "0",
   is_published: false,
   is_featured: false,
@@ -57,7 +58,7 @@ function ProductEditor() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("products")
-        .select("*, product_images(*), product_variants(*)")
+        .select("*, product_images(*), product_variants(*), product_costs(cost_price)")
         .eq("id", id)
         .maybeSingle();
       if (error) throw new Error(errMsg(error));
@@ -79,6 +80,7 @@ function ProductEditor() {
         description: p.description ?? "",
         price: String(p.price),
         compare_at_price: p.compare_at_price == null ? "" : String(p.compare_at_price),
+        cost_price: p.product_costs?.cost_price == null ? "" : String(p.product_costs.cost_price),
         stock_quantity: String(p.stock_quantity),
         is_published: p.is_published,
         is_featured: p.is_featured,
@@ -100,11 +102,13 @@ function ProductEditor() {
           .select("id")
           .single();
         if (error) throw new Error(errMsg(error));
+        await saveCost(data.id, v.cost);
         return data.id;
       }
       const { stock_quantity: _ignored, ...rest } = v.value;
       const { error } = await supabase.from("products").update(rest).eq("id", id);
       if (error) throw new Error(errMsg(error));
+      await saveCost(id, v.cost);
       return id;
     },
     onSuccess: (newId) => {
@@ -260,6 +264,16 @@ function ProductEditor() {
                 className={inputCls}
                 value={f.compare_at_price}
                 onChange={(e) => set("compare_at_price", e.target.value)}
+              />
+            </L>
+            <L label="Cost price (৳)" help="Private — what you paid. Never shown to customers.">
+              <input
+                type="number"
+                min={0}
+                step={1}
+                className={inputCls}
+                value={f.cost_price ?? ""}
+                onChange={(e) => set("cost_price", e.target.value)}
               />
             </L>
             <L
@@ -733,4 +747,14 @@ function Variants({
       </form>
     </section>
   );
+}
+
+async function saveCost(productId: string, cost: number | null) {
+  const r =
+    cost == null
+      ? await supabase.from("product_costs").delete().eq("product_id", productId)
+      : await supabase
+          .from("product_costs")
+          .upsert({ product_id: productId, cost_price: cost, updated_at: new Date().toISOString() });
+  if (r.error) throw new Error(errMsg(r.error));
 }

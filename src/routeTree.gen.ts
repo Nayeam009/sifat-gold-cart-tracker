@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AdminPrintRouteImport } from './routes/admin-print'
 import { Route as CartRouteImport } from './routes/cart'
 import { Route as CheckoutRouteImport } from './routes/checkout'
 import { Route as CollectionsRouteImport } from './routes/collections'
@@ -38,7 +39,10 @@ import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 import { Route as AdminContentRouteImport } from './routes/admin.content'
 import { Route as AdminCouponsRouteImport } from './routes/admin.coupons'
 import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
+import { Route as AdminIncompleteRouteImport } from './routes/admin.incomplete'
 import { Route as AdminInventoryRouteImport } from './routes/admin.inventory'
+import { Route as AdminReportsRouteImport } from './routes/admin.reports'
+import { Route as AdminReturnsRouteImport } from './routes/admin.returns'
 import { Route as AdminSettingsRouteImport } from './routes/admin.settings'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as OccasionSlugRouteImport } from './routes/occasion.$slug'
@@ -46,6 +50,7 @@ import { Route as OrderConfirmationOrderNumberRouteImport } from './routes/order
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as AccountOrdersIndexRouteImport } from './routes/account.orders.index'
 import { Route as AccountOrdersIdRouteImport } from './routes/account.orders.$id'
+import { Route as AdminCustomersPhoneRouteImport } from './routes/admin.customers_.$phone'
 import { Route as AdminOrdersIndexRouteImport } from './routes/admin.orders.index'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
 import { Route as AdminProductsIndexRouteImport } from './routes/admin.products.index'
@@ -69,6 +74,11 @@ const AccountRoute = AccountRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPrintRoute = AdminPrintRouteImport.update({
+  id: '/admin-print',
+  path: '/admin-print',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CartRoute = CartRouteImport.update({
@@ -196,9 +206,24 @@ const AdminCustomersRoute = AdminCustomersRouteImport.update({
   path: '/customers',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminIncompleteRoute = AdminIncompleteRouteImport.update({
+  id: '/incomplete',
+  path: '/incomplete',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminInventoryRoute = AdminInventoryRouteImport.update({
   id: '/inventory',
   path: '/inventory',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReportsRoute = AdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminReturnsRoute = AdminReturnsRouteImport.update({
+  id: '/returns',
+  path: '/returns',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminSettingsRoute = AdminSettingsRouteImport.update({
@@ -237,6 +262,11 @@ const AccountOrdersIdRoute = AccountOrdersIdRouteImport.update({
   path: '/orders/$id',
   getParentRoute: () => AccountRoute,
 } as any)
+const AdminCustomersPhoneRoute = AdminCustomersPhoneRouteImport.update({
+  id: '/customers_/$phone',
+  path: '/customers/$phone',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminOrdersIndexRoute = AdminOrdersIndexRouteImport.update({
   id: '/orders/',
   path: '/orders/',
@@ -263,6 +293,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/account': typeof AccountRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
+  '/admin-print': typeof AdminPrintRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
   '/collections': typeof CollectionsRoute
@@ -286,7 +317,10 @@ export interface FileRoutesByFullPath {
   '/admin/content': typeof AdminContentRoute
   '/admin/coupons': typeof AdminCouponsRoute
   '/admin/customers': typeof AdminCustomersRoute
+  '/admin/incomplete': typeof AdminIncompleteRoute
   '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/returns': typeof AdminReturnsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/occasion/$slug': typeof OccasionSlugRoute
@@ -295,6 +329,7 @@ export interface FileRoutesByFullPath {
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/account/orders/$id': typeof AccountOrdersIdRoute
+  '/admin/customers/$phone': typeof AdminCustomersPhoneRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
   '/account/orders/': typeof AccountOrdersIndexRoute
@@ -304,6 +339,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin-print': typeof AdminPrintRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
   '/collections': typeof CollectionsRoute
@@ -327,7 +363,10 @@ export interface FileRoutesByTo {
   '/admin/content': typeof AdminContentRoute
   '/admin/coupons': typeof AdminCouponsRoute
   '/admin/customers': typeof AdminCustomersRoute
+  '/admin/incomplete': typeof AdminIncompleteRoute
   '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/returns': typeof AdminReturnsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/occasion/$slug': typeof OccasionSlugRoute
@@ -336,6 +375,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
   '/account/orders/$id': typeof AccountOrdersIdRoute
+  '/admin/customers/$phone': typeof AdminCustomersPhoneRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
   '/account/orders': typeof AccountOrdersIndexRoute
@@ -348,6 +388,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/account': typeof AccountRouteWithChildren
   '/admin': typeof AdminRouteWithChildren
+  '/admin-print': typeof AdminPrintRoute
   '/cart': typeof CartRoute
   '/checkout': typeof CheckoutRoute
   '/collections': typeof CollectionsRoute
@@ -371,7 +412,10 @@ export interface FileRoutesById {
   '/admin/content': typeof AdminContentRoute
   '/admin/coupons': typeof AdminCouponsRoute
   '/admin/customers': typeof AdminCustomersRoute
+  '/admin/incomplete': typeof AdminIncompleteRoute
   '/admin/inventory': typeof AdminInventoryRoute
+  '/admin/reports': typeof AdminReportsRoute
+  '/admin/returns': typeof AdminReturnsRoute
   '/admin/settings': typeof AdminSettingsRoute
   '/category/$slug': typeof CategorySlugRoute
   '/occasion/$slug': typeof OccasionSlugRoute
@@ -380,6 +424,7 @@ export interface FileRoutesById {
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/account/orders/$id': typeof AccountOrdersIdRoute
+  '/admin/customers_/$phone': typeof AdminCustomersPhoneRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
   '/account/orders/': typeof AccountOrdersIndexRoute
@@ -393,6 +438,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/admin'
+    | '/admin-print'
     | '/cart'
     | '/checkout'
     | '/collections'
@@ -416,7 +462,10 @@ export interface FileRouteTypes {
     | '/admin/content'
     | '/admin/coupons'
     | '/admin/customers'
+    | '/admin/incomplete'
     | '/admin/inventory'
+    | '/admin/reports'
+    | '/admin/returns'
     | '/admin/settings'
     | '/category/$slug'
     | '/occasion/$slug'
@@ -425,6 +474,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/admin/'
     | '/account/orders/$id'
+    | '/admin/customers/$phone'
     | '/admin/orders/$id'
     | '/admin/products/$id'
     | '/account/orders/'
@@ -434,6 +484,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/admin-print'
     | '/cart'
     | '/checkout'
     | '/collections'
@@ -457,7 +508,10 @@ export interface FileRouteTypes {
     | '/admin/content'
     | '/admin/coupons'
     | '/admin/customers'
+    | '/admin/incomplete'
     | '/admin/inventory'
+    | '/admin/reports'
+    | '/admin/returns'
     | '/admin/settings'
     | '/category/$slug'
     | '/occasion/$slug'
@@ -466,6 +520,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/account/orders/$id'
+    | '/admin/customers/$phone'
     | '/admin/orders/$id'
     | '/admin/products/$id'
     | '/account/orders'
@@ -477,6 +532,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/account'
     | '/admin'
+    | '/admin-print'
     | '/cart'
     | '/checkout'
     | '/collections'
@@ -500,7 +556,10 @@ export interface FileRouteTypes {
     | '/admin/content'
     | '/admin/coupons'
     | '/admin/customers'
+    | '/admin/incomplete'
     | '/admin/inventory'
+    | '/admin/reports'
+    | '/admin/returns'
     | '/admin/settings'
     | '/category/$slug'
     | '/occasion/$slug'
@@ -509,6 +568,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/admin/'
     | '/account/orders/$id'
+    | '/admin/customers_/$phone'
     | '/admin/orders/$id'
     | '/admin/products/$id'
     | '/account/orders/'
@@ -521,6 +581,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   AccountRoute: typeof AccountRouteWithChildren
   AdminRoute: typeof AdminRouteWithChildren
+  AdminPrintRoute: typeof AdminPrintRoute
   CartRoute: typeof CartRoute
   CheckoutRoute: typeof CheckoutRoute
   CollectionsRoute: typeof CollectionsRoute
@@ -574,6 +635,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin-print': {
+      id: '/admin-print'
+      path: '/admin-print'
+      fullPath: '/admin-print'
+      preLoaderRoute: typeof AdminPrintRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cart': {
@@ -751,11 +819,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCustomersRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/incomplete': {
+      id: '/admin/incomplete'
+      path: '/incomplete'
+      fullPath: '/admin/incomplete'
+      preLoaderRoute: typeof AdminIncompleteRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/inventory': {
       id: '/admin/inventory'
       path: '/inventory'
       fullPath: '/admin/inventory'
       preLoaderRoute: typeof AdminInventoryRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/reports': {
+      id: '/admin/reports'
+      path: '/reports'
+      fullPath: '/admin/reports'
+      preLoaderRoute: typeof AdminReportsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/returns': {
+      id: '/admin/returns'
+      path: '/returns'
+      fullPath: '/admin/returns'
+      preLoaderRoute: typeof AdminReturnsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/settings': {
@@ -806,6 +895,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/account/orders/$id'
       preLoaderRoute: typeof AccountOrdersIdRouteImport
       parentRoute: typeof AccountRoute
+    }
+    '/admin/customers_/$phone': {
+      id: '/admin/customers_/$phone'
+      path: '/customers/$phone'
+      fullPath: '/admin/customers/$phone'
+      preLoaderRoute: typeof AdminCustomersPhoneRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/orders/': {
       id: '/admin/orders/'
@@ -858,9 +954,13 @@ interface AdminRouteChildren {
   AdminContentRoute: typeof AdminContentRoute
   AdminCouponsRoute: typeof AdminCouponsRoute
   AdminCustomersRoute: typeof AdminCustomersRoute
+  AdminIncompleteRoute: typeof AdminIncompleteRoute
   AdminInventoryRoute: typeof AdminInventoryRoute
+  AdminReportsRoute: typeof AdminReportsRoute
+  AdminReturnsRoute: typeof AdminReturnsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminCustomersPhoneRoute: typeof AdminCustomersPhoneRoute
   AdminOrdersIdRoute: typeof AdminOrdersIdRoute
   AdminProductsIdRoute: typeof AdminProductsIdRoute
   AdminOrdersIndexRoute: typeof AdminOrdersIndexRoute
@@ -872,9 +972,13 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminContentRoute: AdminContentRoute,
   AdminCouponsRoute: AdminCouponsRoute,
   AdminCustomersRoute: AdminCustomersRoute,
+  AdminIncompleteRoute: AdminIncompleteRoute,
   AdminInventoryRoute: AdminInventoryRoute,
+  AdminReportsRoute: AdminReportsRoute,
+  AdminReturnsRoute: AdminReturnsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminCustomersPhoneRoute: AdminCustomersPhoneRoute,
   AdminOrdersIdRoute: AdminOrdersIdRoute,
   AdminProductsIdRoute: AdminProductsIdRoute,
   AdminOrdersIndexRoute: AdminOrdersIndexRoute,
@@ -888,6 +992,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   AccountRoute: AccountRouteWithChildren,
   AdminRoute: AdminRouteWithChildren,
+  AdminPrintRoute: AdminPrintRoute,
   CartRoute: CartRoute,
   CheckoutRoute: CheckoutRoute,
   CollectionsRoute: CollectionsRoute,

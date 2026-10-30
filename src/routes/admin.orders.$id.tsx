@@ -2,11 +2,11 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Phone, MessageCircle } from "lucide-react";
+import { Phone, MessageCircle, Printer, Undo2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { formatTaka } from "@/lib/catalog";
 import { ORDER_STATUSES, PAYMENT_STATUSES, errMsg } from "@/lib/admin";
-import { AdminTitle, StatePanel, btnPrimary, inputCls } from "@/components/admin/confirm";
+import { AdminTitle, StatePanel, btnGhost, btnPrimary, inputCls } from "@/components/admin/confirm";
 import { StatusBadge } from "@/components/admin/status-badge";
 
 export const Route = createFileRoute("/admin/orders/$id")({ component: OrderDetail });
@@ -31,18 +31,30 @@ function OrderDetail() {
       return { ...data, phoneOrders: count ?? 1 };
     },
   });
-  const [form, setForm] = useState({ status: "", payment_status: "", admin_notes: "" });
+  const [form, setForm] = useState({
+    status: "",
+    payment_status: "",
+    admin_notes: "",
+    courier_name: "",
+    tracking_code: "",
+    tracking_url: "",
+  });
   useEffect(() => {
     if (q.data)
       setForm({
         status: q.data.status,
         payment_status: q.data.payment_status,
         admin_notes: q.data.admin_notes ?? "",
+        courier_name: q.data.courier_name ?? "",
+        tracking_code: q.data.tracking_code ?? "",
+        tracking_url: q.data.tracking_url ?? "",
       });
   }, [q.data]);
 
   const save = useMutation({
     mutationFn: async () => {
+      if (form.tracking_url.trim() && !/^https:\/\/[^\s]+$/.test(form.tracking_url.trim()))
+        throw new Error("Tracking link must start with https://");
       if (form.payment_status === "collected" && form.status === "cancelled")
         throw new Error("A cancelled order can't be marked as cash collected.");
       const { error } = await supabase
@@ -51,6 +63,9 @@ function OrderDetail() {
           status: form.status,
           payment_status: form.payment_status,
           admin_notes: form.admin_notes.trim().slice(0, 1000) || null,
+          courier_name: form.courier_name.trim().slice(0, 60) || null,
+          tracking_code: form.tracking_code.trim().slice(0, 80) || null,
+          tracking_url: form.tracking_url.trim() || null,
         })
         .eq("id", id);
       if (error) throw new Error(errMsg(error));
@@ -86,6 +101,15 @@ function OrderDetail() {
       <AdminTitle title={`Order ${o.order_number}`}>
         <StatusBadge status={o.status} />
         <StatusBadge status={o.payment_status} />
+        <a className={btnGhost} href={`/admin-print?type=invoice&ids=${o.id}`} target="_blank" rel="noreferrer">
+          <Printer className="h-4 w-4" /> Invoice
+        </a>
+        <a className={btnGhost} href={`/admin-print?type=label&ids=${o.id}`} target="_blank" rel="noreferrer">
+          <Printer className="h-4 w-4" /> Label
+        </a>
+        <Link to="/admin/returns" search={{ order: o.id }} className={btnGhost}>
+          <Undo2 className="h-4 w-4" /> Start return
+        </Link>
       </AdminTitle>
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-6 lg:col-span-2">
@@ -225,6 +249,33 @@ function OrderDetail() {
                 ))}
               </select>
             </label>
+            <fieldset className="space-y-2 rounded-md border border-border p-3">
+              <legend className="px-1 text-sm">Courier &amp; tracking (shown on Track Order)</legend>
+              <input
+                aria-label="Courier name"
+                placeholder="Courier (e.g. Steadfast, Pathao)"
+                maxLength={60}
+                className={inputCls}
+                value={form.courier_name}
+                onChange={(e) => setForm({ ...form, courier_name: e.target.value })}
+              />
+              <input
+                aria-label="Tracking code"
+                placeholder="Tracking code"
+                maxLength={80}
+                className={inputCls}
+                value={form.tracking_code}
+                onChange={(e) => setForm({ ...form, tracking_code: e.target.value })}
+              />
+              <input
+                aria-label="Tracking link"
+                placeholder="https://… tracking link"
+                type="url"
+                className={inputCls}
+                value={form.tracking_url}
+                onChange={(e) => setForm({ ...form, tracking_url: e.target.value })}
+              />
+            </fieldset>
             <label className="block text-sm">
               Internal notes (not shown to customer)
               <textarea

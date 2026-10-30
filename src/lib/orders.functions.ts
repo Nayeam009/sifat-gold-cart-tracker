@@ -172,7 +172,7 @@ export const trackOrder = createServerFn({ method: "POST" })
     const { data: order } = await supabaseAdmin
       .from("orders")
       .select(
-        "order_number, customer_name, status, subtotal, delivery_fee, discount, total, area, created_at, order_items(product_name, variant_name, unit_price, quantity, line_total)",
+        "order_number, customer_name, status, subtotal, delivery_fee, discount, total, area, created_at, courier_name, tracking_code, tracking_url, order_items(product_name, variant_name, unit_price, quantity, line_total)",
       )
       .eq("order_number", data.order_number.toUpperCase())
       .eq("phone", data.phone)

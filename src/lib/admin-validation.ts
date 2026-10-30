@@ -7,6 +7,7 @@ export type ProductForm = {
   description: string;
   price: string;
   compare_at_price: string;
+  cost_price?: string;
   stock_quantity: string;
   is_published: boolean;
   is_featured: boolean;
@@ -33,6 +34,9 @@ export function validateProduct(f: ProductForm, isNew: boolean) {
   const compare = int(f.compare_at_price);
   if (compare != null && (!Number.isInteger(compare) || compare <= price))
     return fail("Compare-at price must be higher than the price (or left empty).");
+  const cost = int(f.cost_price ?? "");
+  if (cost != null && (!Number.isInteger(cost) || cost < 0 || cost > 10_000_000))
+    return fail("Cost price must be a whole Taka amount of 0 or more (or left empty).");
   const stock = int(f.stock_quantity) ?? 0;
   if (isNew && (!Number.isInteger(stock) || stock < 0 || stock > 100_000))
     return fail("Stock must be a whole number of 0 or more.");
@@ -40,6 +44,7 @@ export function validateProduct(f: ProductForm, isNew: boolean) {
     return fail("SEO title max 70 and description max 160 characters.");
   return {
     ok: true as const,
+    cost,
     value: {
       name,
       slug: f.slug,

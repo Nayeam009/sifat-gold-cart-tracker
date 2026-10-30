@@ -143,6 +143,30 @@ export type Database = {
         }
         Relationships: []
       }
+      customer_notes: {
+        Row: {
+          admin_id: string | null
+          body: string
+          created_at: string
+          id: string
+          phone: string
+        }
+        Insert: {
+          admin_id?: string | null
+          body: string
+          created_at?: string
+          id?: string
+          phone: string
+        }
+        Update: {
+          admin_id?: string | null
+          body?: string
+          created_at?: string
+          id?: string
+          phone?: string
+        }
+        Relationships: []
+      }
       faqs: {
         Row: {
           answer: string
@@ -208,6 +232,48 @@ export type Database = {
           sort_order?: number
           subtitle?: string | null
           title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      incomplete_checkouts: {
+        Row: {
+          cart: Json
+          city: string | null
+          contacted_at: string | null
+          created_at: string
+          customer_name: string | null
+          id: string
+          phone: string
+          recovered: boolean
+          session_key: string
+          subtotal: number
+          updated_at: string
+        }
+        Insert: {
+          cart?: Json
+          city?: string | null
+          contacted_at?: string | null
+          created_at?: string
+          customer_name?: string | null
+          id?: string
+          phone: string
+          recovered?: boolean
+          session_key: string
+          subtotal?: number
+          updated_at?: string
+        }
+        Update: {
+          cart?: Json
+          city?: string | null
+          contacted_at?: string | null
+          created_at?: string
+          customer_name?: string | null
+          id?: string
+          phone?: string
+          recovered?: boolean
+          session_key?: string
+          subtotal?: number
           updated_at?: string
         }
         Relationships: []
@@ -341,6 +407,62 @@ export type Database = {
           },
         ]
       }
+      order_returns: {
+        Row: {
+          admin_id: string | null
+          admin_note: string | null
+          created_at: string
+          id: string
+          items: Json
+          kind: string
+          order_id: string
+          reason: string
+          refund_amount: number
+          refund_method: string
+          restock: boolean
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          admin_id?: string | null
+          admin_note?: string | null
+          created_at?: string
+          id?: string
+          items?: Json
+          kind?: string
+          order_id: string
+          reason: string
+          refund_amount?: number
+          refund_method?: string
+          restock?: boolean
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          admin_id?: string | null
+          admin_note?: string | null
+          created_at?: string
+          id?: string
+          items?: Json
+          kind?: string
+          order_id?: string
+          reason?: string
+          refund_amount?: number
+          refund_method?: string
+          restock?: boolean
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_returns_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_status_history: {
         Row: {
           admin_id: string | null
@@ -386,6 +508,7 @@ export type Database = {
           area: string
           city: string
           coupon_code: string | null
+          courier_name: string | null
           created_at: string
           customer_name: string
           delivery_fee: number
@@ -402,6 +525,8 @@ export type Database = {
           status: string
           subtotal: number
           total: number
+          tracking_code: string | null
+          tracking_url: string | null
           updated_at: string
           user_id: string | null
         }
@@ -411,6 +536,7 @@ export type Database = {
           area: string
           city: string
           coupon_code?: string | null
+          courier_name?: string | null
           created_at?: string
           customer_name: string
           delivery_fee: number
@@ -427,6 +553,8 @@ export type Database = {
           status?: string
           subtotal: number
           total: number
+          tracking_code?: string | null
+          tracking_url?: string | null
           updated_at?: string
           user_id?: string | null
         }
@@ -436,6 +564,7 @@ export type Database = {
           area?: string
           city?: string
           coupon_code?: string | null
+          courier_name?: string | null
           created_at?: string
           customer_name?: string
           delivery_fee?: number
@@ -452,10 +581,38 @@ export type Database = {
           status?: string
           subtotal?: number
           total?: number
+          tracking_code?: string | null
+          tracking_url?: string | null
           updated_at?: string
           user_id?: string | null
         }
         Relationships: []
+      }
+      product_costs: {
+        Row: {
+          cost_price: number
+          product_id: string
+          updated_at: string
+        }
+        Insert: {
+          cost_price: number
+          product_id: string
+          updated_at?: string
+        }
+        Update: {
+          cost_price?: number
+          product_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_costs_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: true
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       product_images: {
         Row: {
@@ -543,6 +700,7 @@ export type Database = {
         Row: {
           category_id: string | null
           compare_at_price: number | null
+          cost_price: number | null
           created_at: string
           description: string | null
           id: string
@@ -562,6 +720,7 @@ export type Database = {
         Insert: {
           category_id?: string | null
           compare_at_price?: number | null
+          cost_price?: number | null
           created_at?: string
           description?: string | null
           id?: string
@@ -581,6 +740,7 @@ export type Database = {
         Update: {
           category_id?: string | null
           compare_at_price?: number | null
+          cost_price?: number | null
           created_at?: string
           description?: string | null
           id?: string
@@ -712,6 +872,54 @@ export type Database = {
           },
         ]
       }
+      store_credits: {
+        Row: {
+          admin_id: string | null
+          amount: number
+          created_at: string
+          id: string
+          order_id: string | null
+          phone: string
+          reason: string
+          return_id: string | null
+        }
+        Insert: {
+          admin_id?: string | null
+          amount: number
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          phone: string
+          reason: string
+          return_id?: string | null
+        }
+        Update: {
+          admin_id?: string | null
+          amount?: number
+          created_at?: string
+          id?: string
+          order_id?: string | null
+          phone?: string
+          reason?: string
+          return_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "store_credits_order_id_fkey"
+            columns: ["order_id"]
+            isOneToOne: false
+            referencedRelation: "orders"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "store_credits_return_id_fkey"
+            columns: ["return_id"]
+            isOneToOne: false
+            referencedRelation: "order_returns"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       testimonials: {
         Row: {
           body: string
@@ -795,6 +1003,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_add_store_credit: {
+        Args: { p_amount: number; p_phone: string; p_reason: string }
+        Returns: number
+      }
       admin_adjust_stock: {
         Args: {
           p_change: number
@@ -804,6 +1016,26 @@ export type Database = {
           p_variant_id: string
         }
         Returns: number
+      }
+      admin_create_return: {
+        Args: {
+          p_items: Json
+          p_kind: string
+          p_method: string
+          p_order_id: string
+          p_reason: string
+          p_refund: number
+          p_restock: boolean
+        }
+        Returns: string
+      }
+      admin_return_transition: {
+        Args: { p_id: string; p_note: string; p_to: string }
+        Returns: string
+      }
+      complete_incomplete_checkout: {
+        Args: { p_key: string }
+        Returns: undefined
       }
       has_role: {
         Args: {
@@ -831,6 +1063,18 @@ export type Database = {
         }
         Returns: Json
       }
+      record_incomplete_checkout: {
+        Args: {
+          p_cart: Json
+          p_city: string
+          p_key: string
+          p_name: string
+          p_phone: string
+          p_subtotal: number
+        }
+        Returns: undefined
+      }
+      store_credit_balance: { Args: { p_phone: string }; Returns: number }
     }
     Enums: {
       app_role: "admin" | "customer"

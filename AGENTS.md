@@ -18,3 +18,7 @@
 - Customer account pages live under /account (ssr:false layout showing a sign-in prompt when signed out); order access relies on orders RLS (user_id = auth.uid()), never on URL ids. Wishlist syncs to wishlist_items when signed in, localStorage for guests.
 - Order notifications go through src/lib/notifications.server.ts after place_order and are logged in order_notifications; mark "sent" only on provider confirmation, never throw into checkout. Integration env vars are documented in docs/INTEGRATIONS.md.
 - Page metadata uses seo()/jsonLd()/breadcrumbLd() from src/lib/seo.ts (canonical from VITE_SITE_URL); /sitemap.xml and /robots.txt are server routes, so don't add public/robots.txt.
+- Admin navigation lives only in src/components/admin/admin-nav.ts (sidebar, mobile drawer and bottom tabs read it) so menus never drift apart.
+- Returns, store credit and CSV stock imports go through SECURITY DEFINER RPCs (admin_create_return, admin_return_transition, admin_add_store_credit, admin_adjust_stock) so refund caps, credit floor and stock audit are enforced server-side; returns/credits have no delete path.
+- Product cost prices live in admin-only product_costs (products is publicly readable; products.cost_price is deprecated and forced NULL).
+- Printable invoices/labels use top-level /admin-print (outside the admin shell, admin check in-page, RLS on data).
