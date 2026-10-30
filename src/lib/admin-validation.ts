@@ -44,6 +44,7 @@ export function validateProduct(f: ProductForm, isNew: boolean) {
     return fail("SEO title max 70 and description max 160 characters.");
   return {
     ok: true as const,
+    cost,
     value: {
       name,
       slug: f.slug,
@@ -53,7 +54,6 @@ export function validateProduct(f: ProductForm, isNew: boolean) {
       description: opt(f.description),
       price,
       compare_at_price: compare,
-      cost_price: cost,
       stock_quantity: stock,
       is_published: f.is_published,
       is_featured: f.is_featured,
