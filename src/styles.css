@@ -165,3 +165,42 @@
 @media (prefers-reduced-motion: no-preference) {
   button:active:not(:disabled), a[class*="rounded"]:active { transform: scale(0.98); transition: transform 80ms ease-out; }
 }
+
+/* Admin panel: deeper, higher-contrast palette (scoped, storefront unaffected) */
+.admin-theme {
+  --background: oklch(0.965 0.022 75);
+  --foreground: oklch(0.18 0.035 40);
+  --card: oklch(0.995 0.006 80);
+  --card-foreground: oklch(0.18 0.035 40);
+  --popover: oklch(0.995 0.006 80);
+  --popover-foreground: oklch(0.18 0.035 40);
+  --primary: oklch(0.56 0.11 65);
+  --primary-foreground: oklch(0.99 0.01 80);
+  --muted: oklch(0.93 0.03 75);
+  --muted-foreground: oklch(0.38 0.035 50);
+  --secondary: oklch(0.92 0.035 75);
+  --secondary-foreground: oklch(0.18 0.035 40);
+  --accent: oklch(0.36 0.13 20);
+  --border: oklch(0.84 0.04 72);
+  --input: oklch(0.8 0.045 72);
+  --ring: oklch(0.56 0.11 65);
+  --chart-1: oklch(0.56 0.11 65); --chart-2: oklch(0.36 0.13 20); --chart-3: oklch(0.25 0.03 45);
+  --shadow-soft: 0 12px 28px -16px oklch(0.3 0.06 45 / 0.45);
+  color: var(--foreground);
+}
+.admin-theme .bg-card { box-shadow: var(--shadow-soft); }
+/* Dark espresso navigation with gold highlights */
+.admin-dark {
+  --card: oklch(0.24 0.035 42);
+  --background: oklch(0.2 0.03 42);
+  --foreground: oklch(0.96 0.02 80);
+  --muted: oklch(0.32 0.04 45);
+  --muted-foreground: oklch(0.8 0.05 78);
+  --primary: oklch(0.78 0.12 78);
+  --primary-foreground: oklch(0.2 0.03 42);
+  --border: oklch(0.36 0.04 45);
+  --ring: oklch(0.78 0.12 78);
+  background-color: var(--card);
+  color: var(--foreground);
+}
+.admin-dark .bg-card { box-shadow: none; }
