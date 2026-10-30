@@ -51,7 +51,7 @@ function PrintPage() {
   if (auth.status === "loading") return <p className="p-8">Checking access…</p>;
   if (auth.status !== "admin") return <p className="p-8">Only SifatMart admins can print orders.</p>;
   if (!list.length) return <p className="p-8">No orders selected.</p>;
-  if (q.isPending) return <p className="p-8">Preparing…</p>;
+  if (q.isPending || inv.isPending) return <p className="p-8">Preparing…</p>;
   if (q.isError) return <p className="p-8 text-destructive">{q.error.message}</p>;
   return (
     <div className="bg-background text-foreground">
@@ -76,6 +76,7 @@ function PrintPage() {
             <p>Order <b>{o.order_number}</b></p>
             <p>Items: {o.order_items.reduce((a, i) => a + i.quantity, 0)}</p>
             {o.courier_name && <p>Courier: {o.courier_name} {o.tracking_code}</p>}
+            {labelNote && <p className="mt-2 font-semibold">{labelNote}</p>}
             <p className="mt-auto border-2 border-foreground p-2 text-center text-xl font-bold">
               COLLECT {formatTaka(o.payment_status === "collected" ? 0 : o.total)}
             </p>
@@ -127,7 +128,7 @@ function PrintPage() {
               {o.discount > 0 && <div className="flex justify-between"><dt>Discount</dt><dd>− {formatTaka(o.discount)}</dd></div>}
               <div className="flex justify-between border-t border-foreground pt-1 font-semibold"><dt>Total (Cash on Delivery)</dt><dd>{formatTaka(o.total)}</dd></div>
             </dl>
-            <p className="mt-10 text-center text-xs text-muted-foreground">Thank you for shopping with SifatMart.</p>
+            <p className="mt-10 whitespace-pre-line text-center text-xs text-muted-foreground">{footer}</p>
           </section>
         ),
       )}
