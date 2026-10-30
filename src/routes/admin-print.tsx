@@ -35,6 +35,16 @@ function PrintPage() {
       return data;
     },
   });
+  const inv = useQuery({
+    enabled: auth.status === "admin",
+    queryKey: ["admin", "print", "invoice-settings"],
+    queryFn: async () => {
+      const { data } = await supabase.from("site_settings").select("value").eq("key", "invoice").maybeSingle();
+      return (data?.value ?? {}) as { footer?: string; label_note?: string };
+    },
+  });
+  const footer = inv.data?.footer || "Thank you for shopping with SifatMart.";
+  const labelNote = inv.data?.label_note || "";
   useEffect(() => {
     if (q.data?.length) setTimeout(() => window.print(), 400);
   }, [q.data]);
