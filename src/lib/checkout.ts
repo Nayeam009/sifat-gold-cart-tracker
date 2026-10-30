@@ -65,3 +65,21 @@ export const newIdempotencyKey = () =>
     globalThis.crypto?.randomUUID?.() ??
     `${Date.now()}-${Math.random().toString(36).slice(2)}-${Math.random().toString(36).slice(2)}`
   ).replace(/-/g, "");
+
+/** Delivery fee after the free-delivery rule. Mirrors place_order (server is the authority). */
+export function deliveryFeeFor(baseFee: number, subtotal: number, freeOver?: number | null): number {
+  if (freeOver && Number.isInteger(freeOver) && freeOver > 0 && subtotal >= freeOver) return 0;
+  return baseFee;
+}
+
+/** Amount still needed for free delivery, or null when no rule / already reached. */
+export function freeDeliveryGap(subtotal: number, freeOver?: number | null): number | null {
+  if (!freeOver || freeOver <= 0 || subtotal >= freeOver) return null;
+  return freeOver - subtotal;
+}
+
+/** Invoice number shown on printed invoices: optional admin prefix + order number. */
+export function invoiceNumber(orderNumber: string, prefix?: string | null): string {
+  const p = (prefix ?? "").replace(/[^A-Za-z0-9-]/g, "").slice(0, 10);
+  return p ? `${p}${p.endsWith("-") ? "" : "-"}${orderNumber}` : orderNumber;
+}
