@@ -91,6 +91,7 @@ function ProductEditor() {
     }
   }, [prod.data]);
 
+  const [staged, setStaged] = useState<File[]>([]);
   const save = useMutation({
     mutationFn: async () => {
       const v = validateProduct(f, isNew);
@@ -103,6 +104,24 @@ function ProductEditor() {
           .single();
         if (error) throw new Error(errMsg(error));
         await saveCost(data.id, v.cost);
+        let failed = 0;
+        for (const [i, file] of staged.entries()) {
+          try {
+            const url = await uploadImage(file);
+            const r = await supabase.from("product_images").insert({
+              product_id: data.id,
+              image_url: url,
+              alt_text: v.value.name,
+              sort_order: i,
+            });
+            if (r.error) throw new Error(errMsg(r.error));
+          } catch (err) {
+            failed++;
+            toast.error(`${file.name}: ${(err as Error).message}`);
+          }
+        }
+        if (failed) toast.warning(`${failed} photo(s) didn't upload — add them again below.`);
+        setStaged([]);
         return data.id;
       }
       const { stock_quantity: _ignored, ...rest } = v.value;
@@ -376,6 +395,15 @@ function ProductEditor() {
           </div>
         </div>
       </form>
+      {isNew && (
+        <div className="mt-6 grid gap-6 lg:grid-cols-2">
+          <StagedImages files={staged} setFiles={setStaged} disabled={save.isPending} />
+          <section className="rounded-lg border border-dashed border-border bg-card p-4 text-sm text-muted-foreground">
+            <h2 className="mb-2 font-display text-xl text-foreground">Size / colour options</h2>
+            Save the product first, then add options such as sizes or colours here.
+          </section>
+        </div>
+      )}
       {!isNew && prod.data && (
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
           <Images
