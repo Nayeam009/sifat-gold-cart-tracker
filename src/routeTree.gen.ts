@@ -49,6 +49,7 @@ import { Route as OrderConfirmationOrderNumberRouteImport } from './routes/order
 import { Route as ProductSlugRouteImport } from './routes/product.$slug'
 import { Route as AccountOrdersIndexRouteImport } from './routes/account.orders.index'
 import { Route as AccountOrdersIdRouteImport } from './routes/account.orders.$id'
+import { Route as AdminCustomersPhoneRouteImport } from './routes/admin.customers_.$phone'
 import { Route as AdminOrdersIndexRouteImport } from './routes/admin.orders.index'
 import { Route as AdminOrdersIdRouteImport } from './routes/admin.orders.$id'
 import { Route as AdminProductsIndexRouteImport } from './routes/admin.products.index'
@@ -255,6 +256,11 @@ const AccountOrdersIdRoute = AccountOrdersIdRouteImport.update({
   path: '/orders/$id',
   getParentRoute: () => AccountRoute,
 } as any)
+const AdminCustomersPhoneRoute = AdminCustomersPhoneRouteImport.update({
+  id: '/customers_/$phone',
+  path: '/customers/$phone',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminOrdersIndexRoute = AdminOrdersIndexRouteImport.update({
   id: '/orders/',
   path: '/orders/',
@@ -316,6 +322,7 @@ export interface FileRoutesByFullPath {
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/account/orders/$id': typeof AccountOrdersIdRoute
+  '/admin/customers/$phone': typeof AdminCustomersPhoneRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
   '/account/orders/': typeof AccountOrdersIndexRoute
@@ -360,6 +367,7 @@ export interface FileRoutesByTo {
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
   '/account/orders/$id': typeof AccountOrdersIdRoute
+  '/admin/customers/$phone': typeof AdminCustomersPhoneRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
   '/account/orders': typeof AccountOrdersIndexRoute
@@ -407,6 +415,7 @@ export interface FileRoutesById {
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/account/orders/$id': typeof AccountOrdersIdRoute
+  '/admin/customers_/$phone': typeof AdminCustomersPhoneRoute
   '/admin/orders/$id': typeof AdminOrdersIdRoute
   '/admin/products/$id': typeof AdminProductsIdRoute
   '/account/orders/': typeof AccountOrdersIndexRoute
@@ -455,6 +464,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/admin/'
     | '/account/orders/$id'
+    | '/admin/customers/$phone'
     | '/admin/orders/$id'
     | '/admin/products/$id'
     | '/account/orders/'
@@ -499,6 +509,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/admin'
     | '/account/orders/$id'
+    | '/admin/customers/$phone'
     | '/admin/orders/$id'
     | '/admin/products/$id'
     | '/account/orders'
@@ -545,6 +556,7 @@ export interface FileRouteTypes {
     | '/account/'
     | '/admin/'
     | '/account/orders/$id'
+    | '/admin/customers_/$phone'
     | '/admin/orders/$id'
     | '/admin/products/$id'
     | '/account/orders/'
@@ -864,6 +876,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountOrdersIdRouteImport
       parentRoute: typeof AccountRoute
     }
+    '/admin/customers_/$phone': {
+      id: '/admin/customers_/$phone'
+      path: '/customers/$phone'
+      fullPath: '/admin/customers/$phone'
+      preLoaderRoute: typeof AdminCustomersPhoneRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/orders/': {
       id: '/admin/orders/'
       path: '/orders'
@@ -921,6 +940,7 @@ interface AdminRouteChildren {
   AdminReturnsRoute: typeof AdminReturnsRoute
   AdminSettingsRoute: typeof AdminSettingsRoute
   AdminIndexRoute: typeof AdminIndexRoute
+  AdminCustomersPhoneRoute: typeof AdminCustomersPhoneRoute
   AdminOrdersIdRoute: typeof AdminOrdersIdRoute
   AdminProductsIdRoute: typeof AdminProductsIdRoute
   AdminOrdersIndexRoute: typeof AdminOrdersIndexRoute
@@ -938,6 +958,7 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminReturnsRoute: AdminReturnsRoute,
   AdminSettingsRoute: AdminSettingsRoute,
   AdminIndexRoute: AdminIndexRoute,
+  AdminCustomersPhoneRoute: AdminCustomersPhoneRoute,
   AdminOrdersIdRoute: AdminOrdersIdRoute,
   AdminProductsIdRoute: AdminProductsIdRoute,
   AdminOrdersIndexRoute: AdminOrdersIndexRoute,
