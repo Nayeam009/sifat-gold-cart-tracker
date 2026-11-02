@@ -14,8 +14,8 @@ import {
   Facebook,
   Quote,
 } from "lucide-react";
-import heroLarge from "@/assets/hero-vivid-1376.webp";
-import heroSmall from "@/assets/hero-vivid-768.webp";
+import heroLarge from "@/assets/hero-bride-1080.webp";
+import heroSmall from "@/assets/hero-bride-640.webp";
 import bridal from "@/assets/bridal-banner.webp";
 import { BRAND, categories, occasions } from "@/lib/catalog";
 import { ProductCard } from "@/components/site/product-card";
