@@ -14,8 +14,8 @@ import {
   Facebook,
   Quote,
 } from "lucide-react";
-import heroLarge from "@/assets/hero-vivid-1376.webp";
-import heroSmall from "@/assets/hero-vivid-768.webp";
+import heroLarge from "@/assets/hero-bride-1080.webp";
+import heroSmall from "@/assets/hero-bride-640.webp";
 import bridal from "@/assets/bridal-banner.webp";
 import { BRAND, categories, occasions } from "@/lib/catalog";
 import { ProductCard } from "@/components/site/product-card";
@@ -140,26 +140,26 @@ function Home() {
     <>
       {/* Hero */}
       <section className="relative isolate flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden bg-background md:block md:min-h-0">
-        <div className="absolute inset-x-0 top-0 -z-10 h-[52svh] overflow-hidden md:inset-0 md:h-full">
-        <img
-          src={heroLarge}
-          srcSet={`${heroSmall} 768w, ${heroLarge} 1376w`}
-          sizes="100vw"
-          alt="South Asian bride in a red and gold embroidered saree with kundan jewellery, beside cream florals"
-          width={1376}
-          height={768}
-          fetchPriority="high"
-          decoding="async"
-          className="h-full min-h-[100vw] w-full object-cover object-[80%_top] md:min-h-0 md:object-[72%_center]"
-        />
+        <div className="absolute inset-x-0 top-0 -z-10 h-[52svh] overflow-hidden md:inset-y-0 md:left-auto md:right-0 md:h-full md:w-[50%] lg:w-[46%]">
+          <img
+            src={heroLarge}
+            srcSet={`${heroSmall} 640w, ${heroLarge} 1080w`}
+            sizes="(min-width: 768px) 50vw, 100vw"
+            alt="Bride in a red and gold embroidered saree with kundan jewellery, beside cream florals and candles"
+            width={1080}
+            height={1919}
+            fetchPriority="high"
+            decoding="async"
+            className="h-full w-full object-cover object-[50%_22%] md:object-[50%_30%]"
+          />
         </div>
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[49svh] -z-10 h-[3svh] bg-gradient-to-b from-transparent to-background md:hidden"
+          className="pointer-events-none absolute inset-x-0 top-[46svh] -z-10 h-[6svh] bg-gradient-to-b from-transparent to-background md:hidden"
         />
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10 hidden bg-gradient-to-r from-background/90 via-background/40 via-35% to-transparent to-60% md:block"
+          className="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden w-[50%] bg-gradient-to-r from-background via-background/30 via-20% to-transparent to-45% md:block lg:w-[46%]"
         />
         {/* Mobile: the photo stays untouched on top, words sit on plain ivory below it */}
         <div className="hero-rise mt-[52svh] flex flex-1 flex-col justify-center px-5 pb-10 md:hidden">
