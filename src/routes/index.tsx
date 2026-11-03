@@ -161,6 +161,14 @@ function Home() {
           aria-hidden
           className="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden w-[50%] bg-gradient-to-r from-background via-background/30 via-20% to-transparent to-45% md:block lg:w-[46%]"
         />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -left-32 top-1/2 -z-10 hidden h-[560px] w-[560px] -translate-y-1/2 rounded-full bg-primary/15 blur-3xl md:block"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-6 right-6 -z-10 hidden w-[calc(50%-1.5rem)] rounded-sm border border-primary/40 md:block lg:w-[calc(46%-1.5rem)]"
+        />
         {/* Mobile: the photo stays untouched on top, words sit on plain ivory below it */}
         <div className="hero-rise mt-[52svh] flex flex-1 flex-col justify-center px-5 pb-10 md:hidden">
           <p className="eyebrow">Bridal • Beauty • Fashion</p>
@@ -190,6 +198,11 @@ function Home() {
               Explore Bridal Collection <ArrowRight className="h-3.5 w-3.5" aria-hidden />
             </Link>
           </div>
+          <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs font-medium text-foreground/80">
+            <li className="inline-flex items-center gap-1.5"><Wallet className="h-4 w-4 text-primary" aria-hidden />Cash on Delivery</li>
+            <li className="inline-flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" aria-hidden />Delivery across Bangladesh</li>
+            <li><a href="tel:01997974394" className="inline-flex min-h-11 items-center gap-1.5 hover:text-accent md:min-h-0"><Phone className="h-4 w-4 text-primary" aria-hidden />01997974394</a></li>
+          </ul>
         </div>
         <div className="relative mx-auto hidden w-full max-w-7xl px-5 pb-8 pt-40 sm:px-6 md:flex md:min-h-[clamp(480px,70vh,720px)] md:items-center md:py-16 lg:px-8 lg:py-20">
           <div className="hero-rise max-w-xl text-left md:max-w-[52%] lg:max-w-xl">
@@ -224,6 +237,11 @@ function Home() {
                 Explore Bridal Collection
               </Link>
             </div>
+            <ul className="mt-8 flex flex-wrap gap-x-4 gap-y-2 text-sm font-medium text-foreground/80">
+            <li className="inline-flex items-center gap-1.5"><Wallet className="h-4 w-4 text-primary" aria-hidden />Cash on Delivery</li>
+            <li className="inline-flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" aria-hidden />Delivery across Bangladesh</li>
+            <li><a href="tel:01997974394" className="inline-flex min-h-11 items-center gap-1.5 hover:text-accent md:min-h-0"><Phone className="h-4 w-4 text-primary" aria-hidden />01997974394</a></li>
+          </ul>
           </div>
         </div>
       </section>
