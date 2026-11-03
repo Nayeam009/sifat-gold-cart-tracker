@@ -165,10 +165,6 @@ function Home() {
           aria-hidden
           className="pointer-events-none absolute -left-32 top-1/2 -z-10 hidden h-[560px] w-[560px] -translate-y-1/2 rounded-full bg-primary/15 blur-3xl md:block"
         />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-6 right-6 -z-10 hidden w-[calc(50%-1.5rem)] rounded-sm border border-primary/40 md:block lg:w-[calc(46%-1.5rem)]"
-        />
         {/* Mobile: the photo stays untouched on top, words sit on plain ivory below it */}
         <div className="hero-rise mt-[52svh] flex flex-1 flex-col justify-center px-5 pb-10 md:hidden">
           <p className="eyebrow">Bridal • Beauty • Fashion</p>
