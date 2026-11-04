@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { trackShopEvent } from "@/components/site/analytics-consent";
 import { BRAND, formatTaka } from "@/lib/catalog";
 import type { PlacedOrder } from "@/lib/orders.functions";
 
@@ -26,7 +27,16 @@ function Confirmation() {
   useEffect(() => {
     try {
       const raw = sessionStorage.getItem(`sm-order-${orderNumber}`);
-      if (raw) setOrder(JSON.parse(raw));
+      if (raw) {
+        const o = JSON.parse(raw) as PlacedOrder;
+        setOrder(o);
+        // Purchase fires once per order (eventID = order number dedupes reloads on Meta's side).
+        const sentKey = `sm-px-${orderNumber}`;
+        if (!sessionStorage.getItem(sentKey)) {
+          trackShopEvent("Purchase", { value: o.total, currency: "BDT" }, orderNumber);
+          sessionStorage.setItem(sentKey, "1");
+        }
+      }
     } catch {}
   }, [orderNumber]);
 

@@ -800,6 +800,24 @@ export type Database = {
         }
         Relationships: []
       }
+      rate_limits: {
+        Row: {
+          hits: number
+          key: string
+          window_start: string
+        }
+        Insert: {
+          hits?: number
+          key: string
+          window_start: string
+        }
+        Update: {
+          hits?: number
+          key?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       site_settings: {
         Row: {
           is_public: boolean
@@ -1048,6 +1066,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      hit_rate_limit: {
+        Args: { p_key: string; p_max: number; p_window_seconds: number }
         Returns: boolean
       }
       place_order: {

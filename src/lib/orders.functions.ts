@@ -84,6 +84,17 @@ export const placeOrder = createServerFn({ method: "POST" })
       userId = u.user?.id ?? null;
     }
 
+    // Anti-flood: max 5 orders per phone per 10 minutes (enforced in the database).
+    const phoneKey = `order:${String(data.phone).replace(/\D/g, "").slice(-10)}`;
+    const { data: allowed } = await supabaseAdmin.rpc("hit_rate_limit", {
+      p_key: phoneKey,
+      p_max: 5,
+      p_window_seconds: 600,
+    });
+    if (allowed === false) {
+      throw new Error("Too many orders from this number. Please wait a few minutes or call 01997974394.");
+    }
+
     const { items, coupon, idempotency_key, district, upazila, address, ...rest } = data;
     const customer = { ...rest, city: district, address: `${address}, ${upazila}, ${district}` };
     const { data: result, error } = await supabaseAdmin.rpc("place_order_once", {

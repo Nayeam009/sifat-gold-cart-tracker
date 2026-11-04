@@ -17,6 +17,7 @@ import { CartProvider } from "@/lib/cart";
 import { SiteHeader } from "@/components/site/site-header";
 import { SiteFooter } from "@/components/site/site-footer";
 import { Toaster } from "@/components/ui/sonner";
+import { OfflineBanner } from "@/components/site/offline-banner";
 import { AnalyticsConsent } from "@/components/site/analytics-consent";
 
 function NotFoundComponent() {
@@ -152,6 +153,7 @@ function RootComponent() {
           </>
         )}
         <Toaster position="top-center" />
+        <OfflineBanner />
         {!isAdmin && <AnalyticsConsent />}
       </CartProvider>
     </QueryClientProvider>

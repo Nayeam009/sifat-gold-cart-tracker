@@ -25,7 +25,32 @@ const csrfMiddleware = createCsrfMiddleware({
   filter: (ctx) => ctx.handlerType === "serverFn",
 });
 
+const SECURITY_HEADERS: Record<string, string> = {
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=()",
+  "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+  // frame-ancestors allows the Lovable editor preview to embed the site.
+  "Content-Security-Policy":
+    "frame-ancestors 'self' https://*.lovable.app https://*.lovable.dev https://lovable.dev; base-uri 'self'; object-src 'none'; form-action 'self'",
+};
+
+const securityHeadersMiddleware = createMiddleware().server(async ({ next }) => {
+  const result = await next();
+  const res = (result as { response?: Response }).response;
+  if (res instanceof Response) {
+    try {
+      for (const [k, v] of Object.entries(SECURITY_HEADERS)) {
+        if (!res.headers.has(k)) res.headers.set(k, v);
+      }
+    } catch {
+      // immutable headers (e.g. proxied responses) — skip
+    }
+  }
+  return result;
+});
+
 export const startInstance = createStart(() => ({
   functionMiddleware: [attachSupabaseAuth],
-  requestMiddleware: [errorMiddleware, csrfMiddleware],
+  requestMiddleware: [securityHeadersMiddleware, errorMiddleware, csrfMiddleware],
 }));
