@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Facebook, Instagram, MapPin, MessageCircle, Phone, Youtube } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import logo from "@/assets/sifatmart-logo.png.asset.json";
+import logoSrc from "@/assets/sifatmart-logo.webp";
 import { BRAND } from "@/lib/catalog";
 import { siteSettingQuery, socialLinksQuery, subscribeNewsletter } from "@/lib/store-data";
 
@@ -33,11 +33,11 @@ export function SiteFooter() {
         <div>
           <div className="inline-block rounded-md bg-background px-3 py-2">
             <img
-              src={logo.url}
+              src={logoSrc}
               alt="SifatMart"
               loading="lazy"
               decoding="async"
-              width={120}
+              width={58}
               height={48}
               className="h-12 w-auto"
             />

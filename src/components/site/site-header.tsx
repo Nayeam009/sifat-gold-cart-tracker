@@ -2,7 +2,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
 import { Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { useState } from "react";
-import logo from "@/assets/sifatmart-logo.png.asset.json";
+import logoSrc from "@/assets/sifatmart-logo.webp";
 import { useCart } from "@/lib/cart";
 
 const nav = [
@@ -28,9 +28,9 @@ export function SiteHeader() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-3 sm:h-20 sm:px-4">
         <Link to="/" aria-label="SifatMart home" className="flex shrink-0 items-center gap-2">
           <img
-            src={logo.url}
+            src={logoSrc}
             alt="SifatMart"
-            width={160}
+            width={77}
             height={64}
             className="h-12 w-auto sm:h-16"
           />
