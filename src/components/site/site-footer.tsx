@@ -37,7 +37,7 @@ export function SiteFooter() {
               alt="SifatMart"
               loading="lazy"
               decoding="async"
-              width={120}
+              width={58}
               height={48}
               className="h-12 w-auto"
             />

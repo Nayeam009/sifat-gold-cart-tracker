@@ -30,7 +30,7 @@ export function SiteHeader() {
           <img
             src={logoSrc}
             alt="SifatMart"
-            width={160}
+            width={77}
             height={64}
             className="h-12 w-auto sm:h-16"
           />
