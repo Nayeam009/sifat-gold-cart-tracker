@@ -54,8 +54,23 @@ function load() {
       if (real && real !== f) q.forEach((a) => real(...(a as unknown[])));
     };
     document.head.appendChild(s);
-    w.fbq("init", PIXEL);
+    w.fbq("init", PIXEL, {}, { agent: "lovable" });
   }
+}
+
+/**
+ * Standard Meta shop event. Only fires when the Pixel is configured AND the visitor accepted
+ * (fbq exists only then). eventID lets a future server-side send deduplicate with the browser.
+ * Never pass names, phones or addresses here.
+ */
+export function trackShopEvent(
+  name: "ViewContent" | "AddToCart" | "InitiateCheckout" | "Purchase",
+  params: { value?: number; currency?: "BDT"; content_ids?: string[] },
+  eventID?: string,
+) {
+  if (typeof window === "undefined") return;
+  const w = window as W;
+  w.fbq?.("track", name, params, eventID ? { eventID } : undefined);
 }
 
 function pageView(path: string) {
