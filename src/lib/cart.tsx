@@ -5,6 +5,7 @@ import { getProduct } from "./catalog";
 import { supabase } from "@/integrations/supabase/client";
 import { mergeWishlists, reconcileCart } from "./account";
 import { catalogueQueryFn } from "./catalogue-data";
+import { trackShopEvent } from "@/components/site/analytics-consent";
 
 export type CartLine = { slug: string; qty: number; sku?: string; variant?: string };
 export const lineKey = (l: { slug: string; sku?: string | undefined }) =>
@@ -97,7 +98,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return () => sub.subscription.unsubscribe();
   }, [ready]);
 
-  const add: Ctx["add"] = (slug, qty = 1, variant) =>
+  const add: Ctx["add"] = (slug, qty = 1, variant) => {
+    trackShopEvent("AddToCart", { content_ids: [variant?.sku ?? slug], currency: "BDT" });
+    addLine(slug, qty, variant);
+  };
+  const addLine: Ctx["add"] = (slug, qty = 1, variant) =>
     setLines((ls) => {
       const key = lineKey({ slug, sku: variant?.sku });
       const f = ls.find((l) => lineKey(l) === key);

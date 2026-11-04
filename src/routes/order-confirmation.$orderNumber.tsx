@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { trackShopEvent } from "@/components/site/analytics-consent";
 import { BRAND, formatTaka } from "@/lib/catalog";
 import type { PlacedOrder } from "@/lib/orders.functions";
 
