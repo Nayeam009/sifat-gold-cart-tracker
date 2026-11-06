@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ImageOff } from "lucide-react";
 
-export function ProductThumb({ src }: { src?: string | null }) {
+export function ProductThumb({ src }: { src?: string | null | undefined }) {
   const [broken, setBroken] = useState(false);
   if (!src || broken)
     return (
