@@ -139,105 +139,69 @@ function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative isolate flex min-h-[calc(100svh-4rem)] flex-col overflow-hidden bg-background md:block md:min-h-0">
-        <div className="absolute inset-x-0 top-0 -z-10 h-[52svh] overflow-hidden md:inset-y-0 md:left-auto md:right-0 md:h-full md:w-[50%] lg:w-[46%]">
-          <img
-            src={heroLarge}
-            srcSet={`${heroSmall} 640w, ${heroLarge} 1080w`}
-            sizes="(min-width: 768px) 50vw, 100vw"
-            alt="Bride in a red and gold embroidered saree with kundan jewellery, beside cream florals and candles"
-            width={1080}
-            height={1919}
-            fetchPriority="high"
-            decoding="async"
-            className="h-full w-full object-cover object-[50%_22%] md:object-[50%_30%]"
-          />
-        </div>
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-x-0 top-[46svh] -z-10 h-[6svh] bg-gradient-to-b from-transparent to-background md:hidden"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-y-0 right-0 -z-10 hidden w-[50%] bg-gradient-to-r from-background via-background/30 via-20% to-transparent to-45% md:block lg:w-[46%]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -left-32 top-1/2 -z-10 hidden h-[560px] w-[560px] -translate-y-1/2 rounded-full bg-primary/15 blur-3xl md:block"
-        />
-        {/* Mobile: the photo stays untouched on top, words sit on plain ivory below it */}
-        <div className="hero-rise mt-[52svh] flex flex-1 flex-col justify-center px-5 pb-10 md:hidden">
-          <p className="eyebrow">Bridal • Beauty • Fashion</p>
-          <div className="mt-3 h-px w-12 bg-primary" />
-          <h1 className="mt-3 text-[clamp(1.7rem,7.2vw,2.1rem)] leading-[1.08] text-espresso">
-            {heroTitle === DEFAULT_TITLE ? (
-              <>
-                Your Special Moments Deserve Something{" "}
-                <em className="text-accent">Beautiful</em>
-              </>
-            ) : (
-              heroTitle
-            )}
-          </h1>
-          <div className="mt-5 flex flex-col items-start gap-2">
-            <Link
-              to="/shop"
-              className="inline-flex min-h-12 w-full max-w-xs items-center justify-center gap-2 rounded-md bg-primary px-6 text-sm font-medium tracking-wide text-primary-foreground shadow-soft transition hover:opacity-90"
-            >
-              Shop Now <ArrowRight className="h-4 w-4" aria-hidden />
-            </Link>
-            <Link
-              to="/occasion/$slug"
-              params={{ slug: "wedding" }}
-              className="inline-flex min-h-11 items-center gap-1.5 px-1 text-sm font-medium text-accent underline-offset-4 hover:underline"
-            >
-              Explore Bridal Collection <ArrowRight className="h-3.5 w-3.5" aria-hidden />
-            </Link>
+      <section className="px-3 pt-3 sm:px-4 md:pt-5">
+        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-2xl bg-espresso text-espresso-foreground shadow-soft md:grid-cols-[1.1fr_1fr] md:rounded-3xl">
+          <div className="relative order-1 aspect-[4/3] md:order-2 md:aspect-auto md:min-h-[560px]">
+            <img
+              src={heroLarge}
+              srcSet={`${heroSmall} 560w, ${heroLarge} 900w`}
+              sizes="(min-width: 768px) 45vw, 100vw"
+              alt="Bride in a red and gold embroidered saree with kundan jewellery, beside cream florals and candles"
+              width={900}
+              height={1599}
+              fetchPriority="high"
+              decoding="async"
+              className="absolute inset-0 h-full w-full object-cover object-[50%_22%]"
+            />
+            <div aria-hidden className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-espresso to-transparent md:inset-y-0 md:left-0 md:h-auto md:w-20 md:bg-gradient-to-r" />
           </div>
-          <ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2 text-xs font-medium text-foreground/80">
-            <li className="inline-flex items-center gap-1.5"><Wallet className="h-4 w-4 text-primary" aria-hidden />Cash on Delivery</li>
-            <li className="inline-flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" aria-hidden />Delivery across Bangladesh</li>
-            <li><a href="tel:01997974394" className="inline-flex min-h-11 items-center gap-1.5 hover:text-accent md:min-h-0"><Phone className="h-4 w-4 text-primary" aria-hidden />01997974394</a></li>
-          </ul>
-        </div>
-        <div className="relative mx-auto hidden w-full max-w-7xl px-5 pb-8 pt-40 sm:px-6 md:flex md:min-h-[clamp(480px,70vh,720px)] md:items-center md:py-16 lg:px-8 lg:py-20">
-          <div className="hero-rise max-w-xl text-left md:max-w-[52%] lg:max-w-xl">
-            <p className="eyebrow">Bridal • Beauty • Fashion</p>
-            <div className="mt-4 h-px w-16 bg-primary" />
-            <h1 className="mt-4 text-[clamp(2rem,8vw,2.6rem)] leading-[1.06] text-espresso sm:text-5xl md:text-[clamp(2.6rem,5vw,4.25rem)]">
+          <div className="hero-rise order-2 flex flex-col justify-center px-5 pb-7 pt-4 sm:px-8 md:order-1 md:px-12 md:py-14 lg:px-14">
+            <span className="inline-flex w-fit items-center gap-2 rounded-full bg-primary/15 px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-gold-soft">
+              <Truck className="h-3.5 w-3.5" aria-hidden /> Cash on Delivery · Bridal • Beauty • Fashion
+            </span>
+            <h1 className="mt-4 text-[clamp(1.9rem,7.5vw,2.4rem)] leading-[1.08] text-espresso-foreground md:mt-6 md:text-[clamp(2.6rem,4.6vw,4rem)]">
               {heroTitle === DEFAULT_TITLE ? (
                 <>
                   Your Special Moments Deserve Something{" "}
-                  <em className="text-accent">Beautiful</em>
+                  <em className="text-gold-soft">Beautiful.</em>
                 </>
               ) : (
                 heroTitle
               )}
             </h1>
-            <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-foreground/80 sm:text-base lg:text-lg">
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-espresso-foreground/80 sm:text-base md:mt-5 lg:text-lg">
               {heroSub ??
                 "Discover bridal essentials, beauty favourites, elegant fashion, and finishing touches for every unforgettable occasion."}
             </p>
             <div className="mt-6 flex flex-col gap-3 min-[420px]:flex-row min-[420px]:flex-wrap">
               <Link
                 to="/shop"
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md bg-primary px-8 text-sm font-medium tracking-wide text-primary-foreground shadow-soft transition hover:opacity-90"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-primary px-7 text-sm font-semibold text-primary-foreground transition hover:opacity-90"
               >
                 Shop Now <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
               <Link
                 to="/occasion/$slug"
                 params={{ slug: "wedding" }}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-accent bg-background/70 px-8 text-sm font-medium tracking-wide text-accent backdrop-blur-sm transition hover:bg-accent hover:text-accent-foreground"
+                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-espresso-foreground/30 px-7 text-sm font-semibold text-espresso-foreground transition hover:bg-espresso-foreground/10"
               >
                 Explore Bridal Collection
               </Link>
             </div>
-            <ul className="mt-8 flex flex-wrap gap-x-4 gap-y-2 text-sm font-medium text-foreground/80">
-            <li className="inline-flex items-center gap-1.5"><Wallet className="h-4 w-4 text-primary" aria-hidden />Cash on Delivery</li>
-            <li className="inline-flex items-center gap-1.5"><Truck className="h-4 w-4 text-primary" aria-hidden />Delivery across Bangladesh</li>
-            <li><a href="tel:01997974394" className="inline-flex min-h-11 items-center gap-1.5 hover:text-accent md:min-h-0"><Phone className="h-4 w-4 text-primary" aria-hidden />01997974394</a></li>
-          </ul>
+            <dl className="mt-7 grid grid-cols-3 gap-3 border-t border-espresso-foreground/15 pt-5 text-xs sm:text-sm md:mt-10">
+              <div>
+                <dt className="text-espresso-foreground/65">Payment</dt>
+                <dd className="mt-0.5 inline-flex items-center gap-1 font-semibold"><Wallet className="h-3.5 w-3.5 text-gold-soft" aria-hidden />Cash on Delivery</dd>
+              </div>
+              <div>
+                <dt className="text-espresso-foreground/65">Delivery</dt>
+                <dd className="mt-0.5 font-semibold">Across Bangladesh</dd>
+              </div>
+              <div>
+                <dt className="text-espresso-foreground/65">Hotline</dt>
+                <dd className="mt-0.5"><a href="tel:01997974394" className="inline-flex min-h-11 items-start font-semibold hover:text-gold-soft md:min-h-0"><Phone className="mr-1 mt-0.5 h-3.5 w-3.5 text-gold-soft" aria-hidden />01997974394</a></dd>
+              </div>
+            </dl>
           </div>
         </div>
       </section>
