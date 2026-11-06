@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowUpRight, Facebook, Instagram, Mail, MapPin, MessageCircle, Phone, Youtube } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { MeadowHills } from "./meadow-hills";
 import logoSrc from "@/assets/sifatmart-logo.webp";
@@ -126,17 +126,50 @@ export function SiteFooter() {
   );
 }
 
+const BLOOMS = [
+  { x: 6, h: 62, s: 1, petals: 6, tone: "gold" },
+  { x: 19, h: 44, s: 0.8, petals: 5, tone: "red" },
+  { x: 33, h: 70, s: 1.1, petals: 8, tone: "ivory" },
+  { x: 50, h: 52, s: 0.9, petals: 6, tone: "gold" },
+  { x: 66, h: 66, s: 1, petals: 5, tone: "red" },
+  { x: 81, h: 48, s: 0.85, petals: 8, tone: "ivory" },
+  { x: 94, h: 60, s: 1, petals: 6, tone: "gold" },
+];
+const TONES: Record<string, string> = {
+  gold: "var(--ring)",
+  red: "var(--accent)",
+  ivory: "var(--gold-soft)",
+};
+
 function Wildflowers() {
-  const xs = [8, 22, 41, 58, 74, 90];
+  const ref = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setOpen(true); return; }
+    const io = new IntersectionObserver(([e]) => { if (e?.isIntersecting) { setOpen(true); io.disconnect(); } }, { threshold: 0.15 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   return (
-    <svg aria-hidden className="pointer-events-none absolute inset-0 h-full w-full text-gold-soft opacity-[0.08]" preserveAspectRatio="none" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="0.25">
-      {xs.map((x, i) => (
-        <g key={x}>
-          <path d={`M${x} 100 Q${x + (i % 2 ? 2 : -2)} 70 ${x} ${40 + (i % 3) * 8}`} />
-          <circle cx={x} cy={38 + (i % 3) * 8} r="2.4" />
-          <path d={`M${x} ${75} q3 -3 5 -1 M${x} ${82} q-3 -3 -5 -1`} />
-        </g>
+    <div ref={ref} aria-hidden className={`bloom-field pointer-events-none absolute inset-x-0 bottom-0 h-full overflow-hidden ${open ? "is-open" : ""}`}>
+      {BLOOMS.map((b, i) => (
+        <svg key={i} className="absolute bottom-0 opacity-25 md:opacity-30" style={{ left: `${b.x}%`, height: `${b.h}%`, transform: `translateX(-50%) scale(${b.s})`, transformOrigin: "bottom center", ["--d" as string]: `${i * 0.18}s` }} viewBox="0 0 60 200" fill="none">
+          <path className="bloom-stem" pathLength={1} d="M30 200 C26 160 34 120 30 60" stroke="var(--gold-soft)" strokeWidth="1.4" />
+          <path className="bloom-leaf" d="M30 150 C18 140 12 146 8 138 C18 132 26 138 30 150Z" fill="var(--gold-soft)" />
+          <path className="bloom-leaf bloom-leaf-r" d="M30 120 C42 110 48 116 52 108 C42 102 34 108 30 120Z" fill="var(--gold-soft)" />
+          <g className="bloom-head" transform="translate(30 58)">
+            {Array.from({ length: b.petals }).map((_, k) => (
+              <ellipse key={k} cx="0" cy="-11" rx="6" ry="12" fill={TONES[b.tone]} fillOpacity="0.85" transform={`rotate(${(360 / b.petals) * k})`} />
+            ))}
+            {Array.from({ length: b.petals }).map((_, k) => (
+              <ellipse key={`i${k}`} cx="0" cy="-6" rx="3.5" ry="7" fill="var(--gold-soft)" fillOpacity="0.7" transform={`rotate(${(360 / b.petals) * k + 180 / b.petals})`} />
+            ))}
+            <circle r="4" fill="var(--ring)" />
+          </g>
+        </svg>
       ))}
-    </svg>
+    </div>
   );
 }
