@@ -63,7 +63,7 @@ export function MeadowHills({ className }: { className?: string }) {
     };
     const loop = (now: number) => { draw(now); if (visible && !reduce) raf = requestAnimationFrame(loop); };
     const io = new IntersectionObserver(([e]) => {
-      visible = e.isIntersecting;
+      visible = !!e?.isIntersecting;
       cancelAnimationFrame(raf);
       if (visible) raf = requestAnimationFrame(loop);
     }, { rootMargin: "200px" });
