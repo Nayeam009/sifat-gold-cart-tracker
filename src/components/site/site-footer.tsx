@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { Facebook, Instagram, MapPin, MessageCircle, Phone, Youtube } from "lucide-react";
+import { ArrowRight, Facebook, Instagram, MapPin, MessageCircle, Phone, Youtube } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import logoSrc from "@/assets/sifatmart-logo.webp";
@@ -29,8 +29,28 @@ export function SiteFooter() {
 
   return (
     <footer className="bg-espresso text-espresso-foreground">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-4">
-        <div>
+      <div className="relative overflow-hidden border-b border-espresso-foreground/10">
+        <div aria-hidden className="pointer-events-none absolute left-1/2 top-0 h-64 w-[36rem] -translate-x-1/2 rounded-full bg-primary/20 blur-3xl" />
+        <div className="relative mx-auto max-w-3xl px-5 py-14 text-center md:py-20">
+          <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-gold-soft">{BRAND.tagline}</p>
+          <h2 className="mt-3 text-[clamp(1.8rem,6vw,3.2rem)] leading-tight text-espresso-foreground">
+            Make your special day <em className="text-gold-soft">unforgettable.</em>
+          </h2>
+          <p className="mx-auto mt-3 max-w-md text-sm text-espresso-foreground/75 sm:text-base">
+            Order online and pay with Cash on Delivery, or call us for help choosing.
+          </p>
+          <div className="mt-6 flex flex-col items-center justify-center gap-3 min-[420px]:flex-row">
+            <Link to="/shop" className="inline-flex min-h-12 items-center gap-2 rounded-full bg-primary px-7 text-sm font-semibold text-primary-foreground hover:opacity-90">
+              Start shopping <ArrowRight className="h-4 w-4" aria-hidden />
+            </Link>
+            <a href={`tel:${hotline}`} className="inline-flex min-h-12 items-center gap-2 rounded-full border border-espresso-foreground/30 px-7 text-sm font-semibold hover:bg-espresso-foreground/10">
+              <Phone className="h-4 w-4" aria-hidden /> {hotline}
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-10 px-4 py-14 md:grid-cols-4">
+        <div className="col-span-2 md:col-span-1">
           <div className="inline-block rounded-md bg-background px-3 py-2">
             <img
               src={logoSrc}
@@ -71,7 +91,7 @@ export function SiteFooter() {
           )}
         </div>
         <div>
-          <h4 className="text-lg text-gold-soft">Quick Links</h4>
+          <h3 className="text-lg text-gold-soft">Quick Links</h3>
           <ul className="mt-4 space-y-0 text-sm opacity-80 [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center md:space-y-1 md:[&_a]:min-h-8">
             <li>
               <Link to="/">Home</Link>
@@ -91,7 +111,7 @@ export function SiteFooter() {
           </ul>
         </div>
         <div>
-          <h4 className="text-lg text-gold-soft">Customer Service</h4>
+          <h3 className="text-lg text-gold-soft">Customer Service</h3>
           <ul className="mt-4 space-y-0 text-sm opacity-80 [&_a]:inline-flex [&_a]:min-h-11 [&_a]:items-center md:space-y-1 md:[&_a]:min-h-8">
             <li>
               <Link to="/faq">FAQs</Link>
@@ -113,8 +133,8 @@ export function SiteFooter() {
             </li>
           </ul>
         </div>
-        <div>
-          <h4 className="text-lg text-gold-soft">Newsletter</h4>
+        <div className="col-span-2 md:col-span-1">
+          <h3 className="text-lg text-gold-soft">Newsletter</h3>
           <p className="mt-4 text-sm opacity-80">Get updates on new arrivals and offers.</p>
           <form
             className="mt-4 space-y-2"
