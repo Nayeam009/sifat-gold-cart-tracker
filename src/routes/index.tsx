@@ -140,7 +140,7 @@ function Home() {
     <>
       {/* Hero */}
       <section className="px-3 pt-3 sm:px-4 md:pt-5">
-        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-2xl bg-gradient-to-br from-ivory via-secondary to-[color-mix(in_oklab,var(--color-gold)_22%,var(--color-ivory))] text-espresso border border-gold/25 shadow-soft md:grid-cols-[1.1fr_1fr] md:rounded-3xl">
+        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-2xl bg-gradient-to-br from-background via-secondary to-gold-soft/40 text-espresso border border-gold-soft/50 shadow-soft md:grid-cols-[1.1fr_1fr] md:rounded-3xl">
           <div className="relative order-1 aspect-[4/3] md:order-2 md:aspect-auto md:min-h-[560px]">
             <img
               src={heroLarge}
