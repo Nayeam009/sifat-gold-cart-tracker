@@ -204,3 +204,16 @@
   color: var(--foreground);
 }
 .admin-dark .bg-card { box-shadow: none; }
+
+/* Footer blooming flowers */
+.bloom-field .bloom-stem { stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.1s ease-out var(--d); }
+.bloom-field .bloom-leaf { transform-box: fill-box; transform-origin: right bottom; transform: scale(0); transition: transform .7s cubic-bezier(.34,1.56,.64,1) calc(var(--d) + .6s); }
+.bloom-field .bloom-leaf-r { transform-origin: left bottom; }
+.bloom-field .bloom-head ellipse, .bloom-field .bloom-head circle { transform-box: view-box; }
+.bloom-field .bloom-head { opacity: 0; transition: opacity .4s ease calc(var(--d) + 1s); }
+.bloom-field .bloom-head > * { scale: 0; transition: scale .9s cubic-bezier(.34,1.56,.64,1) calc(var(--d) + 1s); }
+.bloom-field.is-open .bloom-stem { stroke-dashoffset: 0; }
+.bloom-field.is-open .bloom-leaf { transform: scale(1); }
+.bloom-field.is-open .bloom-head { opacity: 1; }
+.bloom-field.is-open .bloom-head > * { scale: 1; }
+@media (prefers-reduced-motion: reduce) { .bloom-field * { transition: none !important; } }
