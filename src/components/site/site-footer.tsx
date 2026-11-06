@@ -136,8 +136,8 @@ const BLOOMS = [
   { x: 94, h: 60, s: 1, petals: 6, tone: "gold" },
 ];
 const TONES: Record<string, string> = {
-  gold: "var(--gold)",
-  red: "var(--bridal-red, #7C202B)",
+  gold: "var(--ring)",
+  red: "var(--accent)",
   ivory: "var(--gold-soft)",
 };
 
@@ -166,7 +166,7 @@ function Wildflowers() {
             {Array.from({ length: b.petals }).map((_, k) => (
               <ellipse key={`i${k}`} cx="0" cy="-6" rx="3.5" ry="7" fill="var(--gold-soft)" fillOpacity="0.7" transform={`rotate(${(360 / b.petals) * k + 180 / b.petals})`} />
             ))}
-            <circle r="4" fill="var(--gold)" />
+            <circle r="4" fill="var(--ring)" />
           </g>
         </svg>
       ))}
