@@ -18,6 +18,7 @@ import {
 } from "@/components/admin/confirm";
 
 import { CourierConnections } from "@/components/admin/courier-dispatch";
+import { ChangePassword } from "@/components/admin/change-password";
 
 export const Route = createFileRoute("/admin/settings")({ component: Settings });
 
@@ -190,6 +191,14 @@ function Settings() {
           <T k="invoice" f="label_note" label="Parcel label note (e.g. Handle with care)" max={120} />
         </div>
       </Card>
+
+      <section className="rounded-lg border border-border bg-card p-4 sm:p-6">
+        <h2 className="font-serif text-xl">Account &amp; security</h2>
+        <p className="mb-3 mt-1 text-xs text-muted-foreground">
+          Change the password you use to sign in to this admin panel.
+        </p>
+        <ChangePassword />
+      </section>
 
       <section className="rounded-lg border border-border bg-card p-4 sm:p-6">
         <h2 className="font-serif text-xl">Courier connections</h2>
