@@ -49,8 +49,8 @@ export function SiteFooter() {
           </div>
         </div>
       </div>
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 md:grid-cols-4">
-        <div>
+      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-x-6 gap-y-10 px-4 py-14 md:grid-cols-4">
+        <div className="col-span-2 md:col-span-1">
           <div className="inline-block rounded-md bg-background px-3 py-2">
             <img
               src={logoSrc}
@@ -133,7 +133,7 @@ export function SiteFooter() {
             </li>
           </ul>
         </div>
-        <div>
+        <div className="col-span-2 md:col-span-1">
           <h3 className="text-lg text-gold-soft">Newsletter</h3>
           <p className="mt-4 text-sm opacity-80">Get updates on new arrivals and offers.</p>
           <form
