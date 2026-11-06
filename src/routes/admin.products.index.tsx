@@ -4,7 +4,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Plus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { formatTaka } from "@/lib/catalog";
+import { formatTaka, products as sampleProducts } from "@/lib/catalog";
+import { ProductThumb } from "@/components/admin/product-thumb";
 import { ADMIN_PAGE, LOW_STOCK, errMsg, safeSearch } from "@/lib/admin";
 import { AdminTitle, Pager, StatePanel, btnPrimary, inputCls } from "@/components/admin/confirm";
 
@@ -132,8 +133,9 @@ function Products() {
             </thead>
             <tbody>
               {list.data.rows.map((p) => {
-                const img = [...p.product_images].sort((a, b) => a.sort_order - b.sort_order)[0]
-                  ?.image_url;
+                const img =
+                  [...p.product_images].sort((a, b) => a.sort_order - b.sort_order)[0]?.image_url ??
+                  sampleProducts.find((s) => s.slug === p.slug)?.image;
                 const stock = p.product_variants.length
                   ? p.product_variants.reduce((s, v) => s + v.stock_quantity, 0)
                   : p.stock_quantity;
@@ -145,11 +147,7 @@ function Products() {
                         params={{ id: p.id }}
                         className="flex items-center gap-3 hover:underline"
                       >
-                        {img ? (
-                          <img src={img} alt="" className="h-10 w-10 rounded object-cover" />
-                        ) : (
-                          <span className="h-10 w-10 rounded bg-muted" />
-                        )}
+                        <ProductThumb src={img} />
                         <span>
                           <span className="font-medium">{p.name}</span>
                           <span className="block text-xs text-muted-foreground">
