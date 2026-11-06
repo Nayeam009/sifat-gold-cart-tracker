@@ -148,7 +148,7 @@ function Wildflowers() {
     const el = ref.current;
     if (!el) return;
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setOpen(true); return; }
-    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setOpen(true); io.disconnect(); } }, { threshold: 0.15 });
+    const io = new IntersectionObserver(([e]) => { if (e?.isIntersecting) { setOpen(true); io.disconnect(); } }, { threshold: 0.15 });
     io.observe(el);
     return () => io.disconnect();
   }, []);
