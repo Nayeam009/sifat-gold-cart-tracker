@@ -140,7 +140,7 @@ function Home() {
     <>
       {/* Hero */}
       <section className="px-3 pt-3 sm:px-4 md:pt-5">
-        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-2xl bg-espresso text-espresso-foreground shadow-soft md:grid-cols-[1.1fr_1fr] md:rounded-3xl">
+        <div className="mx-auto grid max-w-7xl overflow-hidden rounded-2xl bg-gradient-to-br from-background via-secondary to-gold-soft/40 text-espresso border border-gold-soft/50 shadow-soft md:grid-cols-[1.1fr_1fr] md:rounded-3xl">
           <div className="relative order-1 aspect-[4/3] md:order-2 md:aspect-auto md:min-h-[560px]">
             <img
               src={heroLarge}
@@ -153,23 +153,21 @@ function Home() {
               decoding="async"
               className="absolute inset-0 h-full w-full object-cover object-[50%_22%]"
             />
-            <div aria-hidden className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-espresso to-transparent md:inset-y-0 md:left-0 md:h-auto md:w-20 md:bg-gradient-to-r" />
+            <div aria-hidden className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-secondary to-transparent md:inset-y-0 md:left-0 md:h-auto md:w-20 md:bg-gradient-to-r" />
           </div>
           <div className="hero-rise order-2 flex flex-col justify-center px-5 pb-7 pt-4 sm:px-8 md:order-1 md:px-12 md:py-14 lg:px-14">
-            <span className="inline-flex w-fit items-center gap-2 rounded-full bg-primary/15 px-3 py-1.5 text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-gold-soft">
-              <Truck className="h-3.5 w-3.5" aria-hidden /> Cash on Delivery · Bridal • Beauty • Fashion
-            </span>
-            <h1 className="mt-4 text-[clamp(1.9rem,7.5vw,2.4rem)] leading-[1.08] text-espresso-foreground md:mt-6 md:text-[clamp(2.6rem,4.6vw,4rem)]">
+            
+            <h1 className="text-[clamp(1.9rem,7.5vw,2.4rem)] leading-[1.08] text-espresso md:mt-0 md:text-[clamp(2.6rem,4.6vw,4rem)]">
               {heroTitle === DEFAULT_TITLE ? (
                 <>
                   Your Special Moments Deserve Something{" "}
-                  <em className="text-gold-soft">Beautiful.</em>
+                  <em className="text-primary">Beautiful.</em>
                 </>
               ) : (
                 heroTitle
               )}
             </h1>
-            <p className="mt-3 max-w-md text-sm leading-relaxed text-espresso-foreground/80 sm:text-base md:mt-5 lg:text-lg">
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-espresso/80 sm:text-base md:mt-5 lg:text-lg">
               {heroSub ??
                 "Discover bridal essentials, beauty favourites, elegant fashion, and finishing touches for every unforgettable occasion."}
             </p>
@@ -183,23 +181,23 @@ function Home() {
               <Link
                 to="/occasion/$slug"
                 params={{ slug: "wedding" }}
-                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-espresso-foreground/30 px-7 text-sm font-semibold text-espresso-foreground transition hover:bg-espresso-foreground/10"
+                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-espresso/30 px-7 text-sm font-semibold text-espresso transition hover:bg-espresso/10"
               >
                 Explore Bridal Collection
               </Link>
             </div>
-            <dl className="mt-7 grid grid-cols-3 gap-3 border-t border-espresso-foreground/15 pt-5 text-xs sm:text-sm md:mt-10">
+            <dl className="mt-7 grid grid-cols-3 gap-3 border-t border-espresso/15 pt-5 text-xs sm:text-sm md:mt-10">
               <div>
-                <dt className="text-espresso-foreground/65">Payment</dt>
-                <dd className="mt-0.5 inline-flex items-center gap-1 font-semibold"><Wallet className="h-3.5 w-3.5 text-gold-soft" aria-hidden />Cash on Delivery</dd>
+                <dt className="text-espresso/65">Payment</dt>
+                <dd className="mt-0.5 inline-flex items-center gap-1 font-semibold"><Wallet className="h-3.5 w-3.5 text-primary" aria-hidden />Cash on Delivery</dd>
               </div>
               <div>
-                <dt className="text-espresso-foreground/65">Delivery</dt>
+                <dt className="text-espresso/65">Delivery</dt>
                 <dd className="mt-0.5 font-semibold">Across Bangladesh</dd>
               </div>
               <div>
-                <dt className="text-espresso-foreground/65">Hotline</dt>
-                <dd className="mt-0.5"><a href="tel:01997974394" className="inline-flex min-h-11 items-start font-semibold hover:text-gold-soft md:min-h-0"><Phone className="mr-1 mt-0.5 h-3.5 w-3.5 text-gold-soft" aria-hidden />01997974394</a></dd>
+                <dt className="text-espresso/65">Hotline</dt>
+                <dd className="mt-0.5"><a href="tel:01997974394" className="inline-flex min-h-11 items-start font-semibold hover:text-primary md:min-h-0"><Phone className="mr-1 mt-0.5 h-3.5 w-3.5 text-primary" aria-hidden />01997974394</a></dd>
               </div>
             </dl>
           </div>
