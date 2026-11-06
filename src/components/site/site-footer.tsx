@@ -155,7 +155,7 @@ function Wildflowers() {
   return (
     <div ref={ref} aria-hidden className={`bloom-field pointer-events-none absolute inset-x-0 bottom-0 h-full overflow-hidden ${open ? "is-open" : ""}`}>
       {BLOOMS.map((b, i) => (
-        <svg key={i} className="absolute bottom-0 opacity-30 md:opacity-40" style={{ left: `${b.x}%`, height: `${b.h}%`, transform: `translateX(-50%) scale(${b.s})`, transformOrigin: "bottom center", ["--d" as string]: `${i * 0.18}s` }} viewBox="0 0 60 200" fill="none">
+        <svg key={i} className="absolute bottom-0 opacity-25 md:opacity-30" style={{ left: `${b.x}%`, height: `${b.h}%`, transform: `translateX(-50%) scale(${b.s})`, transformOrigin: "bottom center", ["--d" as string]: `${i * 0.18}s` }} viewBox="0 0 60 200" fill="none">
           <path className="bloom-stem" pathLength={1} d="M30 200 C26 160 34 120 30 60" stroke="var(--gold-soft)" strokeWidth="1.4" />
           <path className="bloom-leaf" d="M30 150 C18 140 12 146 8 138 C18 132 26 138 30 150Z" fill="var(--gold-soft)" />
           <path className="bloom-leaf bloom-leaf-r" d="M30 120 C42 110 48 116 52 108 C42 102 34 108 30 120Z" fill="var(--gold-soft)" />
